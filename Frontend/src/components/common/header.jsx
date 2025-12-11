@@ -1,4 +1,5 @@
 import react from 'react';
+import food from '../../assets/food.svg';
 import { useState } from 'react';
 function Header() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -6,8 +7,9 @@ function Header() {
     return (
         <>
         <div className='flex justify-between b-g-white shadow-md'>
-            <div className='m-1 p-3'>
-                <p className='text-3xl font-bold font-serif -tracking-tight hover:scale-110'
+            <div className='m-1 p-3 flex items-center space-x-2 cursor-pointer hover:scale-105 transition duration-300 ease-in-out'>
+                <img src={food} alt="Food"  className='hover:-rotate-12'/>
+                <p className='text-3xl font-bold font-serif -tracking-tight hover:scale-110 hover:text-orange-600 transition duration-300 ease-in-out'
                 href="#"
                 >
                     Cravr
@@ -32,7 +34,7 @@ function Header() {
                     <li className='inline p-2 hover:cursor-pointer'
                     href="/cart"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 hover:fill-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 hover:fill-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                         </svg>
                     </li>
