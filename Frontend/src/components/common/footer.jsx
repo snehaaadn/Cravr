@@ -11,7 +11,7 @@ const FooterLink = ({ text, href }) => (
 
 function Footer() {
     return (
-        <footer className="w-full bg-gray-50 shadow py-8 border-t border-gray-100 font-mono absolute bottom-0">
+        <footer className="w-full bg-gray-50 shadow py-8 border-t border-gray-100 font-mono">
             {/* Main Grid */}
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8">
                 
