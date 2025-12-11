@@ -27,13 +27,13 @@ function Footer() {
                             Cravr
                         </span>
                     </div>
-                    <div className="text-center sm:text-left lg:text-center text-gray-400 text-sm leading-relaxed">
+                    <div className="text-center sm:text-left lg:text-center text-gray-400 text-sm ">
                         © {year} Cravr. All rights reserved.
                         <br />
                         Made by 
-                        <a href="https://www.linkedin.com/in/sneha-debnath-521867289/" className="mx-1 text-black font-semibold hover:text-white hover:bg-blue-600 px-1 rounded transition-all duration-300">Sneha</a> 
+                        <a href="https://www.linkedin.com/in/sneha-debnath-521867289/" className="mx-1 text-black font-semibold hover:text-white hover:bg-gray-800 px-1 rounded transition-all duration-300">Sneha</a> 
                         & 
-                        <a href="https://www.linkedin.com/in/tushargnita/" className="mx-1 text-black font-semibold hover:text-white hover:bg-blue-600 px-1 rounded transition-all duration-300">Tushar</a>.
+                        <a href="https://www.linkedin.com/in/tushargnita/" className="mx-1 text-black font-semibold hover:text-white hover:bg-gray-800 px-1 rounded transition-all duration-300">Tushar</a>.
                     </div>
                 </div>
 
