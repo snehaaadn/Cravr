@@ -1,57 +1,119 @@
-import react from 'react';
-import { useState } from 'react';
-import {Link} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import food from '../../assets/food.svg';
 
 function Header() {
     const [searchTerm, setSearchTerm] = useState('');
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const user = true; // From Auth Context
 
     return (
-        <>
-        <div className='flex justify-between b-g-white shadow-md'>
-            <div className='m-1 p-3 flex items-center space-x-2 cursor-pointer hover:scale-105 transition duration-300 ease-in-out'>
-                <img src={food} alt="Food"  className='hover:-rotate-12'/>
-                <p className='text-3xl font-bold font-serif -tracking-tight hover:scale-110 hover:text-orange-600 transition duration-300 ease-in-out'
-                href="#"
-                >
-                    <Link to="/">Cravr</Link>
-                </p>
-            </div>
-            
-            <div className='flex flex-col justify-center m-1 p-3'>
-            <div className='flex flex-row justify-between items-center space-x-6'>
-            
-                <p className='flex items-center hover:scale-105 transition duration-300 ease-in-out'
-                onChange={(e) => setSearchTerm(e.target.value)}
-                >
-                    <input type="text" placeholder= {`Search for restaurants or dishes ${searchTerm}`} className='rounded-full border px-4 py-1 w-140 focus:outline-none'/>
-                </p>
-                
+        <nav className='bg-black shadow-md w-full sticky top-0 z-50'>
+            <div className='max-w-full mx-auto px-4 sm:px-6 lg:px-8'>
+                <div className='flex justify-between items-center h-20'>
+                    
+                    {/* LOGO */}
+                    <div className='flex items-center space-x-2 cursor-pointer hover:scale-105 transition duration-300 ease-in-out'>
+                        <img src={food} alt="Food" className='h-10 w-10 hover:-rotate-12 transition duration-300' />
+                        <Link to="/" className='text-3xl text-amber-400 font-bold font-serif -tracking-tight transition duration-300 ease-in-out'>
+                            Cravr
+                        </Link>
+                    </div>
 
-                <ul className='flex justify-items-center mx-2 space-x-6 font-light font-mono text-md'>
-                    <li className='inline p-2 hover:scale-105 cursor-pointer hover:underline transition duration-300 ease-in-out'><Link to="/">Home</Link></li>
-                    <li className='inline p-2 hover:scale-105 cursor-pointer hover:underline transition duration-300 ease-in-out'><Link to="/about">About</Link></li>
-                    <li className='inline p-2 hover:scale-105 cursor-pointer hover:underline transition duration-300 ease-in-out'><Link to="/restaurants">Restaurants</Link></li>
-                    
-                    {user ? (
-                        <li className='inline p-2 hover:scale-105 cursor-pointer hover:underline transition duration-300 ease-in-out'><Link to="/profile">Profile</Link></li>
-                    ) : (
-                        <li className='inline p-2 hover:scale-105 cursor-pointer hover:underline transition duration-300 ease-in-out'><Link to="/login">Login/SignUp</Link></li>
-                    )}
-                    
-                    <li className='inline p-2 hover:cursor-pointer'>
-                    <Link to="/cart">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 hover:fill-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                    </Link>
-                    </li>
-                </ul>
+                    {/* DESKTOP MENU */}
+                    <div className='hidden md:flex flex-1 justify-end items-center space-x-10'>
+                        {/* Search Bar */}
+                        <div className='relative group'>
+                            <input 
+                                type="text" 
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                placeholder="Search for restaurants..." 
+                                className='rounded-full text-amber-50 border border-gray-300 px-4 py-2 w-64 lg:w-96 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all duration-300'
+                            />
+                        </div>
+
+                        {/* Desktop Navigation Links */}
+                        <ul className='flex text-amber-50 items-center space-x-10 font-light font-mono text-md'>
+                            <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/">Home</Link></li>
+                            <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/about">About</Link></li>
+                            <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/restaurants">Restaurants</Link></li>
+
+                            {user ? (
+                                <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/profile">Profile</Link></li>
+                            ) : (
+                                <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/login">Login/SignUp</Link></li>
+                            )}
+
+                            {/* Desktop Cart Icon */}
+                            <li className='hover:scale-110 transition duration-300'>
+                                <Link to="/cart">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 hover:fill-amber-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* MOBILE */}
+                    <div className='bg-black md:hidden flex items-center space-x-4'>
+                        
+                        {/* Mobile Cart Icon */}
+                        <Link to="/cart" className='text-amber-50 hover:text-amber-400 transition-colors'>
+                             <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </Link>
+
+                        {/* Hamburger Button */}
+                        <button 
+                            onClick={() => setIsMenuOpen(!isMenuOpen)} 
+                            className='text-amber-50 hover:text-amber-400 focus:outline-none transition-transform duration-300 active:scale-90'
+                        >
+                            {isMenuOpen ? (
+                                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            ) : (
+                                <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            )}
+                        </button>
+                    </div>
+                </div>
             </div>
+
+            {/* MOBILE MENU DROPDOWN */}
+            <div className={` md:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className='bg-black border-t border-gray-100 px-4 pt-4 pb-6 space-y-4 shadow-inner'>
+                    
+                    {/* Mobile Search */}
+                    <input 
+                        type="text" 
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Search for restaurants..." 
+                        className='w-full rounded-full border border-amber-400 text-amber-50 px-4 py-3 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400'
+                    />
+
+                    {/* Mobile Links */}
+                    <ul className='flex flex-col space-y-3 font-mono text-lg text-amber-50'>
+                        <li><Link to="/" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-50 hover:text-amber-600 hover:pl-2 transition-all duration-300 rounded-lg'>Home</Link></li>
+                        <li><Link to="/about" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-50 hover:text-amber-600 hover:pl-2 transition-all duration-300 rounded-lg'>About</Link></li>
+                        <li><Link to="/restaurants" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-50 hover:text-amber-600 hover:pl-2 transition-all duration-300 rounded-lg'>Restaurants</Link></li>
+                        
+                        {user ? (
+                            <li><Link to="/profile" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-50 hover:text-amber-600 hover:pl-2 transition-all duration-300 rounded-lg'>Profile</Link></li>
+                        ) : (
+                            <li><Link to="/login" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-50 hover:text-amber-600 hover:pl-2 transition-all duration-300 rounded-lg'>Login/SignUp</Link></li>
+                        )}
+                    </ul>
+                </div>
             </div>
-        </div>
-        </>
+        </nav>
     )
 }
+
 export default Header;

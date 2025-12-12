@@ -2,7 +2,6 @@ import React from "react";
 import food from "../../assets/food.svg";
 const year = new Date().getFullYear();
 
-// --- Helper Component ---
 const FooterLink = ({ text, href }) => (
   <li>
     <a href={href} className="inline-block transition-all duration-300 ease-in-out hover:text-orange-600 hover:translate-x-2 hover:font-medium" > {text} </a>
@@ -15,7 +14,7 @@ function Footer() {
             {/* Main Grid */}
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8">
                 
-                {/* --- Section 1: Brand --- */}
+                {/* Section 1: Brand */}
                 <div className="flex flex-col justify-center items-center h-full sm:items-start lg:items-center group">
                     <div className="flex items-center gap-2 mb-3">
                         <img 
@@ -37,7 +36,7 @@ function Footer() {
                     </div>
                 </div>
 
-                {/* --- Section 2: Country Categories --- */}
+                {/* Section 2: Country Categories */}
                 <div className="flex flex-col items-start pl-4 sm:pl-0 lg:pl-8"> 
                     <h2 className="text-lg font-bold text-black mb-6 relative w-fit after:block after:content-[''] after:absolute after:h-0.5 after:bg-orange-500 after:w-full after:scale-x-0 hover:after:scale-x-100 after:transition after:duration-300 after:origin-left cursor-default">
                         Categories
@@ -54,7 +53,7 @@ function Footer() {
                     </ul>
                 </div>
 
-                {/* --- Section 3: Food Types --- */}
+                {/* Section 3: Food Types */}
                 <div className="flex flex-col items-start pl-4 sm:pl-0 lg:pl-8 -mt-4 sm:mt-0">
                     <div className="h-13 hidden lg:block"></div> 
                     <ul className="flex flex-col space-y-3 text-base text-gray-600">
@@ -69,7 +68,7 @@ function Footer() {
                     </ul>
                 </div>
 
-                {/* --- Section 4: Dietary --- */}
+                {/* Section 4: Dietary */}
                 <div className="flex flex-col items-start pl-4 sm:pl-0 lg:pl-8 -mt-4 sm:mt-0">
                     <div className="h-13 hidden lg:block"></div> 
                     <ul className="flex flex-col space-y-3 text-base text-gray-600">
