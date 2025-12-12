@@ -1,12 +1,11 @@
 import react from "react";
+import HeroSection from "../components/heroSection";
+
 function Homepage(){
     return(
-        <>
-        <div>
-            <h1 className="font-bold text-4xl">Welcome to Cravr!</h1>
-            <p className="mt-4 text-lg">Discover the best restaurants and dishes around you.</p>
+        <div className="flex flex-col max-w-full min-h-screen">
+            <HeroSection />
         </div>
-        </>
     )
 }
 export default Homepage;

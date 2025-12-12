@@ -61,11 +61,6 @@ function ProfilePage() {
                             <p className="font-bold text-2xl">{cravrCoins}</p>
                         </div>
                     </div>
-
-
-
-
-
                 </div>
 
                 <div className="flex flex-row justify-between p-4 shadow-md rounded-2xl">

@@ -10,9 +10,9 @@ import './App.css'
 function App() {
 
   return (
-      <div className='flex flex-col min-h-screen '>
+      <div className='flex flex-col max-w-full min-h-screen '>
         <Header />
-        <main className="flex-1 container mx-auto px-2 py-6">
+        <main className="flex-1">
           <Routes>
             <Route path='/' element={<Homepage />} />
             <Route path='/about' element={<Aboutpage />} />
