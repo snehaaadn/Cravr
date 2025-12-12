@@ -1,6 +1,9 @@
 import react from "react";
+import {useState} from "react";
 import FavItems from "../components/favItems.jsx";
 import Addresses from "../components/addresses.jsx";
+import Orders from "../components/orders.jsx";
+
 
 const renderView = (view) => {
     switch (view) {
@@ -9,7 +12,9 @@ const renderView = (view) => {
         case 'addresses':
             return <Addresses />;
         case 'orders':
-            return <div>Your Orders will be displayed here.</div>;
+            return <Orders />;
+        case 'logout':
+            return <div>You have been logged out.</div>;
         default:
             return <div>Select a view.</div>;
     }
@@ -22,7 +27,7 @@ function ProfilePage() {
     const orders = 15; // From DB
     const moneySpent = 2500; // From DB
     const cravrCoins = 300; // From DB
-    const [activeView, setActiveView] = react.useState('orders'); // 'favourites' or 'addresses' or 'orders'
+    const [activeView, setActiveView] = useState('orders'); // 'favourites' or 'addresses' or 'orders'
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -65,27 +70,32 @@ function ProfilePage() {
 
                 <div className="flex flex-row justify-between p-4 shadow-md rounded-2xl">
 
-                    <div className="flex flex-col space-y-4 mx-4 items-start justify-start text-lg font-mono">
+                    <div className="flex flex-col space-y-12 mt-6 mx-6 p-6 items-start justify-start text-lg font-mono">
+                
                         <button
                             onClick={() => setActiveView('orders')}
-                            className=" hover:border-b-2 border-gray-400 hover:text-orange-600 hover:translate-x-2 hover:font-medium hover:duration-300"                            >
+                            className={` hover:border-b-2 border-gray-400 hover:text-orange-600 hover:translate-x-2 hover:font-medium hover:duration-300 ${activeView === 'orders' ? 'border-b-2 border-gray-400 text-orange-600 translate-x-2 font-medium duration-300' : ''}`}           
+                        >
                             Orders
                         </button>
+
                         <button
-                            className=" hover:border-b-2 border-gray-400 hover:text-orange-600 hover:translate-x-2 hover:font-medium hover:duration-300"
+                            className={` hover:border-b-2 border-gray-400 hover:text-orange-600 hover:translate-x-2 hover:font-medium hover:duration-300 ${activeView === 'favourites' ? 'border-b-2 border-gray-400 text-orange-600 translate-x-2 font-medium duration-300' : ''}`}
                             onClick={() => setActiveView('favourites')}
                         >
                             Favourites
                         </button>
                         <button
 
-                            className=" hover:border-b-2 border-gray-400 hover:text-orange-600 hover:translate-x-2 hover:font-medium hover:duration-300"
+                            className={` hover:border-b-2 border-gray-400 hover:text-orange-600 hover:translate-x-2 hover:font-medium hover:duration-300 ${activeView === 'addresses' ? 'border-b-2 border-gray-400 text-orange-600 translate-x-2 font-medium duration-300' : ''}`}
                             onClick={() => setActiveView('addresses')}
                         >
                             Addresses
                         </button>
                         <button
-                            className=" hover:border-b-2 border-gray-400 hover:text-orange-600 hover:translate-x-2 hover:font-medium hover:duration-300"                            >
+                            className={` hover:border-b-2 border-gray-400 hover:text-orange-600 hover:translate-x-2 hover:font-medium hover:duration-300 ${activeView === 'logout' ? 'border-b-2 border-gray-400 text-orange-600 translate-x-2 font-medium duration-300' : ''}`}
+                            onClick={() => setActiveView('logout')}
+                        >
 
                             Log Out
                         </button>
