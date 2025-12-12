@@ -1,6 +1,6 @@
 import react from 'react';
 import { useState } from 'react';
-import image from '../assets/food.svg';
+import image from '../assets/food_ad3.webp';
 function FavouriteItemCard({ item }) {
 
     // onhandleAddToCart = (item) => {
