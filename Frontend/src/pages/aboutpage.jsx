@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 function Aboutpage(){
     return (
         <>
-        <div className="max-w-7xl mx-auto px-6 py-12">
-            <h1 className="text-4xl font-bold mb-6">About Cravr</h1>
+        <div className="max-w-7xl mx-auto px-6 py-12 font-merriweather font-extralight">
+            <h1 className="text-5xl font-bold mb-6">About Cravr</h1>
             <p className="text-lg mb-4">
                 Welcome to Cravr, your ultimate food delivery companion! We are dedicated to bringing you a diverse selection of restaurants and cuisines right to your doorstep.
             </p>

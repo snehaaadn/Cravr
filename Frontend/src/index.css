@@ -1,4 +1,16 @@
 @import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Aladin&family=Iceberg&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Niconne&family=Pacifico&family=Quintessential&display=swap');
+
+@theme {
+  --font-niconne: "Niconne", cursive;
+  --font-pacifico: "Pacifico", cursive;
+  --font-iceberg: "Iceberg", sans-serif;
+  --font-quintessential: "Quintessential", cursive;
+  --font-aladin: "Aladin", cursive;
+  --font-merriweather: "Merriweather", serif;
+}
+
 @keyframes float {
   0% { transform: translateY(0px) scale(1.1);}
   50% { transform: translateY(-20px) scale(1);}
