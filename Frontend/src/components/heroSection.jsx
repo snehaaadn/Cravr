@@ -53,7 +53,7 @@ function HeroSection() {
                     <h1 className="text-7xl font-bold font-serif mb-4 text-white drop-shadow-lg">
                         Cravings? <span className="text-amber-400 italic">Cravr.</span>
                     </h1>
-                    <p className="text-lg md:text-2xl text-amber-50/90 font-light max-w-2xl tracking-wide">
+                    <p className="text-lg md:text-2xl text-amber-50/90 font-serif font-light max-w-2xl tracking-wide">
                         Your ultimate food delivery companion. Explore a world of flavors at your fingertips!
                     </p>
                 </div>

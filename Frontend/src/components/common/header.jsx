@@ -8,33 +8,32 @@ function Header() {
     const user = true; // From Auth Context
 
     return (
-        <nav className='bg-black shadow-md w-full sticky top-0 z-50'>
+        <nav className='bg-black w-full sticky top-0 z-50'>
             <div className='max-w-full mx-auto px-4 sm:px-6 lg:px-8'>
                 <div className='flex justify-between items-center h-20'>
                     
                     {/* LOGO */}
                     <div className='flex items-center space-x-2 cursor-pointer hover:scale-105 transition duration-300 ease-in-out'>
-                        <img src={food} alt="Food" className='h-10 w-10 hover:-rotate-12 transition duration-300' />
-                        <Link to="/" className='text-3xl text-amber-400 font-bold font-serif -tracking-tight transition duration-300 ease-in-out'>
+                        <Link to="/" className='text-4xl text-amber-400 tracking-wide font-pacifico transition duration-300 ease-in-out'>
                             Cravr
                         </Link>
                     </div>
 
                     {/* DESKTOP MENU */}
-                    <div className='hidden md:flex flex-1 justify-end items-center space-x-10'>
+                    <div className='hidden lg:flex flex-1 justify-end items-center space-x-10 text-md font-merriweather'>
                         {/* Search Bar */}
                         <div className='relative group'>
                             <input 
                                 type="text" 
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                placeholder="Search for restaurants..." 
+                                placeholder="Search for Restaurants..." 
                                 className='rounded-full text-amber-50 border border-gray-300 px-4 py-2 w-64 lg:w-96 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all duration-300'
                             />
                         </div>
 
                         {/* Desktop Navigation Links */}
-                        <ul className='flex text-amber-50 items-center space-x-10 font-light font-mono text-md'>
+                        <ul className='flex text-amber-50 items-center space-x-10'>
                             <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/">Home</Link></li>
                             <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/about">About</Link></li>
                             <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/restaurants">Restaurants</Link></li>
@@ -57,7 +56,7 @@ function Header() {
                     </div>
 
                     {/* MOBILE */}
-                    <div className='bg-black md:hidden flex items-center space-x-4'>
+                    <div className='bg-black lg:hidden flex items-center space-x-4'>
                         
                         {/* Mobile Cart Icon */}
                         <Link to="/cart" className='text-amber-50 hover:text-amber-400 transition-colors'>
@@ -86,28 +85,28 @@ function Header() {
             </div>
 
             {/* MOBILE MENU DROPDOWN */}
-            <div className={` md:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className='bg-black border-t border-gray-100 px-4 pt-4 pb-6 space-y-4 shadow-inner'>
+            <div className={` lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className='bg-black border-t font-medium text-lg tracking-wide font-iceberg border-gray-100 px-4 pt-4 pb-6 space-y-4 shadow-inner'>
                     
                     {/* Mobile Search */}
                     <input 
                         type="text" 
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Search for restaurants..." 
+                        placeholder="Search for Restaurants..." 
                         className='w-full rounded-full border border-amber-400 text-amber-50 px-4 py-3 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400'
                     />
 
                     {/* Mobile Links */}
-                    <ul className='flex flex-col space-y-3 font-mono text-lg text-amber-50'>
-                        <li><Link to="/" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-50 hover:text-amber-600 hover:pl-2 transition-all duration-300 rounded-lg'>Home</Link></li>
-                        <li><Link to="/about" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-50 hover:text-amber-600 hover:pl-2 transition-all duration-300 rounded-lg'>About</Link></li>
-                        <li><Link to="/restaurants" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-50 hover:text-amber-600 hover:pl-2 transition-all duration-300 rounded-lg'>Restaurants</Link></li>
+                    <ul className='flex flex-col space-y-3 text-lg text-amber-50'>
+                        <li><Link to="/" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-950/80 hover:text-amber-400 hover:pl-2 transition-all duration-300 rounded-lg'>Home</Link></li>
+                        <li><Link to="/about" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-950/80 hover:text-amber-400 hover:pl-2 transition-all duration-300 rounded-lg'>About</Link></li>
+                        <li><Link to="/restaurants" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-950/80 hover:text-amber-400 hover:pl-2 transition-all duration-300 rounded-lg'>Restaurants</Link></li>
                         
                         {user ? (
-                            <li><Link to="/profile" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-50 hover:text-amber-600 hover:pl-2 transition-all duration-300 rounded-lg'>Profile</Link></li>
+                            <li><Link to="/profile" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-950/80 hover:text-amber-400 hover:pl-2 transition-all duration-300 rounded-lg'>Profile</Link></li>
                         ) : (
-                            <li><Link to="/login" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-50 hover:text-amber-600 hover:pl-2 transition-all duration-300 rounded-lg'>Login/SignUp</Link></li>
+                            <li><Link to="/login" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-950/80 hover:text-amber-400 hover:pl-2 transition-all duration-300 rounded-lg'>Login/SignUp</Link></li>
                         )}
                     </ul>
                 </div>
