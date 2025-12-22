@@ -1,5 +1,5 @@
 import react from 'react';
-import food from '../assets/food_ad3.webp';
+import food from '../assets/food.svg';
 
 function OrderCard({ order }) {
     return (
