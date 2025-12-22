@@ -1,0 +1,37 @@
+import mongoose from "mongoose";
+
+const addressSchema = new mongoose.Schema({
+    houseNo: {type: Number, required: false},
+    street: {type: String, required: true},
+    locality: {type: String, required: false},
+    city: {type: String, required: true},
+    state: {type: String, required: true},
+    zipCode: {type: String, required: true},
+})
+
+const userSchema = new mongoose.Schema({
+    username: { type: String, required: true},
+    email: { type: String, required: false, unique: true},
+    phone: {type: Number, required:true, unique:true},
+    password: {type: String, required: true},
+    address:{
+        type: [addressSchema],
+        default : []
+    },
+    cart: [
+        {
+            dishID: { 
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Dish',
+                required: true,
+                index: true // Added index for faster queries
+            },
+            quantity: { type: Number, required: true, default: 1 },
+            default: [] // Added default empty array for cart
+        }
+    ]
+}, { timestamps: true });
+
+const User = mongoose.model('User', userSchema);
+
+export default User;
