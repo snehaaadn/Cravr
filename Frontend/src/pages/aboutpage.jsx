@@ -1,24 +1,14 @@
 import React from "react";
-import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import bgVideo from "../assets/burger.mp4";
 
 function Aboutpage() {
-    // Create a reference for the video
-  const videoRef = useRef(null);
-
-  // Set the speed when the component loads
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.playbackRate = 0.7; // 0.5 is 50% speed. 1.0 is normal.
-    }
-  }, []);
+  
 
   return (
     <div className="relative min-h-screen w-full font-merriweather font-extralight">
       
       <video
-        ref={videoRef}
         autoPlay
         loop
         muted
