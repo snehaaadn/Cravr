@@ -5,7 +5,7 @@ import food from '../../assets/food.svg';
 function Header() {
     const [searchTerm, setSearchTerm] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const user = true; // From Auth Context
+    const user = false; // From Auth Context
 
     return (
         <nav className='bg-black w-full sticky top-0 z-50'>

@@ -5,6 +5,7 @@ import Aboutpage from './pages/aboutpage'
 import Header from './components/common/header'
 import Footer from './components/common/footer'
 import Profilepage from './pages/profilepage'
+import AuthPage from './pages/authpage'
 import './App.css'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path='/' element={<Homepage />} />
             <Route path='/about' element={<Aboutpage />} />
             <Route path='/profile' element={<Profilepage />} />
+            <Route path='/login' element={<AuthPage />} />
             <Route path='*' element={<Navigate to='/' />} />
           </Routes>
         </main>
