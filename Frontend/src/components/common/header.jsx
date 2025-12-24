@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import food from '../../assets/food.svg';
+import logo from '../../assets/logo.png';
 
 function Header() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -13,6 +13,7 @@ function Header() {
                 <div className='flex justify-between items-center h-20'>
                     
                     {/* LOGO */}
+                    <img src={logo} alt="Logo" className='w-12 h-12 p-1 object-contain' />
                     <div className='flex items-center space-x-2 cursor-pointer hover:scale-105 transition duration-300 ease-in-out'>
                         <Link to="/" className='text-4xl text-amber-400 tracking-wide font-pacifico transition duration-300 ease-in-out'>
                             Cravr

@@ -81,3 +81,18 @@
 .animate-scroll-right:hover {
   animation-play-state: paused;
 }
+
+
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-spin-reverse-slow {
+  animation: spin-reverse 3s linear infinite;
+}
