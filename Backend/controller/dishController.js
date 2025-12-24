@@ -1,4 +1,4 @@
-import Dish from "../models/dishModel";
+import Dish from "../models/dishModel.js";
 
 async function getDishes(req, res) {
     try {

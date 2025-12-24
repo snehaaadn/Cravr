@@ -1,11 +1,23 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link ,useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 
 function Header() {
     const [searchTerm, setSearchTerm] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const user = false; // From Auth Context
+    const user = false;
+
+    const navigate = useNavigate();
+
+    // Handle Search Submission
+    const handleSearchSubmit = (e) => {
+        if (e.key === 'Enter' && searchTerm.trim() !== '') { // 
+            navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
+            setSearchTerm('');
+            setIsMenuOpen(false);
+        }
+
+    }
 
     return (
         <nav className='bg-black w-full sticky top-0 z-50'>
@@ -28,7 +40,8 @@ function Header() {
                                 type="text" 
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                placeholder="Search for Restaurants..." 
+                                onKeyDown={handleSearchSubmit}
+                                placeholder="Search for Restaurants & Dishes..." 
                                 className='rounded-full text-amber-50 border border-gray-300 px-4 py-2 w-64 lg:w-96 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400 transition-all duration-300'
                             />
                         </div>
