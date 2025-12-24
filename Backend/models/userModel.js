@@ -18,6 +18,9 @@ const userSchema = new mongoose.Schema({
         type: [addressSchema],
         default : []
     },
+    points: {type: Number, required: false, default: 0},
+    totalOrders: {type: Number, required: false, default: 0},
+    totalSpent: {type: Number, required: false, default: 0},
     cart: [
         {
             dishID: { 

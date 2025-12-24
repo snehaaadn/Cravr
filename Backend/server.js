@@ -4,7 +4,9 @@ import { connectDB } from './connect.js';
 
 // Import Routes
 import userRoutes from './routes/userRoutes.js';
-
+import cartRoutes from './routes/cartRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
+import restaurantRoutes from './routes/restaurantRoutes.js';
 
 dotenv.config();
 const app = express();
@@ -23,11 +25,11 @@ connectDB(URI)
 // Middleware
 app.use(express.json()); // For parsing application/json
 
-
 // Routes
 app.use('/api/users', userRoutes);
-
-
+app.use('/api/users/cart', cartRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/restaurants', restaurantRoutes);
 
 
 // Start Server
