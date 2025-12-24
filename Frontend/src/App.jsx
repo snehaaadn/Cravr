@@ -7,6 +7,7 @@ import Footer from './components/common/footer'
 import Profilepage from './pages/profilepage'
 import AuthPage from './pages/authpage'
 import LoadingPage from './pages/loadingpage';
+import SearchPage from './pages/searchpage';
 import './App.css'
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    const timer = setTimeout(() => setIsLoading(false), 1000); // 1 second load time
+    const timer = setTimeout(() => setIsLoading(false), 2000); // 1 second load time
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
@@ -29,6 +30,7 @@ function App() {
             <Route path='/about' element={<Aboutpage />} />
             <Route path='/profile' element={<Profilepage />} />
             <Route path='/login' element={<AuthPage />} />
+            <Route path='/search' element={<SearchPage />} />
             <Route path='*' element={<Navigate to='/' />} />
           </Routes>
         </main>
