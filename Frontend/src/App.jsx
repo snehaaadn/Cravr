@@ -1,17 +1,27 @@
-import React from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import React, { useState, useEffect} from 'react'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import Homepage from './pages/homepage'
 import Aboutpage from './pages/aboutpage'
 import Header from './components/common/header'
 import Footer from './components/common/footer'
 import Profilepage from './pages/profilepage'
 import AuthPage from './pages/authpage'
+import LoadingPage from './pages/loadingpage';
 import './App.css'
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+  const location = useLocation();
+
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => setIsLoading(false), 1000); // 1 second load time
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   return (
       <div className='flex flex-col max-w-full min-h-screen '>
+        {isLoading && <LoadingPage />}
         <Header />
         <main className="flex-1">
           <Routes>
