@@ -6,7 +6,7 @@ const geocoder = nodeGeocoder({ provider: 'openstreetmap' });
 async function getRestaurantsByLocationName(req, res) {
     try {
         const { locationName } = req.query; // e.g., "Kengeri, Bengaluru"
-        const radiusInMeters = parseFloat(req.query.radius) || 5000;
+        const radiusInMeters = 10000;
 
         if (!locationName) {
             return res.status(400).json({ success: false, message: "Location name is required" });
@@ -68,4 +68,20 @@ async function getRestaurantsDetailsbyID(req, res) {
     }
 }
 
-export { getRestaurantsByLocationName, getRestaurantsDetailsbyID };
+async function getRestaurantsByName (req, res) {
+    try {
+        const { name } = req.params;
+        const restaurants = await Restaurant.find({ name: new RegExp(name, 'i') });
+
+        if (!restaurants.length) {
+            return res.status(404).json({ success: false, message: "No restaurants found with that name" });
+        }
+
+        res.status(200).json({ success: true, restaurants });
+    }
+    catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }           
+}
+
+export { getRestaurantsByLocationName, getRestaurantsDetailsbyID, getRestaurantsByName };
