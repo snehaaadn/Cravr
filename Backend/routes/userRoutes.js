@@ -1,19 +1,16 @@
 import express from 'express';
 const router = express.Router();
+import { authCheck } from '../middleware/authCheck.js';
 
-import paymentCheck from '../middlewares/mockPaymentCheck.js';
-
-import { signup, login, makeOrder, getCart, removeDishFromCart, updateDishQuantityInCart } from '../controller/userController.js';
+import { signup, login, getUserProfile } from '../controller/userController.js';
 
 // User routes
 router.post('/signup', signup);
 
 router.post('/login', login);
 
-router.route('/cart') // /api/user/cart
-    .post('/', paymentCheck, makeOrder) // Make order from cart
-    .get('/', getCart) // Get cart items
-    .delete('/', removeDishFromCart) // Remove dish from cart
-    .patch('/', updateDishQuantityInCart) // Update dish quantity in cart
+router.get('/profile', authCheck, getUserProfile);
+
+
 
 export default router;
