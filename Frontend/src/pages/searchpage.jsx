@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import Loading from '../components/common/loading.jsx';
+import Pagination from '../components/common/pagination.jsx';
 import RestaurantCard from '../components/restaurantCard.jsx';
 import DishCard from '../components/dishCard.jsx';
-import Loading from '../components/common/loading.jsx';
 
-// IMPORT YOUR API FUNCTIONS
+// API Functions
 import {
     getRestaurantsByName,
     getDishes
 } from '../services/api';
-import Pagination from '../components/common/pagination.jsx';
 
-// Import Assets (Fallbacks)
+// Assets
 import pizzaImg from '../assets/category/pizza.webp';
 import logo from '../assets/logo.png';
 
@@ -27,25 +27,25 @@ function SearchPage() {
     const [itemsPerPage] = useState(12);
     const [totalItems, setTotalItems] = useState(0);
 
-
+    // Fetch Data
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
             try {
                 let data = [];
 
-                
                 if (activeTab === 'restaurants') {
-                    const searchTerm = query || 'Bengaluru';
-
+                    const searchTerm = query || '';
                     const response = await getRestaurantsByName(searchTerm);
                     const rawData = response.data.restaurants || [];
+                    setTotalItems(rawData.length); 
 
                     data = rawData.map(item => ({
                         id: item._id,
                         name: item.name,
-                        image: logo,
-                        location: item.address?.city || item.address?.locality || "Local Area"
+                        image: logo, 
+                        location: item.address?.locality || item.address?.city || "Location Unavailable",
+                        rating: item.rating || 4.5
                     }));
                 } else {
                     const searchTerm = query || '';
@@ -59,9 +59,11 @@ function SearchPage() {
                         name: item.name,
                         restaurant: item.restaurantID?.name || "Cravr Partner",
                         price: item.price,
-                        rating: item.rating || 4.5,
+                        rating: item.rating || 8,
+                        ratingCount: item.ratingCount || 100,
                         image: item.imageUrl || pizzaImg, 
-                        description: item.description || "Delicious and freshly prepared."
+                        description: item.description || "Delicious and freshly prepared.",
+                        category: item.category 
                     }));
                 }
                 setResults(data);
@@ -80,66 +82,83 @@ function SearchPage() {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-
     return (
-        <div id='searchSection' className="min-h-screen bg-stone-950 text-white font-sans selection:bg-amber-500 selection:text-black pb-20 scroll-mt-24">
+        <div id='searchSection' className="min-h-screen bg-stone-950 text-white font-sans selection:bg-amber-500 selection:text-black pb-20 relative">
 
-            {/* HEADER SECTION */}
-            <div className="sticky top-20 z-30 bg-stone-950/80 backdrop-blur-lg border-b border-gray-800 py-6 px-4 md:px-8">
-                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
+            {/* --- HEADER --- */}
+            <div className="top-20 z-40 bg-stone-950/90 backdrop-blur-md border-b border-white/5 py-6">
+                <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
+
+                    {/* Title */}
                     <div>
-                        <h1 className="text-3xl md:text-4xl font-merriweather font-bold">
+                        <span className="text-amber-500 font-mono text-xs tracking-widest uppercase block mb-1">
+                            Search Results for "{query || 'All'}"
+                        </span>
+                        <h1 className="text-3xl md:text-4xl font-merriweather font-bold text-white">
                             Explore {activeTab === 'restaurants' ? 'Restaurants' : 'Dishes'}
                         </h1>
                     </div>
 
-                    {/* Filter Tabs */}
-                    <div className="flex bg-gray-900/80 p-1 rounded-xl border border-gray-800">
-                        <button
-                            onClick={() => setActiveTab('restaurants')}
-                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all duration-300 ${activeTab === 'restaurants' ? 'bg-amber-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
-                        >
-                            Restaurants
-                        </button>
+                    {/* Tabs */}
+                    <div className="flex bg-stone-900/50 p-1.5 rounded-full border border-white/10 backdrop-blur-sm">
                         <button
                             onClick={() => setActiveTab('dishes')}
-                            className={`px-6 py-2 rounded-lg text-sm font-bold transition-all duration-300 ${activeTab === 'dishes' ? 'bg-amber-500 text-black shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                            className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${
+                                activeTab === 'dishes' 
+                                ? 'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]' 
+                                : 'text-stone-400 hover:text-white'
+                            }`}
                         >
                             Dishes
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('restaurants')}
+                            className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${
+                                activeTab === 'restaurants' 
+                                ? 'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]' 
+                                : 'text-stone-400 hover:text-white'
+                            }`}
+                        >
+                            Restaurants
                         </button>
                     </div>
                 </div>
             </div>
 
-            {/* CONTENT GRID */}
-            <div className="max-w-7xl mx-auto px-4 md:px-8 mt-8">
+            {/* --- CONTENT GRID --- */}
+            <div className="max-w-7xl mx-auto px-4 md:px-8 mt-12 relative z-10">
                 {loading ? (
-                    <div className="min-h-[300px] flex items-center justify-center">
+                    <div className="min-h-[50vh] flex items-center justify-center">
                         <Loading />
                     </div>
                 ) : (
                     <>
-                        <p className="text-gray-500 mb-6 font-mono text-sm">
-                            Found {results.length} {activeTab === 'restaurants' ? 'outlets' : 'items'} for you
-                        </p>
+                        <div className="flex items-center justify-between mb-8">
+                            <p className="text-stone-500 font-mono text-sm">
+                                Found {results.length} {activeTab === 'restaurants' ? 'outlets' : 'items'}
+                            </p>
+                            <div className="h-px bg-stone-800 flex-1 ml-6"></div>
+                        </div>
 
                         {results.length > 0 ? (
-                            <div className={activeTab === 'restaurants'
-                                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-                                : "grid grid-cols-1 md:grid-cols-2 gap-6"
-                            }>
-                                {activeTab === 'restaurants'
-                                    ? results.map(item => <RestaurantCard key={item.id} data={item} />)
-                                    : results.map(item => <DishCard key={item.id} data={item} />)
-                                }
+                            <div className={`grid gap-8 ${activeTab === 'restaurants' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
+                                
+                                {/* --- DISH CARDS --- */}
+                                {activeTab === 'dishes' && results.map((dish) => (
+                                    <DishCard key={dish.id} dish={dish} />
+                                ))}
+
+                                {/* --- RESTAURANT CARDS --- */}
+                                {activeTab === 'restaurants' && results.map((rest) => (
+                                   <RestaurantCard key={rest.id} data={rest} />
+                                ))}
+
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center py-20 opacity-60">
-                                <div className="text-6xl mb-4 w-24 h-24">
-                                    <img src={logo} alt="No results" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-300">No results found</h3>
-                                <p className="text-gray-500">Try searching for something else like "Pizza" or "Biryani"</p>
+                            <div className="flex flex-col items-center justify-center py-20 opacity-40">
+                                <img src={logo} alt="No results" className="w-24 h-24 mb-4 grayscale invert" />
+                                <h3 className="text-xl font-bold text-stone-400">No results found</h3>
+                                <p className="text-stone-600">Try searching for generic terms like "Pizza" or "Biryani"</p>
                             </div>
                         )}
                     </>
@@ -148,13 +167,15 @@ function SearchPage() {
 
             {/* PAGINATION */}
             {!loading && results.length > 0 && (
-                <Pagination
-                    itemsPerPage={itemsPerPage}
-                    totalItems={totalItems}
-                    paginate={paginate}
-                    currentPage={currentPage}
-                    sectionId="searchSection"
-                />
+                <div className="mt-12">
+                    <Pagination
+                        itemsPerPage={itemsPerPage}
+                        totalItems={totalItems}
+                        paginate={paginate}
+                        currentPage={currentPage}
+                        sectionId="searchSection"
+                    />
+                </div>
             )}
         </div>
     );

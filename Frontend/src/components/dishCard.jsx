@@ -1,26 +1,57 @@
 import React from "react";
 
 
-const DishCard = ({ data }) => (
-    <div className="flex bg-gray-900 rounded-2xl overflow-hidden shadow-md border border-gray-800 hover:border-gray-700 transition-all duration-300">
-        <div className="w-1/3 md:w-40 relative">
-            <img src={data.image} alt={data.name} className="w-full h-full object-cover" />
-            <div className="absolute top-2 left-2">
-                <div className="w-4 h-4 border border-green-500 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-sm">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+const DishCard = ({ dish }) => (
+    <div key={dish.id} className="group relative bg-stone-800/50 rounded-3xl overflow-hidden border border-white/5 hover:border-amber-500/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_10px_30px_-10px_rgba(245,158,11,0.2)] flex flex-col h-full">
+
+        {/* Image Area */}
+        <div className="h-56 overflow-hidden relative">
+            <img
+                src={dish.image}
+                alt={dish.name}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-20 group-hover:grayscale-0"
+            />
+
+            {/* Badge */}
+            <div className="absolute top-4 left-4">
+                <div className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider backdrop-blur-md shadow-lg border ${dish.category === 'Non-Veg' ? 'bg-red-900/80 text-white border-red-500' : 'bg-green-900/80 text-white border-green-500'}`}>
+                    {dish.category}
                 </div>
             </div>
-        </div>
-        <div className="flex-1 p-4 flex flex-col justify-between relative">
-            <div>
-                <h3 className="text-lg font-bold text-white font-merriweather">{data.name}</h3>
-                <p className="text-xs text-amber-500 font-bold mb-1">{data.restaurant}</p>
-                <p className="text-gray-400 text-xs line-clamp-2">{data.description}</p>
+
+            {/* Price */}
+            <div className="absolute bottom-4 right-4 bg-black/80 backdrop-blur text-amber-500 px-4 py-1.5 rounded-lg font-bold text-lg border border-amber-500/30 shadow-xl">
+                ₹{dish.price}
             </div>
-            <div className="flex justify-between items-end mt-4">
-                <span className="text-xl font-bold text-white">₹{data.price}</span>
-                <button className="bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-2 rounded-lg text-sm shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:shadow-[0_0_20px_rgba(245,158,11,0.5)] transition-all active:scale-95">
-                    ADD +
+
+            {/* Rating */}
+            <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-black/60 backdrop-blur px-2 py-1 rounded border border-white/10">
+                <span className="text-yellow-400 text-xs">★</span>
+                <span className="text-white text-xs font-mono font-bold">{dish.rating * 2}</span>
+            </div>
+        </div>
+
+        {/* Content Area */}
+        <div className="p-6 flex flex-col flex-1 relative">
+            <div className="flex flex-col items-start mb-2">
+                <span className="text-xs font-bold uppercase tracking-widest text-amber-500 mb-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                    {dish.restaurant}
+                </span>
+                <h3 className="text-xl font-bold text-amber-50 group-hover:text-amber-400 transition-colors font-merriweather leading-tight">
+                    {dish.name}
+                </h3>
+            </div>
+
+            <p className="text-stone-400 text-sm leading-relaxed mb-6 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">
+                {dish.description}
+            </p>
+
+            <div className="mt-auto pt-2 border-t border-white/5">
+                <button className="w-full py-3 rounded-xl bg-stone-700 hover:bg-amber-500 text-white hover:text-black font-bold tracking-wider uppercase text-xs transition-all duration-300 flex items-center justify-center gap-2 group/btn">
+                    <span>Add to Cart</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transform group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                    </svg>
                 </button>
             </div>
         </div>

@@ -5,7 +5,7 @@ import RestaurantPage from "./restaurantpage";
 
 function Homepage(){
     return(
-        <div className="flex flex-col max-w-full min-h-screen">
+        <div className="flex flex-col max-w-full min-h-screen bg-stone-950 scroll-smooth">
             <HeroSection />
             <CategoryPage />
             <RestaurantPage />

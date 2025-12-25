@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import bgVideo from "../assets/burger.mp4";
 
 function Aboutpage() {
-  
-
   return (
     <div className="relative min-h-screen w-full font-merriweather font-extralight">
       
@@ -56,7 +54,6 @@ function Aboutpage() {
               Back to Home
             </Link>
           </div>
-
         </div>
       </div>
     </div>

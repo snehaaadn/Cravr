@@ -23,11 +23,9 @@ function RestaurantPage() {
             setLoading(true);
             try {
                 const location = queryLocation || 'Bengaluru';
-                // Pass currentPage and itemsPerPage to the API
                 const response = await getRestaurantsByLocationName(location, currentPage, itemsPerPage);
 
                 const rawData = response.data.restaurants || [];
-                // Assuming your backend sends the total count of matches for pagination
                 setTotalItems(response.data.totalCount || rawData.length);
 
                 const data = rawData.map(item => ({
@@ -35,6 +33,7 @@ function RestaurantPage() {
                     name: item.name,
                     image: logo,
                     location: item.address?.city || item.address?.locality || "Local Area",
+                    rating: item.rating || 4.5
                 }));
 
                 setResults(data);
@@ -61,8 +60,19 @@ function RestaurantPage() {
     }
 
     return (
-        <div id='nearByRestaurants' className="min-h-screen bg-stone-900 py-10 px-5 scroll-mt-20">
-            <h1 className="text-3xl font-bold text-white mb-8">Restaurants in {queryLocation || 'Bengaluru'}</h1>
+        <div id='nearByRestaurants' className="min-h-screen bg-stone-950 py-10 px-5 scroll-mt-20 max-w-7xl mx-auto">
+            <h1 className="text-4xl font-bold font-merriweather text-white mb-8">
+                {queryLocation ? (
+                    <>
+                        Restaurants in{" "}
+                        <span className="text-amber-500 capitalize">
+                            {queryLocation}
+                        </span>
+                    </>
+                ) : (
+                    "Search Location"
+                )}
+            </h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
                 {results.map((restaurant) => (
                     <RestaurantCard key={restaurant.id} data={restaurant} />

@@ -101,7 +101,7 @@ function Header() {
 
             {/* MOBILE MENU DROPDOWN */}
             <div className={` lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className='bg-black border-t font-medium text-lg tracking-wide font-iceberg border-gray-100 px-4 pt-4 pb-6 space-y-4 shadow-inner'>
+                <div className='bg-black border-t font-medium text-lg tracking-wide font-merriweather border-gray-100 px-4 pt-4 pb-6 space-y-4 shadow-inner'>
                     
                     {/* Mobile Search */}
                     <input 
