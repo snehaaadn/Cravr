@@ -71,9 +71,9 @@ const getUserOrders = (token) =>
 
 
 // Restaurant APIs
-const getRestaurantsByLocationName = (locationName) =>
+const getRestaurantsByLocationName = (locationName, page = 1, limit = 10) =>
   api.get('/restaurants', {
-    params: { locationName },
+    params: { locationName, page, limit },
   });
 
 const getRestaurantDetailsByID = (id) =>

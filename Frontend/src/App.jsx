@@ -6,7 +6,7 @@ import Header from './components/common/header'
 import Footer from './components/common/footer'
 import Profilepage from './pages/profilepage'
 import AuthPage from './pages/authpage'
-import LoadingPage from './pages/loadingpage';
+import Loading from './components/common/loading.jsx';
 import SearchPage from './pages/searchpage';
 import MenuPage from './pages/menupage';
 import './App.css'
@@ -23,7 +23,7 @@ function App() {
 
   return (
       <div className='flex flex-col max-w-full min-h-screen '>
-        {isLoading && <LoadingPage />}
+        {isLoading && <Loading />}
         <Header />
         <main className="flex-1">
           <Routes>
