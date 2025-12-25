@@ -70,4 +70,5 @@ async function getUserProfile(req,res){
 }
 
 
-export { signup, login, getUserProfile};
+
+export { signup, login, getUserProfile };

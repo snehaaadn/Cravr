@@ -1,4 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
+import scrollToTop from "../utils/scrollToTop";
 
 // Importing images
 import choleBhature from "../assets/category/cholebhature.webp";
@@ -34,6 +36,15 @@ const categories = [
 function CategoryPage() {
     const scrollRef = useRef(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const navigate = useNavigate();
+
+    const handleCategorySelect = (category) => {
+        setSelectedCategory(category);
+        navigate(`/search?q=${category.name.toLowerCase()}`);
+        scrollToTop();
+    };
+
 
     // PRE-LOADER LOGIC
     useEffect(() => {
@@ -43,12 +54,12 @@ function CategoryPage() {
                     const img = new Image();
                     img.src = cat.image;
                     img.onload = resolve;
-                    img.onerror = resolve; // Continue even if one fails
+                    img.onerror = resolve;
                 });
             });
 
             await Promise.all(promises);
-            setIsLoading(false); // Only show UI when everything is ready
+            setIsLoading(false);
         };
 
         loadImages();
@@ -65,10 +76,10 @@ function CategoryPage() {
     const userName = "Tushar";
 
     return (
-        <div className="w-full flex flex-col items-center py-12 bg-gray-50/50 min-h-[400px]">
+        <div className="w-full flex flex-col border-b border-amber-50 items-center py-12 bg-stone-950 min-h-[400px]">
             {/* Header Section */}
             <div className="w-full max-w-7xl px-6 mb-8 flex items-baseline gap-2">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+                <h2 className="text-2xl md:text-3xl font-bold font-merriweather text-amber-50">
                     <span className="text-amber-500">{userName},</span> what's on your mind?
                 </h2>
                 <div className="grow h-px bg-gray-200 ml-4 hidden md:block"></div>
@@ -113,7 +124,11 @@ function CategoryPage() {
                                 <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden shadow-md mb-4 
                                     transition-transform duration-300 ease-out will-change-transform
                                     group-hover/item:scale-110 group-hover/item:shadow-xl 
-                                    border-4 border-white group-hover/item:border-amber-400">
+                                    border-4 border-amber-50 group-hover/item:border-amber-500"
+                                    onClick={()=> {
+                                        handleCategorySelect(category);
+                                    }}
+                                >
                                     
                                     <img
                                         src={category.image}
@@ -127,7 +142,7 @@ function CategoryPage() {
                                     <div className="absolute inset-0 bg-black/5 group-hover/item:bg-transparent transition-colors duration-300"></div>
                                 </div>
                                 
-                                <h3 className="text-lg font-semibold text-gray-700 group-hover/item:text-amber-600 transition-colors duration-300">
+                                <h3 className="text-lg font-semibold font-merriweather text-amber-50 group-hover/item:text-amber-600 transition-colors duration-300">
                                     {category.name}
                                 </h3>
                             </div>
