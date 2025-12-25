@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams} from 'react-router-dom';
 
 import { getRestaurantDetailsByID } from '../services/api.js';
 import Pagination from '../components/common/pagination.jsx';
+import Loading from '../components/common/loading.jsx';
 
 // Fallback Assets
 import foodBg from '../assets/foodbg1.png'; 
@@ -31,7 +32,7 @@ function MenuPage() {
 
     if (loading) return (
         <div className="min-h-screen bg-stone-950 flex items-center justify-center">
-            <div className="w-16 h-16 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
+            <Loading />
         </div>
     );
 
@@ -41,24 +42,22 @@ function MenuPage() {
     const locationStr = address ? `${address.locality || ''} ${address.city || ''}` : "Location Unavailable";
 
     // --- PAGINATION LOGIC ---
-    // 1. Get current dishes
+    // Get current dishes
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     
     // Safety check: ensure menu exists
     const currentDishes = restaurant?.menu?.slice(indexOfFirstItem, indexOfLastItem) || [];
 
-    // 2. Change page handler
+    // Change page handler
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
-        // Optional: Scroll to top of menu
-        window.scrollTo({ top: 400, behavior: 'smooth' });
     };
 
     return (
-        <div className="min-h-screen bg-stone-950 text-white font-sans pb-20">
+        <div id='menuSection' className="min-h-screen bg-stone-950 text-white font-sans pb-20 scroll-mt-24">
             
-            {/* 1. IMMERSIVE HERO HEADER */}
+            {/* IMMERSIVE HERO HEADER */}
             <div className="relative h-[40vh] md:h-[50vh] overflow-hidden">
                 {/* Background Image with Parallax-like feel */}
                 <div className="absolute inset-0">
@@ -156,6 +155,7 @@ function MenuPage() {
                             totalItems={menu.length} 
                             paginate={paginate} 
                             currentPage={currentPage}
+                            sectionId="menuSection"
                         />
                     </>
                 ) : (

@@ -1,6 +1,6 @@
-import logo from '../assets/logo.png';
+import logo from '../../assets/logo.png';
 
-function LoadingPage() {
+function Loading() {
     return (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-md transition-opacity duration-500">
             
@@ -24,4 +24,4 @@ function LoadingPage() {
     );
 }
 
-export default LoadingPage;
+export default Loading;

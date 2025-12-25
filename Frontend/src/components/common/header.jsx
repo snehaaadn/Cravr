@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link ,useNavigate } from 'react-router-dom';
+import {Link as ScrollLink} from 'react-scroll';
+import handleScrollToTop from '../../utils/scrollToTop';
 import logo from '../../assets/logo.png';
 
 function Header() {
     const [searchTerm, setSearchTerm] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const user = false;
-
     const navigate = useNavigate();
 
     // Handle Search Submission
@@ -15,19 +16,19 @@ function Header() {
             navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
             setSearchTerm('');
             setIsMenuOpen(false);
+            handleScrollToTop();
         }
-
     }
 
     return (
-        <nav className='bg-black w-full sticky top-0 z-50'>
+        <nav className='bg-stone-900 w-full sticky top-0 z-50'>
             <div className='max-w-full mx-auto px-4 sm:px-6 lg:px-8'>
                 <div className='flex justify-between items-center h-20'>
                     
                     {/* LOGO */}
                     <img src={logo} alt="Logo" className='w-12 h-12 p-1 object-contain' />
                     <div className='flex items-center space-x-2 cursor-pointer hover:scale-105 transition duration-300 ease-in-out'>
-                        <Link to="/" className='text-4xl text-amber-400 tracking-wide font-pacifico transition duration-300 ease-in-out'>
+                        <Link to="/" onClick={handleScrollToTop} className='text-4xl text-amber-400 tracking-wide font-pacifico transition duration-300 ease-in-out'>
                             Cravr
                         </Link>
                     </div>
@@ -48,9 +49,9 @@ function Header() {
 
                         {/* Desktop Navigation Links */}
                         <ul className='flex text-amber-50 items-center space-x-10'>
-                            <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/">Home</Link></li>
+                            <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/" onClick={handleScrollToTop}>Home</Link></li>
                             <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/about">About</Link></li>
-                            <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/restaurants">Restaurants</Link></li>
+                            <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><ScrollLink to="nearByRestaurants" smooth={true} duration={500} offset={-80}>Restaurants</ScrollLink></li>
 
                             {user ? (
                                 <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/profile">Profile</Link></li>

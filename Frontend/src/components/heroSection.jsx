@@ -1,38 +1,32 @@
 import React, { useState } from "react";
 import foodBg from "../assets/foodbg1.png";
+import { useNavigate } from "react-router-dom";
+import AdCard from "./adCard";
 
-const AdCard = ({ text }) => {
-    return (
-        <div className="group relative w-40 h-40 md:w-60 md:h-60 rounded-full shadow-xl hover:shadow-amber-500/50 transition-all duration-500 ease-out transform overflow-hidden animate-float-delay">
-
-            {/* Gradient Overlay for text readability */}
-            <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300"></div>
-
-            {/* Text Content */}
-            <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
-                <span className="text-amber-50 text-sm md:text-xl font-bold drop-shadow-md group-hover:text-white transition-colors italic font-serif">
-                    {text}
-                </span>
-            </div>
-        </div>
-    );
-};
 
 function HeroSection() {
-    const [pincode, setPincode] = useState('');
+    const [locationInput, setLocationInput] = useState('');
+    const navigate = useNavigate();
+
+    const handleSearch = (e) => {
+        if ((e.key === 'Enter' || !e.key) && locationInput.trim() !== '') {
+            navigate(`?location=${encodeURIComponent(locationInput.trim())}`);
+
+            const section = document.getElementById('nearByRestaurants');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    };
+
 
     const ads = [
         { text: "Get 60% Off On Your First Order" },
         { text: "Limited Time Offer: Free Delivery" },
     ];
 
-    const findRestaurants = (location) => {
-        setPincode(location);
-        // Logic placeholder
-    };
-
     return (
-        <div className="relative w-full min-h-screen flex flex-col justify-start items-center overflow-hidden bg-gray-900">
+        <div className="relative w-full min-h-screen flex flex-col justify-start items-center overflow-hidden bg-stone-900">
 
             {/* BACKGROUND LAYER */}
             <div className="absolute inset-0 w-full h-full z-0">
@@ -42,7 +36,7 @@ function HeroSection() {
                     className="w-full h-full object-cover rotate-180 opacity-90"
                 />
                 {/* Main Gradient Overlay: Essential for text visibility over busy images */}
-                <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/30 to-black/80"></div>
+                <div className="absolute inset-0 bg-linear-to-b from-stone-900/90 via-stone-800/30 to-stone-900/80"></div>
             </div>
 
             {/* MAIN CONTENT CONTENT */}
@@ -64,15 +58,23 @@ function HeroSection() {
                     <div className="relative flex items-center">
                         <input
                             type="text"
-                            placeholder="Enter your Pincode..."
-                            value={pincode}
-                            onChange={(e) => findRestaurants(e.target.value)}
-                            className="w-full bg-white/10 backdrop-blur-md border border-white/20 text-amber-50 placeholder-amber-200/50 px-8 py-4 rounded-full text-lg focus:outline-none focus:bg-white/20 focus:border-amber-400/50 transition-all duration-300 shadow-xl cursor-pointer"
+                            placeholder="Enter your Location..."
+                            value={locationInput}
+                            onChange={(e) => setLocationInput(e.target.value)}
+                            onKeyDown={handleSearch}
+                            className="w-full bg-white/10 backdrop-blur-md border border-white/20 text-amber-50 placeholder-amber-200/50 px-8 py-4 rounded-full text-lg focus:outline-none focus:bg-white/20 focus:border-amber-400/50 transition-all duration-300 shadow-xl cursor-text"
                         />
-                        {/* Optional Search Icon inside input */}
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-amber-200 absolute right-6 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
+
+                        {/* Fixed Button: Removed pointer-events-none and added hover effects */}
+                        <button
+                            type="button"
+                            className="h-10 w-10 text-amber-200 absolute right-4 flex items-center justify-center hover:text-amber-400 hover:scale-110 active:scale-90 transition-all duration-200 z-10"
+                            onClick={() => handleSearch({ key: 'Enter' })}
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
