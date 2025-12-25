@@ -84,8 +84,8 @@ const getRestaurantsByName = (name) =>
 
 
 // Dish APIs
-const getDishes = (name, category) => {
-  const params = {};
+const getDishes = (name, category, page = 1) => {
+  const params = {page, limit: 12};
   if (name) params.name = name;
   if (category) params.category = category;
 

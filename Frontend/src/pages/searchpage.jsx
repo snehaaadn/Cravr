@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 // 1. IMPORT YOUR API FUNCTIONS
 import {
     getRestaurantsByName,
     getDishes
 } from '../services/api';
+import Pagination from '../components/common/pagination.jsx';
 
 // Import Assets (Fallbacks)
 import pizzaImg from '../assets/category/pizza.webp';
@@ -20,6 +21,10 @@ function SearchPage() {
     const [activeTab, setActiveTab] = useState(queryLocation ? 'restaurants' : 'dishes');
     const [results, setResults] = useState([]);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(12);
+    const [totalItems, setTotalItems] = useState(0);
+
     // --- REAL API CALL ---
     useEffect(() => {
         const fetchData = async () => {
@@ -29,11 +34,10 @@ function SearchPage() {
 
                 // Inside useEffect fetchData...
                 if (activeTab === 'restaurants') {
-                    // We use queryDish as a fallback for location if the user searched from Header
                     const searchTerm = queryDish || queryLocation || 'Bengaluru';
 
                     const response = await getRestaurantsByName(searchTerm);
-                    const rawData = response.data.restaurants || []; // Matches backend key 'restaurants'
+                    const rawData = response.data.restaurants || [];
 
                     data = rawData.map(item => ({
                         id: item._id,
@@ -43,13 +47,15 @@ function SearchPage() {
                     }));
                 } else {
                     const searchTerm = queryDish || '';
-                    const response = await getDishes(searchTerm);
-                    const rawData = response.data.dishes || []; // Matches backend key 'dishes'
+                    const response = await getDishes(searchTerm, null, currentPage);
+                    setTotalItems(response.data.count || 0);
+
+                    const rawData = response.data.dishes || [];
 
                     data = rawData.map(item => ({
                         id: item._id,
                         name: item.name,
-                        restaurant: "Cravr Partner",
+                        restaurant: item.restaurantID?.name || "Cravr Partner",
                         price: item.price,
                         rating: item.rating || 4.5,
                         image: item.imageUrl || pizzaImg, // Note: Use 'imageUrl' as per your Dish model
@@ -68,32 +74,35 @@ function SearchPage() {
 
         fetchData();
 
-    }, [queryLocation, queryDish, activeTab]);
+    }, [queryLocation, queryDish, activeTab, currentPage]);
 
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
     // --- RENDER HELPERS (Unchanged from your design) ---
 
     const RestaurantCard = ({ data }) => (
-        <div className="group relative bg-gray-900 rounded-2xl overflow-hidden shadow-lg border border-gray-800 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-1">
-            <div className="relative h-48 overflow-hidden">
-                <img src={data.image} alt={data.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                <div className="absolute inset-0 bg-linear-to-t from-gray-900 to-transparent opacity-90"></div>
-                <div className="absolute bottom-3 left-3 flex items-center space-x-2">
-                    <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded flex items-center">
-                        {data.rating} ★
-                    </span>
-                    <span className="text-gray-300 text-xs font-medium">{data.time}</span>
+        <Link to={`/restaurant/${data.id}`} className="block h-full">
+            <div className="group relative bg-gray-900 rounded-2xl overflow-hidden shadow-lg border border-gray-800 hover:border-amber-500/50 transition-all duration-300 hover:-translate-y-1 h-full flex flex-col">
+                <div className="relative h-48 overflow-hidden">
+                    <img src={data.image} alt={data.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-linear-to-t from-gray-900 to-transparent opacity-90"></div>
+                    <div className="absolute bottom-3 left-3 flex items-center space-x-2">
+                        <span className="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded flex items-center">
+                            {data.rating} ★
+                        </span>
+                        <span className="text-gray-300 text-xs font-medium">{data.time}</span>
+                    </div>
+                </div>
+                <div className="p-4">
+                    <h3 className="text-xl font-bold text-white font-merriweather mb-1 group-hover:text-amber-400 transition-colors">{data.name}</h3>
+                    <p className="text-gray-400 text-sm mb-3">{data.cuisine}</p>
+                    <div className="flex justify-between items-center border-t border-gray-800 pt-3">
+                        <span className="text-gray-500 text-xs uppercase tracking-wide">{data.location}</span>
+                        <span className="text-amber-500 font-bold text-sm">{data.price}</span>
+                    </div>
                 </div>
             </div>
-            <div className="p-4">
-                <h3 className="text-xl font-bold text-white font-merriweather mb-1 group-hover:text-amber-400 transition-colors">{data.name}</h3>
-                <p className="text-gray-400 text-sm mb-3">{data.cuisine}</p>
-                <div className="flex justify-between items-center border-t border-gray-800 pt-3">
-                    <span className="text-gray-500 text-xs uppercase tracking-wide">{data.location}</span>
-                    <span className="text-amber-500 font-bold text-sm">{data.price}</span>
-                </div>
-            </div>
-        </div>
+        </Link>
     );
 
     const DishCard = ({ data }) => (
@@ -194,6 +203,16 @@ function SearchPage() {
                     </>
                 )}
             </div>
+
+            {/* PAGINATION */}
+            {!loading && results.length > 0 && (
+                <Pagination
+                    itemsPerPage={itemsPerPage}
+                    totalItems={totalItems}
+                    paginate={paginate}
+                    currentPage={currentPage}
+                />
+            )}
         </div>
     );
 }

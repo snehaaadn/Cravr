@@ -16,7 +16,7 @@ export default defineConfig({
     proxy: {
       // Whenever the frontend calls '/api', redirect to the backend
       '/api': {
-        target: 'http://localhost:8000',
+        target: 'http://localhost:6000',
         changeOrigin: true,
         secure: false,
       },

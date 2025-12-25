@@ -8,6 +8,7 @@ import Profilepage from './pages/profilepage'
 import AuthPage from './pages/authpage'
 import LoadingPage from './pages/loadingpage';
 import SearchPage from './pages/searchpage';
+import MenuPage from './pages/menupage';
 import './App.css'
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
             <Route path='/profile' element={<Profilepage />} />
             <Route path='/login' element={<AuthPage />} />
             <Route path='/search' element={<SearchPage />} />
+            <Route path='/restaurant/:id' element={<MenuPage />} />
             <Route path='*' element={<Navigate to='/' />} />
           </Routes>
         </main>

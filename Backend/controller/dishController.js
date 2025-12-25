@@ -15,15 +15,18 @@ async function getDishes(req, res) {
             query.category = category;
         }
 
+        const totalCount = await Dish.countDocuments(query);
+
         // Use skip/limit for O(1) style paging
         const dishes = await Dish.find(query)
+            .populate('restaurantID', 'name')
             .limit(limit * 1)
             .skip((page - 1) * limit)
             .exec();
 
         res.status(200).json({
             success: true,
-            count: dishes.length,
+            count: totalCount,
             dishes: dishes
         });
     } catch (error) {
