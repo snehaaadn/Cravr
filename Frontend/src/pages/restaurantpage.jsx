@@ -1,9 +1,11 @@
 import react, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+
 import { getRestaurantsByLocationName } from '../services/api.js';
 import Loading from '../components/common/loading.jsx';
 import RestaurantCard from '../components/restaurantCard.jsx';
 import Pagination from '../components/common/pagination.jsx';
+import LocationPrompt from '../components/locationprompt.jsx';
 import logo from '../assets/logo.png';
 
 function RestaurantPage() {
@@ -73,21 +75,28 @@ function RestaurantPage() {
                     "Search Location"
                 )}
             </h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                {results.map((restaurant) => (
-                    <RestaurantCard key={restaurant.id} data={restaurant} />
-                ))}
-            </div>
 
-            {/* PAGINATION */}
-            {!loading && results.length > 0 && (
-                <Pagination
-                    itemsPerPage={itemsPerPage}
-                    totalItems={totalItems}
-                    paginate={paginate}
-                    currentPage={currentPage}
-                    sectionId="nearByRestaurants"
-                />
+            {queryLocation ? (
+                <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                        {results.map((restaurant) => (
+                            <RestaurantCard key={restaurant.id} data={restaurant} />
+                        ))}
+                    </div>
+
+                    {/* PAGINATION */}
+                    {!loading && results.length > 0 && (
+                        <Pagination
+                            itemsPerPage={itemsPerPage}
+                            totalItems={totalItems}
+                            paginate={paginate}
+                            currentPage={currentPage}
+                            sectionId="nearByRestaurants"
+                        />
+                    )}
+                </>
+            ) : (
+                <LocationPrompt />
             )}
         </div>
     );
