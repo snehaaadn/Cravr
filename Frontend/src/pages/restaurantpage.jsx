@@ -62,7 +62,7 @@ function RestaurantPage() {
     }
 
     return (
-        <div id='nearByRestaurants' className="min-h-screen bg-stone-950 py-10 px-5 scroll-mt-20 max-w-7xl mx-auto">
+        <div id='nearByRestaurants' className="min-h-screen bg-stone-950 py-10 px-5 scroll-mt-20 min-w-full mx-auto">
             <h1 className="text-4xl font-bold font-merriweather text-white mb-8">
                 {queryLocation ? (
                     <>
@@ -79,9 +79,18 @@ function RestaurantPage() {
             {queryLocation ? (
                 <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
-                        {results.map((restaurant) => (
-                            <RestaurantCard key={restaurant.id} data={restaurant} />
-                        ))}
+                        {
+                            results.length > 0 ? (
+                                results.map(restaurant => (
+                                    <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+                                ))
+                            ) : (
+                                <div className="col-span-full text-center text-stone-400">
+                                    No restaurants found for "{queryLocation.toUpperCase()}".
+                                    We'll Soon reach out to restaurants in this area!
+                                </div>
+                            )
+                        }
                     </div>
 
                     {/* PAGINATION */}

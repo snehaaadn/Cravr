@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import scrollToTop from '../utils/scrollToTop.js';
 const LocationPrompt = () => {
-    const navigate = useNavigate();
     const [textIndex, setTextIndex] = useState(0);
     const words = ["Biryani?", "Pizza?", "Sushi?", "Burgers?", "Desserts?"];
 
@@ -12,10 +10,6 @@ const LocationPrompt = () => {
         }, 2000);
         return () => clearInterval(interval);
     }, []);
-
-    const handleDetectLocation = () => {
-        alert("Trigger Location Detection Logic Here");
-    };
 
     return (
         <div className="relative w-full min-h-[85vh] flex flex-col items-center justify-center overflow-hidden bg-stone-950 border-b border-stone-800 isolate">
@@ -33,10 +27,10 @@ const LocationPrompt = () => {
                     }}
                 ></div>
             </div>
-
+                    
             {/* --- 2. THE SCANNER BEAM --- */}
             <div className="absolute inset-0 pointer-events-none z-0">
-                <div className="w-full h-[2px] bg-amber-500/50 blur-sm shadow-[0_0_20px_rgba(245,158,11,0.5)] animate-[scan_4s_ease-in-out_infinite]"></div>
+                <div className="w-full h-0.5 bg-amber-500/50 blur-sm shadow-[0_0_20px_rgba(245,158,11,0.5)] animate-[scan_4s_ease-in-out_infinite]"></div>
             </div>
 
             {/* --- 3. FLOATING "GRAVITY" ELEMENTS --- */}
@@ -84,21 +78,8 @@ const LocationPrompt = () => {
                 {/* --- ACTION BAR --- */}
                 <div className="flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-md mx-auto">
                     
-                    {/* Primary Button: Glowing & Pulsing */}
                     <button 
-                        onClick={handleDetectLocation}
-                        className="group relative w-full py-4 bg-amber-500 text-black font-bold text-sm tracking-[0.2em] uppercase rounded-xl overflow-hidden shadow-[0_0_40px_-10px_rgba(245,158,11,0.6)] hover:shadow-[0_0_60px_-10px_rgba(245,158,11,0.8)] transition-all"
-                    >
-                        <div className="absolute inset-0 bg-white/30 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
-                        <span className="relative flex items-center justify-center gap-2">
-                            <svg className="w-5 h-5 animate-spin-slow" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>
-                            Use Current Location
-                        </span>
-                    </button>
-
-                    {/* Secondary Button: Glass */}
-                    <button 
-                        onClick={() => navigate('/login')}
+                        onClick={() => scrollToTop()}
                         className="w-full py-4 bg-stone-900/50 backdrop-blur border border-stone-700 text-stone-300 font-bold text-sm tracking-[0.2em] uppercase rounded-xl hover:bg-stone-800 hover:text-white hover:border-stone-500 transition-all"
                     >
                         Enter Manually
