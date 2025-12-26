@@ -62,7 +62,7 @@ function RestaurantPage() {
     }
 
     return (
-        <div id='nearByRestaurants' className="min-h-screen bg-stone-950 py-10 px-5 scroll-mt-20 min-w-full mx-auto">
+        <div id='nearByRestaurants' className="min-h-screen bg-stone-950 py-10 px-1 scroll-mt-20 min-w-full mx-auto">
             <h1 className="text-4xl font-bold font-merriweather text-white mb-8">
                 {queryLocation ? (
                     <>
@@ -72,7 +72,7 @@ function RestaurantPage() {
                         </span>
                     </>
                 ) : (
-                    "Search Location"
+                    ""
                 )}
             </h1>
 
@@ -82,7 +82,7 @@ function RestaurantPage() {
                         {
                             results.length > 0 ? (
                                 results.map(restaurant => (
-                                    <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+                                    <RestaurantCard key={restaurant.id} data={restaurant} />
                                 ))
                             ) : (
                                 <div className="col-span-full text-center text-stone-400">
