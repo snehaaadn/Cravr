@@ -9,7 +9,9 @@ import AuthPage from './pages/authpage'
 import Loading from './components/common/loading.jsx';
 import SearchPage from './pages/searchpage';
 import MenuPage from './pages/menupage';
+import ProtectedRoute from './components/protectedRoutes.jsx'
 import './App.css'
+
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -29,7 +31,11 @@ function App() {
           <Routes>
             <Route path='/' element={<Homepage />} />
             <Route path='/about' element={<Aboutpage />} />
-            <Route path='/profile' element={<Profilepage />} />
+            <Route path='/profile' element={
+              <ProtectedRoute>
+                <Profilepage />
+              </ProtectedRoute>
+            } />
             <Route path='/login' element={<AuthPage />} />
             <Route path='/search' element={<SearchPage />} />
             <Route path='/restaurant/:id' element={<MenuPage />} />

@@ -1,6 +1,6 @@
 import Dish from "../models/dishModel.js";
 
-async function getDishes(req, res) {
+async function getDishesByName(req, res) {
     try {
         const { name, category, page = 1, limit = 20 } = req.query;
         let query = {};
@@ -34,4 +34,20 @@ async function getDishes(req, res) {
     }
 }
 
-export { getDishes };
+async function getDishDetailsByID(req, res) {
+    try {
+        const { id } = req.params;
+        const dish = await Dish.findById(id).populate('restaurantID', 'name location');
+
+        if (!dish) {
+            return res.status(404).json({ success: false, message: "Dish not found" });
+        }
+
+        res.status(200).json({ success: true, dish: dish });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+}
+
+
+export { getDishesByName, getDishDetailsByID};

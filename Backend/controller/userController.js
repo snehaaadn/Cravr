@@ -1,16 +1,18 @@
 import bcrypt from "bcryptjs";
-
 import User from "../models/userModel.js";
 import { setUser } from "../services/auth.js";
 
+
 // User Signup
 async function signup(req, res) {
-    const { username, email, phone, password } = req.body;
+    const data = req.body;
+    const { username, phone, email, password } = data;
 
     // Validate required fields
     if (!phone || !username || !password) {
         return res.status(400).json({success: false, message: "Username, phone and password are required" });
     }
+
 
     // Check if user with phone already exists
     const existingUser = await User.findOne({ phone: phone });
@@ -25,7 +27,7 @@ async function signup(req, res) {
     const hashPass = await bcrypt.hash(password, salt);
     await User.create({ username, email, phone, password: hashPass });
 
-    return res.status(201).json({success: true, message: "User created successfully" });
+    return res.status(201).json({success: true, message: "User created successfully"});
 }
 
 // User Login
@@ -54,7 +56,7 @@ async function login(req, res) {
     res.setHeader('Authorization', `Bearer ${token}`);
 
     // If user exists, return success response
-    return res.status(200).json({success: true, message: "Login successful", user: user});
+    return res.status(200).json({success: true, message: "Login successful", user: user, token: token });
 
 }
 
@@ -68,6 +70,26 @@ async function getUserProfile(req,res){
 
     return res.status(200).json({success: true, user: user});
 }
+
+// Addres Add
+async function addAdress(req, res){
+    const userID = req.user._id;
+    const { address } = req.body;
+
+    if (!address) {
+        return res.status(400).json({ success: false, message: "Address is required" });
+    }
+
+    const user = await User.findById(userID);
+    if (!user) {
+        return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    user.address = address;
+    await user.save();
+    return res.status(200).json({ success: true, message: "Address updated successfully", user: user });
+}
+
 
 
 

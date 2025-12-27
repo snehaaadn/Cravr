@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 function LogoutView({ onConfirmLogout }) {
 
@@ -11,7 +11,7 @@ function LogoutView({ onConfirmLogout }) {
                     <div className="w-16 h-16 border-4 border-amber-500 border-t-transparent rounded-full animate-spin"></div>
                 </div>
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-mono text-[10px] text-amber-500 font-bold uppercase tracking-tighter">Exit</span>
+                    <span className="font-mono text-[10px] text-amber-500 font-bold uppercase tracking-tighter">Exiting</span>
                 </div>
             </div>
 

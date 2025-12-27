@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/authContext';
+import { userSignup, userLogin } from '../services/api';
 
 // Import assets
 import pizzaImg from '../assets/category/pizza.webp';
@@ -11,8 +14,66 @@ import cakeImg from '../assets/category/cake.webp';
 import dosaImg from '../assets/category/dosa.webp';
 
 function AuthPage() {
+    const navigate = useNavigate();
+    const { login } = useContext(AuthContext);
+
     const [isLogin, setIsLogin] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState('');
+
+    const [formData, setFormData] = useState({
+        username: '',
+        phone: '',
+        email: '',
+        password: ''
+    });
+
+    const handleInputChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleAuth = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+
+        try {
+            if (isLogin) {
+                // --- LOGIN FLOW ---
+                const response = await userLogin(formData.phone, formData.password);
+
+                if (response.data.success || response.data.token) {
+                    // Use the context function to update state and localStorage
+                    login(response.data.user, response.data.token);
+                    navigate('/');
+                } else {
+                    setError("Login failed. Please check your credentials.");
+                }
+            } else {
+                // --- SIGNUP FLOW ---
+                const signupRes = await userSignup(formData);
+
+                if (signupRes.data.success) {
+                    // Auto-login after successful signup
+                    const loginRes = await userLogin(formData.phone, formData.password);
+
+                    if (loginRes.data.success) {
+                        login(loginRes.data.user, loginRes.data.token);
+                        navigate('/');
+                    }
+                }
+            }
+
+        } catch (err) {
+            console.error(err);
+            // Better error handling to display specific messages from backend
+            const msg = err.response?.data?.message || "Authentication Failed. Please check your connection.";
+            setError(msg);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const baseRow1 = [pizzaImg, burgerImg, noodlesImg, shakeImg];
     const baseRow2 = [pastaImg, biryaniImg, cakeImg, dosaImg];
@@ -104,7 +165,14 @@ function AuthPage() {
                         {isLogin ? "LOGIN TICKET" : "NEW REGISTRY"}
                     </h2>
 
-                    <form className="space-y-4">
+                    {/* ADDED: Error Message Display */}
+                    {error && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative text-xs font-bold uppercase mb-4 text-center">
+                            {error}
+                        </div>
+                    )}
+
+                    <form className="space-y-4" onSubmit={handleAuth}>
 
                         {!isLogin && (
                             <div className="flex flex-col group">
@@ -114,6 +182,8 @@ function AuthPage() {
                                 <input
                                     type="text"
                                     placeholder="ENTER YOUR NAME"
+                                    name="username"
+                                    onChange={handleInputChange}
                                     required
                                     className="border-b-2 border-gray-300 bg-transparent py-1 focus:outline-none focus:border-black font-bold text-lg placeholder-gray-200 transition-colors uppercase"
                                 />
@@ -127,6 +197,8 @@ function AuthPage() {
                             <input
                                 type="tel"
                                 placeholder="+91-XXXXXXXXXX"
+                                name="phone"
+                                onChange={handleInputChange}
                                 required
                                 className="border-b-2 border-gray-300 bg-transparent py-1 focus:outline-none focus:border-black font-bold text-lg placeholder-gray-200 transition-colors uppercase"
                             />
@@ -138,6 +210,8 @@ function AuthPage() {
                                 <input
                                     type="email"
                                     placeholder="USER@MAIL.COM"
+                                    name="email"
+                                    onChange={handleInputChange}
                                     className="border-b-2 border-gray-300 bg-transparent py-1 focus:outline-none focus:border-black font-bold text-lg placeholder-gray-200 transition-colors uppercase"
                                 />
                             </div>
@@ -151,6 +225,9 @@ function AuthPage() {
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     placeholder="********"
+                                    name="password"
+                                    onChange={handleInputChange}
+                                    required
                                     className="w-full border-b-2 border-gray-300 bg-transparent py-1 focus:outline-none focus:border-black font-bold text-lg placeholder-gray-200 transition-colors pr-8"
                                 />
                                 <button
@@ -181,7 +258,7 @@ function AuthPage() {
 
                             <button className="w-full bg-black text-white font-bold py-4 hover:bg-stone-800 transition-all uppercase tracking-widest text-sm relative overflow-hidden group shadow-lg">
                                 <span className="relative z-10 group-hover:text-amber-400 transition-colors duration-300">
-                                    {isLogin ? "CONFIRM ORDER" : "PRINT TICKET"}
+                                    {loading ? "PRINTING..." : (isLogin ? "CONFIRM ORDER" : "PRINT TICKET")}
                                 </span>
                             </button>
                         </div>

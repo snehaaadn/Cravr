@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import OrderTracker from './orderTracker.jsx';
 import ReviewEntry from './reviewEntry.jsx';
+import { getRestaurantDetailsByID, getDishDetailsByID } from '../services/api.js';
+
 
 function OrderDetailView({ order, onBack }) {
     const [reviewTarget, setReviewTarget] = useState(null);
@@ -28,18 +30,18 @@ function OrderDetailView({ order, onBack }) {
                 {/* Header Section */}
                 <div className="flex justify-between items-start mb-6">
                     <div>
-                        <h1 className="text-5xl font-serif font-bold italic text-amber-50 uppercase tracking-tighter">{order.restaurant}</h1>
-                        <p className="font-mono text-stone-500 text-[10px] mt-2 tracking-[0.3em]">ORDER_ID: {order.id} // {order.date}</p>
+                        <h1 className="text-5xl font-serif font-bold italic text-amber-50 uppercase tracking-tighter">{getRestaurantDetailsByID(order.restaurantID).then(res => res.data.restaurant.name).catch(() => "Unknown Restaurant")}</h1>
+                        <p className="font-mono text-stone-500 text-[10px] mt-2 tracking-[0.3em]">ORDER_ID: {order._id} // {order.createdAt}</p>
                     </div>
                     <div className="text-right">
-                        <p className="text-4xl font-black text-amber-500">₹{order.total}</p>
+                        <p className="text-4xl font-black text-amber-500">₹{order.totalAmount}</p>
                     </div>
                 </div>
 
                 {/* Tracking Line Section */}
                 <div className="mb-16 mt-10 border-y border-white/5 py-4">
                     <p className="font-mono text-[10px] text-amber-50 uppercase tracking-widest mb-4">Live Tracking Status</p>
-                    <OrderTracker currentStatus={order.status} />
+                    <OrderTracker currentStatus={order.orderStatus} />
                 </div>
 
                 {/* Items Briefing */}
@@ -49,7 +51,7 @@ function OrderDetailView({ order, onBack }) {
                         <div key={idx} className="bg-stone-950/50 border border-white/5 rounded-2xl p-5 flex items-center justify-between group hover:border-amber-500/30 transition-all">
                             <div className="flex items-center gap-6">
                                 <div className="relative">
-                                    <img src={item.imgURL} alt={item.name} className="w-16 h-16 rounded-xl object-cover grayscale group-hover:grayscale-0 transition-all" />
+                                    <img src={getDishDetailsByID(item.dishID).then(res => res.data.dish.imgURL).catch(() => "")} alt={item.name} className="w-16 h-16 rounded-xl object-cover grayscale group-hover:grayscale-0 transition-all" />
                                     <span className="absolute -top-2 -right-2 bg-amber-500 text-black text-[10px] font-bold w-6 h-6 flex items-center justify-center rounded-full border-4 border-stone-900">
                                         {item.quantity}
                                     </span>
