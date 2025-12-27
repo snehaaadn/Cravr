@@ -130,3 +130,61 @@
 .animate-spin-slow {
   animation: spin 3s linear infinite;
 }
+
+@keyframes scan {
+
+  0%,
+  100% {
+    top: 0%;
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes float-slow {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes float-pill {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-15px) rotate(2deg);
+  }
+}
+
+@keyframes float-bubble {
+
+  0%,
+  100% {
+    transform: translate(0px, 0px);
+  }
+
+  33% {
+    transform: translate(5px, -10px);
+  }
+
+  66% {
+    transform: translate(-5px, 5px);
+  }
+}

@@ -63,7 +63,7 @@ function RestaurantPage() {
 
     return (
         <div id='nearByRestaurants' className="min-h-screen bg-stone-950 py-10 px-1 scroll-mt-20 min-w-full mx-auto">
-            <h1 className="text-4xl font-bold font-merriweather text-white mb-8">
+            <h1 className="text-4xl font-bold font-merriweather text-white mb-8 px-10">
                 {queryLocation ? (
                     <>
                         Restaurants in{" "}
@@ -72,7 +72,7 @@ function RestaurantPage() {
                         </span>
                     </>
                 ) : (
-                    ""
+                    "Explore Restaurants"
                 )}
             </h1>
 

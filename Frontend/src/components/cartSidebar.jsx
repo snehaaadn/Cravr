@@ -1,0 +1,267 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png'; // Make sure path is correct
+// import { useAuth } from '../context/AuthContext.js'; // UNCOMMENT if you use context
+import pizzaImg from '../assets/category/pizza.webp';
+import Loading from './common/loading.jsx';
+
+const CartSidebar = ({ isOpen, onClose }) => {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    // --- MOCK USER & CART (Replace with your actual Context/Redux) ---
+    // const { user } = useAuth(); 
+    const user = { name: "Test User" }; // CHANGE THIS to `null` to test login state
+
+    const [address, setAddress] = useState({
+        type: "Home",
+        line1: "Flat 402, Emerald Heights",
+        line2: "Sector 14, Indiranagar",
+        city: "Bengaluru, KA"
+    });
+
+    const [cartItems, setCartItems] = useState([
+        // Uncomment to test items:
+        { id: 1, name: "Truffle Mushroom Pizza", price: 450, image: pizzaImg, quantity: 1, restaurant: "Italiano Crust" },
+        { id: 2, name: "Pepperoni Pizza", price: 350, image: pizzaImg, quantity: 2, restaurant: "Pizza Palace" }
+    ]);
+
+    // --- CALCULATIONS ---
+    const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    const tax = Math.round(subtotal * 0.05); // 5% Tax
+    const deliveryFee = 40;
+    const total = subtotal + tax + deliveryFee;
+
+    // Close on Escape key
+    useEffect(() => {
+        const handleEsc = (e) => { if (e.key === 'Escape') onClose(); };
+        window.addEventListener('keydown', handleEsc);
+        return () => window.removeEventListener('keydown', handleEsc);
+    }, [onClose]);
+
+    // Prevent scrolling when open
+    useEffect(() => {
+        if (isOpen) document.body.style.overflow = 'hidden';
+        else document.body.style.overflow = 'unset';
+    }, [isOpen]);
+
+    const handlePlaceOrder = () => {
+        onClose();
+        navigate('/profile');
+    };
+
+    const updateQuantity = (id, delta) => {
+        setCartItems(prev => prev.map(item => {
+            if (item.id === id) {
+                return { ...item, quantity: Math.max(0, item.quantity + delta) };
+            }
+            return item;
+        }).filter(item => item.quantity > 0));
+    };
+
+    const handleChangeAddress = () => {
+        alert("Trigger Address Modal Here");
+    };
+
+    if (loading) {
+        return (
+            <Loading />
+        );
+    }
+
+    return (
+        <>
+            <div
+                className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-60 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                onClick={onClose}
+            ></div>
+
+            {/* SIDEBAR PANEL */}
+            <div
+                className={`fixed top-0 right-0 h-full w-full sm:w-[480px] bg-stone-950 border-l border-white/10 z-70 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+            >
+                {/* --- HEADER --- */}
+                <div className="flex items-center justify-between p-5 border-b border-white/10 bg-stone-900/50 backdrop-blur-md z-10">
+                    <h2 className="text-xl font-bold font-merriweather text-white">Your Cart</h2>
+                    <button onClick={onClose} className="p-2 text-stone-400 hover:text-white transition-colors rounded-full hover:bg-white/5">
+                        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+
+                {/* --- CONTENT AREA --- */}
+                <div className="flex-1 overflow-y-auto p-6">
+
+                    {/* NOT LOGGED IN */}
+                    {!user ? (
+                        <div className="h-full flex flex-col items-center justify-center text-center opacity-80">
+                            <img src={logo} alt="Login Required" className="w-24 h-24 mb-6 grayscale invert opacity-50" />
+                            <h3 className="text-xl font-bold text-stone-300 mb-2">Login Required</h3>
+                            <p className="text-stone-500 text-sm mb-6 max-w-[200px]">Please login first to add items to your cart.</p>
+                            <button
+                                onClick={() => { onClose(); navigate('/login'); }}
+                                className="px-8 py-3 bg-amber-500 text-black font-bold uppercase tracking-widest text-xs rounded hover:bg-white transition-colors"
+                            >
+                                Login Now
+                            </button>
+                        </div>
+                    )
+
+                        // EMPTY CART
+                        : cartItems.length === 0 ? (
+                            <div className="h-full flex flex-col items-center justify-center text-center opacity-60">
+                                <img src={logo} alt="Empty Cart" className="w-24 h-24 mb-4 grayscale invert" />
+                                <h3 className="text-xl font-bold text-stone-400">Your cart is empty</h3>
+                                <p className="text-stone-600 text-sm mt-2">Good food is waiting for you.</p>
+                                <button
+                                    onClick={onClose}
+                                    className="mt-6 px-6 py-2 border border-stone-700 text-stone-400 font-mono text-xs uppercase hover:border-amber-500 hover:text-amber-500 transition-colors"
+                                >
+                                    Browse Menu
+                                </button>
+                            </div>
+                        )
+
+                            // ITEMS IN CART
+                            : (
+                                <div className="max-w-4xl mx-auto px-4 md:px-8 mt-8 space-y-8">
+
+                                    {/* --- 1. ADDRESS SECTION --- */}
+                                    <section>
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <span className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-black font-bold text-xs">1</span>
+                                            <h2 className="text-xl font-bold font-merriweather text-stone-200">Delivery Address</h2>
+                                        </div>
+
+                                        <div className="bg-stone-900/50 backdrop-blur-sm border border-white/10 p-6 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all hover:border-amber-500/30">
+                                            <div className="flex gap-4">
+                                                <div className="mt-1">
+                                                    <svg className="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-bold text-white text-lg">{address.type}</h3>
+                                                    <p className="text-stone-400 text-sm leading-relaxed">
+                                                        {address.line1}, {address.line2}<br />
+                                                        {address.city}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <button
+                                                onClick={handleChangeAddress}
+                                                className="px-5 py-2 border border-stone-700 text-stone-300 font-bold text-xs uppercase tracking-widest rounded hover:border-amber-500 hover:text-amber-500 transition-colors whitespace-nowrap"
+                                            >
+                                                Change
+                                            </button>
+                                        </div>
+                                    </section>
+
+                                    {/* --- 2. CART ITEMS SECTION --- */}
+                                    <section>
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <span className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-stone-950 font-bold text-xs">2</span>
+                                            <h2 className="text-xl font-bold font-merriweather text-stone-200">Order Summary</h2>
+                                        </div>
+
+                                        <div className="bg-stone-900/30 border border-white/5 rounded-xl overflow-hidden divide-y divide-white/5">
+                                            {cartItems.map((item) => (
+                                                <div key={item.id} className="p-4 md:p-6 flex gap-4 md:gap-6 group hover:bg-stone-900/80 transition-colors">
+
+                                                    {/* Image */}
+                                                    <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 overflow-hidden rounded-lg bg-stone-800">
+                                                        <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                                    </div>
+
+                                                    {/* Details */}
+                                                    <div className="flex-1 flex flex-col justify-between">
+                                                        <div>
+                                                            <div className="flex justify-between items-start">
+                                                                <h3 className="font-bold text-lg text-white font-merriweather leading-tight">{item.name}</h3>
+                                                                <span className="font-mono text-amber-500 font-bold ml-2">₹{item.price * item.quantity}</span>
+                                                            </div>
+                                                            <p className="text-xs text-stone-500 uppercase tracking-wide mt-1">{item.restaurant}</p>
+                                                        </div>
+
+                                                        {/* Quantity Control */}
+                                                        <div className="flex items-center gap-4 mt-3">
+                                                            <div className="flex items-center bg-stone-950 border border-stone-700 rounded overflow-hidden">
+                                                                <button
+                                                                    onClick={() => updateQuantity(item.id, -1)}
+                                                                    className="w-8 h-7 flex items-center justify-center text-stone-400 hover:text-white hover:bg-stone-800 transition-colors"
+                                                                >
+                                                                    -
+                                                                </button>
+                                                                <span className="w-8 h-7 flex items-center justify-center font-mono text-sm font-bold text-white border-x border-stone-800">
+                                                                    {item.quantity}
+                                                                </span>
+                                                                <button
+                                                                    onClick={() => updateQuantity(item.id, 1)}
+                                                                    className="w-8 h-7 flex items-center justify-center text-amber-500 hover:bg-stone-800 transition-colors"
+                                                                >
+                                                                    +
+                                                                </button>
+                                                            </div>
+                                                            <button
+                                                                onClick={() => updateQuantity(item.id, -100)} // Remove logic
+                                                                className="text-xs text-red-500/70 hover:text-red-500 underline decoration-dotted"
+                                                            >
+                                                                Remove
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </section>
+
+                                    {/* --- 3. BILLING SECTION --- */}
+                                    <section className="border-t-2 border-dashed border-stone-800 pt-8 mt-8">
+                                        <div className="bg-stone-900/80 p-6 rounded-xl space-y-3 font-merriweather text-sm">
+                                            <div className="flex justify-between text-stone-400">
+                                                <span>Item Total</span>
+                                                <span>₹{subtotal}</span>
+                                            </div>
+                                            <div className="flex justify-between text-stone-400">
+                                                <span>Tax (5%)</span>
+                                                <span>₹{tax}</span>
+                                            </div>
+                                            <div className="flex justify-between text-stone-400">
+                                                <span>Delivery Fee</span>
+                                                <span>₹{deliveryFee}</span>
+                                            </div>
+                                            <div className="h-px bg-white/10 my-4"></div>
+                                            <div className="flex justify-between text-lg font-bold text-stone-100">
+                                                <span>To Pay</span>
+                                                <span className="text-amber-500">₹{total}</span>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                            )}
+                </div>
+
+                {/* --- CHECKOUT --- */}
+                {user && cartItems.length > 0 && (
+                    <div className="p-6 bg-stone-900 border-t border-white/10">
+                        <div className="flex justify-between items-center mb-4 text-sm font-merriweather text-stone-400">
+                            <span>Subtotal</span>
+                            <span className="text-stone-100">₹{total}</span>
+                        </div>
+                        <button
+                            onClick={handlePlaceOrder}
+                            className="w-full py-4 bg-amber-500 hover:bg-stone-300 text-stone-950 font-bold uppercase tracking-[0.2em] rounded-lg shadow-lg transition-all"
+                        >
+                            Place Order
+                        </button> 
+                        <p className="text-center text-[10px] text-stone-600 uppercase tracking-widest mt-3 font-mono">
+                            Secure Payment Gateway
+                        </p>
+                    </div>
+                )}
+            </div>
+        </>
+    );
+};
+
+export default CartSidebar;

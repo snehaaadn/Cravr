@@ -7,13 +7,13 @@ function Loading() {
             {/* SPINNER CONTAINER */}
             <div className="relative flex items-center justify-center mb-8">
                 
-                {/* 1. The Spinning Ring */}
+                {/* The Spinning Ring */}
                 <div className="absolute w-40 h-40 border-4 border-amber-500/30 border-t-amber-500 rounded-full animate-spin"></div>
                 
-                {/* Optional: Second Reverse Ring for detail */}
+                {/* Second Reverse Ring for detail */}
                 <div className="absolute w-32 h-32 border-2 border-white/10 border-b-white/50 rounded-full animate-spin-reverse-slow"></div>
 
-                {/* 2. The Static Logo */}
+                {/* The Static Logo */}
                 <img 
                     src={logo} 
                     alt="Logo" 
