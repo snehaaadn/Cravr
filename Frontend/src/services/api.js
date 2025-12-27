@@ -19,6 +19,24 @@ api.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
+api.interceptors.response.use(
+  (response) => response, // Pass through successful responses
+  (error) => {
+    // Check if the error is a 401 (Expired/Invalid Token)
+    if (error.response && error.response.status === 401) {
+      console.warn("Session expired. Redirecting to login...");
+      
+      // Clear local storage
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      
+      // Redirect to login page and refresh state
+      window.location.href = '/auth'; 
+    }
+    return Promise.reject(error);
+  }
+);
+
 
 // User APIs (Cleaned of redundant manual headers)
 const userSignup = (formData) => api.post('/users/signup', formData);

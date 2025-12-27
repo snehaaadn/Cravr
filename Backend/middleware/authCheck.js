@@ -15,7 +15,7 @@ export function authCheck(req, res, next) {
         req.user = decoded; // Attach decoded user info to request object
         next();
     } catch (err) {
-        console.log("Token verification failed:", token, err.message);
+        console.log("Token verification failed:", err.message);
         return res.status(401).json({ success: false, message: "Invalid token" });
     }
 }

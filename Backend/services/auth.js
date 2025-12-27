@@ -8,7 +8,7 @@ function setUser(user) {
         email: user.email,
         name: user.name
     };
-    return jwt.sign(payload, secretKey, { expiresIn: '1h' });
+    return jwt.sign(payload, secretKey, { expiresIn: '7d' });
 }
 
 function getUser(token) {

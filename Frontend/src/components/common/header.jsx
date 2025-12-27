@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Link as ScrollLink } from 'react-scroll';
 import handleScrollToTop from '../../utils/scrollToTop';
 import logo from '../../assets/logo.png';
 import CartSidebar from '../cartSidebar';
 
+import {AuthContext} from '../../context/authContext';
+
 function Header() {
     const [searchTerm, setSearchTerm] = useState('');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isCartOpen, setIsCartOpen] = useState(false);
-    // const { user } = useAuth(); // UNCOMMENT if you use context
-    const user = false;
+    const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
     // Handle Search Submission
@@ -57,7 +58,7 @@ function Header() {
                                 <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/about">About</Link></li>
                                 <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><ScrollLink to="nearByRestaurants" smooth={true} duration={500} offset={-80}>Restaurants</ScrollLink></li>
 
-                                {user ? (
+                                {user != null ? (
                                     <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/profile">Profile</Link></li>
                                 ) : (
                                     <li className='hover:scale-105 cursor-pointer hover:underline transition duration-300 decoration-amber-400 underline-offset-4'><Link to="/login">Login/SignUp</Link></li>
@@ -122,7 +123,7 @@ function Header() {
                             <li><Link to="/about" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-950/80 hover:text-amber-400 hover:pl-2 transition-all duration-300 rounded-lg'>About</Link></li>
                             <li><Link to="/restaurants" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-950/80 hover:text-amber-400 hover:pl-2 transition-all duration-300 rounded-lg'>Restaurants</Link></li>
 
-                            {user ? (
+                            {user != null ? (
                                 <li><Link to="/profile" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-950/80 hover:text-amber-400 hover:pl-2 transition-all duration-300 rounded-lg'>Profile</Link></li>
                             ) : (
                                 <li><Link to="/login" onClick={() => setIsMenuOpen(false)} className='block py-2 hover:bg-amber-950/80 hover:text-amber-400 hover:pl-2 transition-all duration-300 rounded-lg'>Login/SignUp</Link></li>
