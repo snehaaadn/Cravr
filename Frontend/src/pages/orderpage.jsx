@@ -40,7 +40,7 @@ function Orders() {
                     setOrders(response.data.orders);
                 }
             } catch (err) {
-                console.error("Dossier Retrieval Failed", err);
+                console.error("There is an error fetching orders:", err);
                 setError(err.response?.data?.message || "Unauthorized access.");
             } finally {
                 setLoading(false);
