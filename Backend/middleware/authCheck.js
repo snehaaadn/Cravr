@@ -4,17 +4,18 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export function authCheck(req, res, next) {
-    const token = req.headers.authorization.split(' ')[1]; // convert into array and get token part at 1st index
+    const token = req.headers.authorization?.split(' ')[1];
 
     if (!token) {
         return res.status(401).json({ success: false, message: "No token provided" });
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWTSECRETKEY);
         req.user = decoded; // Attach decoded user info to request object
         next();
     } catch (err) {
+        console.log("Token verification failed:", token, err.message);
         return res.status(401).json({ success: false, message: "Invalid token" });
     }
 }

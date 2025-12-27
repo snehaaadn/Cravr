@@ -8,7 +8,7 @@ import DishCard from '../components/dishCard.jsx';
 // API Functions
 import {
     getRestaurantsByName,
-    getDishes
+    getDishesByName
 } from '../services/api';
 
 // Assets
@@ -17,7 +17,7 @@ import logo from '../assets/logo.png';
 
 function SearchPage() {
     const [searchParams] = useSearchParams();
-    const query = searchParams.get('q');
+    const queryName = searchParams.get('q');
 
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('dishes');
@@ -35,7 +35,7 @@ function SearchPage() {
                 let data = [];
 
                 if (activeTab === 'restaurants') {
-                    const searchTerm = query || '';
+                    const searchTerm = queryName || '';
                     const response = await getRestaurantsByName(searchTerm);
                     const rawData = response.data.restaurants || [];
                     setTotalItems(rawData.length); 
@@ -48,8 +48,11 @@ function SearchPage() {
                         rating: item.rating || 4.5
                     }));
                 } else {
-                    const searchTerm = query || '';
-                    const response = await getDishes(searchTerm, null, currentPage);
+                    let response;
+                    if(queryName){
+                        response = await getDishesByName(queryName, currentPage);
+                    }
+
                     setTotalItems(response.data.count || 0);
 
                     const rawData = response.data.dishes || [];
@@ -78,7 +81,7 @@ function SearchPage() {
 
         fetchData();
 
-    }, [query, activeTab, currentPage]);
+    }, [queryName, activeTab, currentPage]);
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -92,7 +95,7 @@ function SearchPage() {
                     {/* Title */}
                     <div>
                         <span className="text-amber-500 font-mono text-xs tracking-widest uppercase block mb-1">
-                            Search Results for "{query || 'All'}"
+                            Search Results for "{queryName || 'All'}"
                         </span>
                         <h1 className="text-3xl md:text-4xl font-merriweather font-bold text-white">
                             Explore {activeTab === 'restaurants' ? 'Restaurants' : 'Dishes'}

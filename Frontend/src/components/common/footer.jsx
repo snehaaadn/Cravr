@@ -1,5 +1,7 @@
 import React from "react";
 import logo from "../../assets/logo.png";
+
+
 const year = new Date().getFullYear();
 
 // --- Helper Component ---
@@ -16,7 +18,7 @@ const FooterLink = ({ text, href }) => (
 
 function Footer() {
     return (
-        <footer className="w-full bg-stone-900 shadow py-8 border-t border-gray-800 font-mono text-amber-50">
+        <footer className="w-full bg-stone-900 shadow py-8 border-t border-gray-800 font-merriweather text-amber-50">
             {/* Main Grid */}
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-8">
                 
@@ -28,7 +30,7 @@ function Footer() {
                             alt="Cravr Icon" 
                             className="h-10 w-auto transition-transform duration-500 ease-in-out group-hover:-rotate-12 filter brightness-110" 
                         /> 
-                        <span className="text-3xl font-serif font-bold tracking-tight text-amber-400 group-hover:text-amber-300 transition-colors duration-300">
+                        <span className="text-3xl font-pacifico font-bold tracking-tight text-amber-400 group-hover:text-amber-300 transition-colors duration-300">
                             Cravr
                         </span>
                     </div>
@@ -48,14 +50,14 @@ function Footer() {
                         Categories
                     </h2>
                     <ul className="flex flex-col space-y-3 text-base">
-                        <FooterLink text="Italian" href="#" />
-                        <FooterLink text="Chinese" href="#" />
-                        <FooterLink text="Japanese" href="#" />
-                        <FooterLink text="Korean" href="#" />
-                        <FooterLink text="North Indian" href="#" />
-                        <FooterLink text="South Indian" href="#" />
-                        <FooterLink text="Bengali" href="#" />
-                        <FooterLink text="American" href="#" />
+                        <FooterLink text="Italian" href="/search?q=Italian" />
+                        <FooterLink text="Chinese" href="/search?q=Chinese" />
+                        <FooterLink text="Japanese" href="/search?q=Japanese" />
+                        <FooterLink text="Korean" href="/search?q=Korean" />
+                        <FooterLink text="North Indian" href="/search?q=North Indian" />
+                        <FooterLink text="South Indian" href="/search?q=South Indian" />
+                        <FooterLink text="Bengali" href="/search?q=Bengali" />
+                        <FooterLink text="American" href="/search?q=American" />
                     </ul>
                 </div>
 
@@ -63,14 +65,14 @@ function Footer() {
                 <div className="flex flex-col items-start pl-4 sm:pl-0 lg:pl-8 -mt-4 sm:mt-0">
                     <div className="h-13 hidden lg:block"></div> 
                     <ul className="flex flex-col space-y-3 text-base">
-                        <FooterLink text="Appetizers" href="#" />
-                        <FooterLink text="Desserts" href="#" />
-                        <FooterLink text="Small Eats" href="#" />
-                        <FooterLink text="Main Course" href="#" />
-                        <FooterLink text="Wraps & Rolls" href="#" />
-                        <FooterLink text="Bakery" href="#" />
-                        <FooterLink text="Smoothies & Juices" href="#" />
-                        <FooterLink text="Seafood" href="#" />
+                        <FooterLink text="Appetizers" href="/search?q=Appetizers" />
+                        <FooterLink text="Desserts" href="/search?q=Desserts" />
+                        <FooterLink text="Small Eats" href="/search?q=Small Eats" />
+                        <FooterLink text="Main Course" href="/search?q=Main Course" />
+                        <FooterLink text="Wraps & Rolls" href="/search?q=Wraps & Rolls" />
+                        <FooterLink text="Bakery" href="/search?q=Bakery" />
+                        <FooterLink text="Smoothies & Juices" href="/search?q=Smoothies & Juices" />
+                        <FooterLink text="Seafood" href="/search?q=Seafood" />
                     </ul>
                 </div>
 
@@ -78,11 +80,11 @@ function Footer() {
                 <div className="flex flex-col items-start pl-4 sm:pl-0 lg:pl-8 -mt-4 sm:mt-0">
                     <div className="h-13 hidden lg:block"></div> 
                     <ul className="flex flex-col space-y-3 text-base">
-                        <FooterLink text="Vegan" href="#" />
-                        <FooterLink text="Vegetarian" href="#" />
-                        <FooterLink text="Healthy" href="#" />
-                        <FooterLink text="Gluten-free" href="#" />
-                        <FooterLink text="Organic" href="#" />
+                        <FooterLink text="Vegan" href="/search?q=Vegan" />
+                        <FooterLink text="Vegetarian" href="/search?q=Vegetarian" />
+                        <FooterLink text="Healthy" href="/search?q=Healthy" />
+                        <FooterLink text="Gluten-free" href="/search?q=Gluten-free" />
+                        <FooterLink text="Organic" href="/search?q=Organic" />
                     </ul>
                 </div>
 
