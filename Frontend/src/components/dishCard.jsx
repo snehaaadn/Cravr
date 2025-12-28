@@ -123,7 +123,7 @@ const DishCard = ({ dish }) => {
                         <button
                             onClick={() => handleAddToCart(dish)}
                             disabled={addingId === validId}
-                            className="w-full py-3 rounded-xl bg-stone-700 hover:bg-amber-500 text-white hover:text-black font-bold tracking-wider uppercase text-xs transition-all duration-300 flex items-center justify-center gap-2 group/btn"
+                            className="w-full py-3 rounded-xl bg-amber-600 hover:bg-stone-300 text-stone-100 hover:text-black font-bold tracking-wider uppercase text-xs transition-all duration-300 flex items-center justify-center gap-2 group/btn"
                         >
                             {addingId === validId ? (
                                 <span className="animate-pulse">Adding...</span>

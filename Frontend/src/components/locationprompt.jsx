@@ -12,6 +12,19 @@ const LocationPrompt = () => {
         return () => clearInterval(interval);
     }, []);
 
+    const handleManualEntry = () => {
+        const input = document.getElementById('location-search-input');
+        if (input) {
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            setTimeout(() => {
+                input.focus();
+            }, 500);
+        } else {
+            scrollToTop();
+        }
+    };
+
     return (
         <div className="relative w-full min-h-[85vh] flex flex-col items-center justify-center overflow-hidden bg-stone-950 border-b border-stone-800 isolate">
             
@@ -36,14 +49,18 @@ const LocationPrompt = () => {
 
             {/* --- FLOATING ELEMENTS  --- */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <FloatingGroup emoji="🍕" text="Pizza" top="15%" left="10%" delay="0s" />
-                <FloatingGroup emoji="🍜" text="Ramen" top="25%" right="15%" delay="2s" />
-                <FloatingGroup emoji="🍔" text="Burger" bottom="20%" left="20%" delay="1s" />
-                <FloatingGroup emoji="🥗" text="Healthy" bottom="15%" right="10%" delay="3s" />
-                <FloatingGroup emoji="🍧" text="Ice Cream" top="10%" right="30%" delay="4s" />
-                <FloatingGroup emoji="🍗" text="Spicy" bottom="40%" left="5%" delay="1.5s" />
-                <FloatingGroup emoji="🍩" text="Donuts" top="5%" left="30%" delay="1.5s" />
-                <FloatingGroup emoji="🍣" text="Sushi" bottom="40%" right="5%" delay="2.5s" />
+                {/* Visible on all */}
+                <FloatingGroup emoji="🍕" text="Pizza" style={{ top: '10%', left: '5%' }} delay="0s" />
+                <FloatingGroup emoji="🍔" text="Burger" style={{ bottom: '5%', left: '4%' }} delay="1s" />
+                <FloatingGroup emoji="🍣" text="Sushi" style={{ bottom: '25%', right: '5%' }} delay="2.5s" />
+                <FloatingGroup emoji="🍧" text="Ice Cream" style={{ top: '15%', right: '8%' }} delay="4s" />
+                <FloatingGroup emoji="🍗" text="Spicy" style={{ top: '25%', left: '10%' }} delay="1.5s"  />
+
+                {/* --- Hidden on Mobile --- */}
+                <FloatingGroup emoji="🍜" text="Ramen" style={{ top: '7%', right: '30%' }} delay="2s" className="hidden md:flex" />
+                <FloatingGroup emoji="🥗" text="Healthy" style={{ bottom: '15%', right: '20%' }} delay="3s" className="hidden md:flex" />
+                <FloatingGroup emoji="🍩" text="Donuts" style={{ bottom: '25%', left: '20%' }} delay="1.5s" className="hidden md:flex" />
+                <FloatingGroup emoji="🌮" text="Tacos" style={{ top: '4%', left: '25%' }} delay="0.5s" className="hidden md:flex" />
             </div>
 
             {/* --- MAIN CONTENT --- */}
@@ -76,7 +93,7 @@ const LocationPrompt = () => {
                 {/* --- ACTION BAR --- */}
                 <div className="flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-md mx-auto">
                     <button 
-                        onClick={() => scrollToTop()}
+                        onClick={handleManualEntry}
                         className="w-full py-4 bg-stone-900/50 backdrop-blur border border-stone-700 text-stone-300 font-bold text-sm tracking-[0.2em] uppercase rounded-xl hover:bg-stone-800 hover:text-white hover:border-stone-500 transition-all"
                     >
                         Enter Manually
@@ -101,14 +118,13 @@ const LocationPrompt = () => {
 };
 
 // Component that holds both the Text Pill and the Emoji Bubble
-const FloatingGroup = ({ emoji, text, top, left, right, bottom, delay }) => (
+const FloatingGroup = ({ emoji, text, style, delay, className = "" }) => (
     <div 
-        className="absolute flex items-center gap-5"
-        style={{ top, left, right, bottom }}
+        className={`absolute flex items-center gap-5 ${className}`}
+        style={style}
     >
-        {/* The Text Pill */}
         <div 
-            className="px-4 py-2 bg-stone-900/40 backdrop-blur-md border border-stone-700/50 rounded-full text-stone-400 text-xs font-bold uppercase tracking-wider shadow-xl"
+            className="hidden sm:block px-4 py-2 bg-stone-900/40 backdrop-blur-md border border-stone-700/50 rounded-full text-stone-400 text-xs font-bold uppercase tracking-wider shadow-xl"
             style={{ 
                 animation: `float-pill 6s ease-in-out infinite ${delay}`
             }}
@@ -116,9 +132,8 @@ const FloatingGroup = ({ emoji, text, top, left, right, bottom, delay }) => (
             {text}
         </div>
 
-        {/* The Emoji Bubble */}
         <div 
-            className="w-20 h-20 flex items-center justify-center bg-stone-800/60 backdrop-blur-md border border-stone-600/30 rounded-full text-3xl shadow-lg"
+            className="w-15 h-15 md:w-20 md:h-20 flex items-center justify-center bg-stone-800/60 backdrop-blur-md border border-stone-600/30 rounded-full text-3xl md:text-3xl shadow-lg"
             style={{ 
                 animation: `float-bubble 5s ease-in-out infinite ${delay}`
             }}

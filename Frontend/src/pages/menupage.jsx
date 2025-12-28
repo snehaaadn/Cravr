@@ -81,7 +81,7 @@ function MenuPage() {
                     <span className="font-pacifico text-amber-500 text-2xl md:text-3xl drop-shadow-lg tracking-wide">
                         Welcome to
                     </span>
-                    <h1 className="text-5xl md:text-7xl font-merriweather font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
+                    <h1 className="text-3xl md:text-7xl font-merriweather font-bold text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]">
                         {name}
                     </h1>
                     <div className="flex items-center gap-3 text-gray-300 font-mono text-sm md:text-base bg-black/40 backdrop-blur-md px-6 py-2 rounded-full border border-white/10">

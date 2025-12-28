@@ -5,7 +5,7 @@ import handleScrollToTop from '../../utils/scrollToTop';
 import logo from '../../assets/logo.png';
 import CartSidebar from '../cartSidebar';
 
-import {AuthContext} from '../../context/authContext';
+import { AuthContext } from '../../context/authContext';
 
 function Header() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -16,11 +16,17 @@ function Header() {
 
     // Handle Search Submission
     const handleSearchSubmit = (e) => {
-        if (e.key === 'Enter' && searchTerm.trim() !== '') { // 
+        if (e.type === 'submit') {
+            e.preventDefault();
+        }
+        if ((e.key === 'Enter' || e.type === 'submit') && searchTerm.trim() !== '') { 
             navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
             setSearchTerm('');
             setIsMenuOpen(false);
             handleScrollToTop();
+
+            // Force keyboard to close on mobile
+            document.activeElement.blur();
         }
     }
 
@@ -109,13 +115,16 @@ function Header() {
                     <div className='bg-black border-t font-medium text-lg tracking-wide font-merriweather border-gray-100 px-4 pt-4 pb-6 space-y-4 shadow-inner'>
 
                         {/* Mobile Search */}
-                        <input
-                            type="text"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            placeholder="Search for Restaurants & Dishes..."
-                            className='w-full rounded-full border border-amber-400 text-amber-50 px-4 py-3 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400'
-                        />
+                        <form onSubmit={handleSearchSubmit} className="w-full">
+                            <input
+                                id="mobile-search-bar"
+                                type="search" // show Search icon on keyboard
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                placeholder="Search for Restaurants & Dishes..."
+                                className='w-full rounded-full border border-amber-400 text-amber-50 px-4 py-3 focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400'
+                            />
+                        </form>
 
                         {/* Mobile Links */}
                         <ul className='flex flex-col space-y-3 text-lg text-amber-50'>

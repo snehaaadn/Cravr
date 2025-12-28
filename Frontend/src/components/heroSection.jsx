@@ -57,6 +57,7 @@ function HeroSection() {
                     <div className="absolute -inset-1 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
                     <div className="relative flex items-center">
                         <input
+                            id="location-search-input"
                             type="text"
                             placeholder="Enter your Location..."
                             value={locationInput}

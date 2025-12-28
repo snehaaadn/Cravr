@@ -78,16 +78,17 @@ function RestaurantPage() {
 
             {queryLocation ? (
                 <>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 p-5">
                         {
                             results.length > 0 ? (
                                 results.map(restaurant => (
                                     <RestaurantCard key={restaurant.id} data={restaurant} />
                                 ))
                             ) : (
-                                <div className="col-span-full text-center text-stone-400">
-                                    No restaurants found for "{queryLocation.toUpperCase()}".
-                                    We'll Soon reach out to restaurants in this area!
+                                <div className="col-span-full flex flex-col items-center justify-center text-center py-20">
+                                    <img src={logo} alt="Empty" className="w-24 h-24 opacity-60 mb-4 grayscale invert" />
+                                    <h3 className="text-xl font-bold text-stone-400">No restaurants found for {queryLocation.toUpperCase()}.</h3>
+                                    <p className="text-stone-500">We'll Soon reach out to restaurants in this area!</p>
                                 </div>
                             )
                         }
