@@ -68,7 +68,7 @@ function Orders() {
         };
 
         fetchOrdersAndDetails();
-    }, []);
+    }, [orders.length, orders[orders.length - 1]?.orderStatus]);
 
     const sortedOrders = [...orders].sort((a, b) => new Date(b.date) - new Date(a.date));
 

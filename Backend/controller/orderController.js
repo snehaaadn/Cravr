@@ -3,23 +3,41 @@ import User from '../models/userModel.js';
 
 const orderFlow = ['Confirmed', 'Preparing', 'Ready for Pickup', 'Out for Delivery', 'Delivered'];
 
-// Helper to update status and log to console
-const simulateOrderLifecycle = (orderId) => {
+const simulateOrderLifecycle = (orderId, userId, totalAmount) => {
     let step = 0;
 
-    const runNextStep = () => {
-        if (step < orderFlow.length) {
-            setTimeout(async () => {
-                try {
-                    await Order.findByIdAndUpdate(orderId, { orderStatus: orderFlow[step] });
-                    console.log(`Order ${orderId} status: ${orderFlow[step]}`);
+    const runNextStep = async () => {
+        try {
+            
+            const currentOrder = await Order.findById(orderId);
+            
+            if (!currentOrder || currentOrder.orderStatus === 'Cancelled') {
+                return;
+            }
+
+            if (step < orderFlow.length) {
+                setTimeout(async () => {
+                    const statusUpdate = orderFlow[step];
                     
+                    await Order.findByIdAndUpdate(orderId, { orderStatus: statusUpdate });
+
+                    if (statusUpdate === 'Delivered') {
+                        const pointsEarned = Math.floor(totalAmount / 100);
+                        await User.findByIdAndUpdate(userId, {
+                            $inc: { 
+                                totalOrders: 1, 
+                                totalSpent: totalAmount, 
+                                points: pointsEarned 
+                            }
+                        });
+                    }
+
                     step++;
-                    runNextStep(); // Recursive call for the next minute
-                } catch (err) {
-                    console.error("Simulation Error:", err.message);
-                }
-            }, 60 * 1000); // 1 minute delay
+                    runNextStep(); 
+                }, 10 * 1000); // 10 seconds delay
+            }
+        } catch (err) {
+            console.error("Simulation Error:", err.message);
         }
     };
 
@@ -57,28 +75,25 @@ async function createOrder(req, res) {
             tax,
             deliveryFee,
             totalAmount,
-            paymentMethod: paymentMethod === "Cash On Delivery" ? "COD" : paymentMethod, // Logic: Sync with Schema Enum
+            paymentMethod: paymentMethod === "Cash On Delivery" ? "COD" : paymentMethod,
             orderStatus: 'Pending',
             shippingAddress: {
                 houseNo: shippingAddress.houseNo,
                 street: shippingAddress.street,
                 city: shippingAddress.city,
-                pincode: shippingAddress.zipCode, // Logic: Maps frontend zipCode to pincode
+                pincode: shippingAddress.zipCode,
             },
         });
 
-        const pointsEarned = Math.floor(totalAmount / 100);
+        // Logic: Clear cart immediately, but wait for 'Delivered' to update stats
+        await User.findByIdAndUpdate(userId, { $set: { cart: [] } });
         
-        await User.findByIdAndUpdate(userId, {
-            $inc: { totalOrders: 1, totalSpent: totalAmount, points: pointsEarned },
-            $set: { cart: [] } 
-        });
-
-        simulateOrderLifecycle(newOrder._id);
+        // Pass userId and totalAmount to the simulation
+        simulateOrderLifecycle(newOrder._id, userId, totalAmount);
 
         return res.status(201).json({
             success: true,
-            message: 'Order secured.',
+            message: 'Order secured. Lifecycle initiated.',
             orderId: newOrder._id
         });
     } catch (error) {
