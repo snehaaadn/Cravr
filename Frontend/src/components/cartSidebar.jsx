@@ -13,7 +13,8 @@ const CartSidebar = ({ isOpen, onClose, onBrowse }) => {
     const { user } = useContext(AuthContext);
     const [address, setAddress] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [addressError, setAddressError] = useState('');
 
     useEffect(() => {
         if (user?.address) {
@@ -47,10 +48,11 @@ const CartSidebar = ({ isOpen, onClose, onBrowse }) => {
     }, [isOpen]);
 
     const handlePlaceOrder = async () => {
+        setAddressError('');
         const selectedAddress = address.find(addr => addr._id === selectedAddressId);
 
         if (!selectedAddress) {
-            alert("Select Delivery Destination.");
+            setAddressError("Please add a delivery destination to proceed.");
             return;
         }
 
@@ -59,8 +61,8 @@ const CartSidebar = ({ isOpen, onClose, onBrowse }) => {
             tax: parseFloat(tax),
             deliveryFee: parseFloat(deliveryFee),
             totalAmount: total,
-            paymentMethod: "Cash On Delivery", 
-            shippingAddress: selectedAddress 
+            paymentMethod: "Cash On Delivery",
+            shippingAddress: selectedAddress
         };
 
         const result = await placeOrder(billingData);
@@ -78,12 +80,13 @@ const CartSidebar = ({ isOpen, onClose, onBrowse }) => {
             onClose();
             return;
         }
-        setIsDropdownOpen(!isDropdownOpen); 
+        setIsDropdownOpen(!isDropdownOpen);
     };
 
     const selectNewAddress = (id) => {
         setSelectedAddressId(id);
-        setIsDropdownOpen(false); 
+        setIsDropdownOpen(false);
+        setAddressError('');
     };
 
     const getItemName = (item) => item.dishID?.name || "Unknown Dish";
@@ -200,6 +203,13 @@ const CartSidebar = ({ isOpen, onClose, onBrowse }) => {
 
                                                 {/* --- TOGGLE LINK --- */}
                                                 <div className="border-t border-white/5 pt-2 mt-1 flex justify-end">
+                                                    <div>
+                                                        {addressError && (
+                                                            <span className="text-red-500 text-[10px] uppercase font-bold tracking-wider animate-pulse">
+                                                                ! {addressError}
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                     <button
                                                         onClick={handleChangeAddress}
                                                         className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-amber-500/80 hover:text-amber-400 transition-colors group"
