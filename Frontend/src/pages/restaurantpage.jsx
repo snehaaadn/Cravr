@@ -85,8 +85,8 @@ function RestaurantPage() {
                                     <RestaurantCard key={restaurant.id} data={restaurant} />
                                 ))
                             ) : (
-                                <div className="col-span-full flex flex-col items-center justify-center text-center py-20">
-                                    <img src={logo} alt="Empty" className="w-24 h-24 opacity-60 mb-4 grayscale invert" />
+                                <div className="col-span-full flex flex-col items-center justify-center text-center py-20 font-merriweather opacity-80">
+                                    <img src={logo} alt="Empty" className="w-24 h-24 mb-4 grayscale invert" />
                                     <h3 className="text-xl font-bold text-stone-400">No restaurants found for {queryLocation.toUpperCase()}.</h3>
                                     <p className="text-stone-500">We'll Soon reach out to restaurants in this area!</p>
                                 </div>

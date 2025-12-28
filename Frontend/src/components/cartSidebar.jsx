@@ -8,12 +8,12 @@ import { AuthContext } from '../context/authContext.jsx';
 import { CartContext } from '../context/cartContext.jsx';
 import Loading from './common/loading.jsx';
 
-const CartSidebar = ({ isOpen, onClose }) => {
+const CartSidebar = ({ isOpen, onClose, onBrowse }) => {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
     const [address, setAddress] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false); //
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
 
     useEffect(() => {
         if (user?.address) {
@@ -59,8 +59,8 @@ const CartSidebar = ({ isOpen, onClose }) => {
             tax: parseFloat(tax),
             deliveryFee: parseFloat(deliveryFee),
             totalAmount: total,
-            paymentMethod: "Cash On Delivery", // Mapped to 'COD' in controller
-            shippingAddress: selectedAddress // Contains zipCode, street, etc.
+            paymentMethod: "Cash On Delivery", 
+            shippingAddress: selectedAddress 
         };
 
         const result = await placeOrder(billingData);
@@ -78,12 +78,12 @@ const CartSidebar = ({ isOpen, onClose }) => {
             onClose();
             return;
         }
-        setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown logic
+        setIsDropdownOpen(!isDropdownOpen); 
     };
 
     const selectNewAddress = (id) => {
         setSelectedAddressId(id);
-        setIsDropdownOpen(false); // Close after selection
+        setIsDropdownOpen(false); 
     };
 
     const getItemName = (item) => item.dishID?.name || "Unknown Dish";
@@ -135,7 +135,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
                     {/* NOT LOGGED IN */}
                     {!user ? (
-                        <div className="h-full flex flex-col items-center justify-center text-center opacity-80">
+                        <div className="h-full flex flex-col items-center justify-center text-center font-merriweather opacity-80">
                             <img src={logo} alt="Login Required" className="w-24 h-24 mb-6 grayscale invert" />
                             <h3 className="text-xl font-bold text-stone-300 mb-2">Login Required</h3>
                             <p className="text-stone-400 text-sm mb-6 max-w-[200px]">Please login first to add items to your cart.</p>
@@ -150,13 +150,13 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
                         // EMPTY CART
                         : cartItems.length === 0 ? (
-                            <div className="h-full flex flex-col items-center justify-center text-center opacity-60">
+                            <div className="h-full flex flex-col items-center justify-center text-center opacity-80 font-merriweather">
                                 <img src={logo} alt="Empty Cart" className="w-24 h-24 mb-4 grayscale invert" />
                                 <h3 className="text-xl font-bold text-stone-400">Your cart is empty</h3>
-                                <p className="text-stone-600 text-sm mt-2">Good food is waiting for you.</p>
+                                <p className="text-stone-500 text-sm mt-2">Good food is waiting for you.</p>
                                 <button
-                                    onClick={onClose}
-                                    className="mt-6 px-6 py-2 border border-stone-700 text-stone-400 font-mono text-xs uppercase hover:border-amber-500 hover:text-amber-500 transition-colors"
+                                    onClick={onBrowse}
+                                    className="mt-6 px-6 py-2 border font-bold border-amber-500 text-amber-500 text-xs uppercase hover:bg-amber-500 hover:text-stone-900 transition-colors cursor-pointer"
                                 >
                                     Browse Menu
                                 </button>
@@ -190,7 +190,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                                                 <AddressCard key={addr._id} address={addr} isCompact={true} />
                                                             ))
                                                         ) : (
-                                                            /* Logic: Fallback when no address exists */
+                                                            /* when no address exists */
                                                             <div className="py-2">
                                                                 <p className="text-stone-400 italic text-sm">No saved locations found.</p>
                                                             </div>
@@ -198,7 +198,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                                     </div>
                                                 </div>
 
-                                                {/* --- TOGGLE LINK (Bottom Line with Arrow) --- */}
+                                                {/* --- TOGGLE LINK --- */}
                                                 <div className="border-t border-white/5 pt-2 mt-1 flex justify-end">
                                                     <button
                                                         onClick={handleChangeAddress}

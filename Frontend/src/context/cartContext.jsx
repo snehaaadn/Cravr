@@ -50,8 +50,7 @@ export const CartProvider = ({ children }) => {
     // Add Item to Cart
     const addToCart = async (dish) => {
         if (!user) {
-            alert("Please login to add items to cart");
-            return;
+            return { success: false, message: "Please login to add items to cart" };
         }
         try {
             await addDishToCart(

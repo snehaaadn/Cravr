@@ -19,7 +19,7 @@ function Header() {
         if (e.type === 'submit') {
             e.preventDefault();
         }
-        if ((e.key === 'Enter' || e.type === 'submit') && searchTerm.trim() !== '') { 
+        if ((e.key === 'Enter' || e.type === 'submit') && searchTerm.trim() !== '') {
             navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`);
             setSearchTerm('');
             setIsMenuOpen(false);
@@ -29,6 +29,25 @@ function Header() {
             document.activeElement.blur();
         }
     }
+
+    const handleBrowse = () => {
+        setIsCartOpen(false);
+        
+        handleScrollToTop(); 
+
+        // check if Mobile or Desktop?
+        if (window.innerWidth < 1024) { 
+            setIsMenuOpen(true);
+            
+            setTimeout(() => {
+                document.getElementById('mobile-search-bar')?.focus();
+            }, 500);
+        } else {
+            setTimeout(() => {
+                document.getElementById('desktop-search-bar')?.focus();
+            }, 500);
+        }
+    };
 
     return (
         <>
@@ -49,6 +68,7 @@ function Header() {
                             {/* Search Bar */}
                             <div className='relative group'>
                                 <input
+                                    id="desktop-search-bar"
                                     type="text"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
@@ -142,7 +162,7 @@ function Header() {
                 </div>
             </nav>
 
-            <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+            <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} onBrowse={handleBrowse} />
         </>
     )
 }
