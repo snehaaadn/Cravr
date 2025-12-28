@@ -101,4 +101,23 @@ async function addAddressToUser(req, res) {
     }
 }
 
-export { signup, login, getUserProfile, addAddressToUser };
+async function deleteAddressFromUser(req, res) {
+    const userID = req.user._id;
+    const { addressID } = req.params;
+
+    try {
+        const user = await User.findByIdAndUpdate(
+            userID,
+            { $pull: { address: { _id: addressID } } },
+            { new: true }
+        ).select("-password");
+
+        if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+        return res.status(200).json({ success: true, user: user });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server Error" });
+    }
+}
+
+export { signup, login, getUserProfile, addAddressToUser, deleteAddressFromUser };

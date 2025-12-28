@@ -42,6 +42,7 @@ const userSignup = (formData) => api.post('/users/signup', formData);
 const userLogin = (phone, password) => api.post('/users/login', { phone, password });
 const getUserProfile = () => api.get('/users/profile');
 const addAddressToUser = (addressData) => api.post('/users/address', addressData);
+const deleteAddressFromUser = (addressID) => api.delete(`/users/address/${addressID}`);
 
 
 // Cart APIs
@@ -92,6 +93,7 @@ export {
   userLogin,
   getUserProfile,
   addAddressToUser,
+  deleteAddressFromUser,
   addDishToCart,
   getCart,
   removeDishFromCart,

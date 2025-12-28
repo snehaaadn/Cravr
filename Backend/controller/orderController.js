@@ -27,7 +27,7 @@ const simulateOrderLifecycle = (orderId) => {
 };
 
 async function createOrder(req, res) {
-    const userId = req.user._id; // Extracted from auth middleware
+    const userId = req.user._id;
     const {
         restaurantId,
         cartItems,
@@ -43,13 +43,12 @@ async function createOrder(req, res) {
         return res.status(400).json({ success: false, message: "Missing required order details." });
     }
 
-    // Create new order
     try {
         const newOrder = await Order.create({
             userID: userId,
             restaurantID: restaurantId,
             items: cartItems.map(item => ({
-                dish: item.dishId,
+                dishID: item.dishId,
                 name: item.name,
                 price: item.price,
                 quantity: item.quantity,
@@ -58,26 +57,32 @@ async function createOrder(req, res) {
             tax,
             deliveryFee,
             totalAmount,
-            paymentMethod,
+            paymentMethod: paymentMethod === "Cash On Delivery" ? "COD" : paymentMethod, // Logic: Sync with Schema Enum
             orderStatus: 'Pending',
-            shippingAddress,
+            shippingAddress: {
+                houseNo: shippingAddress.houseNo,
+                street: shippingAddress.street,
+                city: shippingAddress.city,
+                pincode: shippingAddress.zipCode, // Logic: Maps frontend zipCode to pincode
+            },
         });
-        // Update user's total orders and total spent, and clear cart
+
+        const pointsEarned = Math.floor(totalAmount / 100);
+        
         await User.findByIdAndUpdate(userId, {
-            $inc: { totalOrders: 1, totalSpent: totalAmount },
-            $set: { cart: [] } // Clear cart after order is placed
+            $inc: { totalOrders: 1, totalSpent: totalAmount, points: pointsEarned },
+            $set: { cart: [] } 
         });
 
         simulateOrderLifecycle(newOrder._id);
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
-            message: 'Order placed successfully!',
+            message: 'Order secured.',
             orderId: newOrder._id
         });
-
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error', details: error.message });
+        return res.status(500).json({ success: false, message: 'Server error', details: error.message });
     }
 }
 
