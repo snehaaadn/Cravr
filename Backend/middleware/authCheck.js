@@ -12,7 +12,7 @@ export function authCheck(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, process.env.JWTSECRETKEY);
-        req.user = decoded; // Attach decoded user info to request object
+        req.user = decoded; 
         next();
     } catch (err) {
         console.log("Token verification failed:", err.message);

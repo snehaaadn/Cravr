@@ -4,7 +4,7 @@ const secretKey = process.env.JWTSECRETKEY || "your_secret_key";
 
 function setUser(user) {
     const payload = {
-        id: user._id,
+        _id: user._id,
         email: user.email,
         name: user.name
     };

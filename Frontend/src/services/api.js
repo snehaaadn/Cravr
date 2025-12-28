@@ -42,6 +42,7 @@ api.interceptors.response.use(
 const userSignup = (formData) => api.post('/users/signup', formData);
 const userLogin = (phone, password) => api.post('/users/login', { phone, password });
 const getUserProfile = () => api.get('/users/profile');
+const addAddressToUser = (addressData) => api.post('/users/address', addressData);
 
 // Cart APIs
 const addDishToCart = (dishID, name, price, quantity) =>
@@ -89,6 +90,7 @@ export {
   userSignup,
   userLogin,
   getUserProfile,
+  addAddressToUser,
   addDishToCart,
   getCart,
   removeDishFromCart,

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-function AddressForm({ initialData, onSave, onCancel }) {
+function AddressForm({ onSave, onCancel }) {
     // Optimized state mapping to your Schema
-    const [formData, setFormData] = useState(initialData || {
-        label: '', // e.g., Home/Work
+    const [formData, setFormData] = useState({
+        label: '',
         contact: '',
         houseNo: '',
         street: '',
@@ -27,7 +27,7 @@ function AddressForm({ initialData, onSave, onCancel }) {
         <form onSubmit={handleSubmit} className="animate-in fade-in slide-in-from-bottom-4 duration-500 bg-stone-900/40 border border-amber-500/10 rounded-3xl p-8 backdrop-blur-md">
             <div className="border-b border-amber-500/10 pb-6 mb-8 flex justify-between items-center">
                 <h2 className="text-3xl font-serif font-bold italic text-white uppercase tracking-tighter">
-                    {initialData ? 'Update Record' : 'New Safe Zone'}
+                    New Address Entry
                 </h2>
                 <span className="font-mono text-[10px] text-amber-500/30 tracking-widest uppercase italic">Entry_Auth_882</span>
             </div>
@@ -70,7 +70,7 @@ function AddressForm({ initialData, onSave, onCancel }) {
 
             <div className="mt-10 flex gap-4">
                 <button type="submit" className="flex-1 bg-amber-500 text-stone-950 font-bold py-3 rounded-2xl text-xs uppercase tracking-widest hover:bg-white transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)]">
-                    Commit Changes
+                    Save Address
                 </button>
                 <button type="button" onClick={onCancel} className="px-8 border border-stone-700 text-stone-500 font-bold rounded-2xl text-xs uppercase tracking-widest hover:text-white hover:border-white transition-all">
                     Abort
