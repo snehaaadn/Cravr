@@ -8,11 +8,9 @@ import Loading from './common/loading.jsx';
 const CartSidebar = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const { user } = useContext(AuthContext);
 
     // --- MOCK USER & CART (Replace with your actual Context/Redux) ---
-    const { user } = useContext(AuthContext);
-    // const user = { name: "Test User" }; // CHANGE THIS to `null` to test login state
-
     const [address, setAddress] = useState({
         type: "Home",
         line1: "Flat 402, Emerald Heights",
@@ -28,7 +26,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
     // --- CALCULATIONS ---
     const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    const tax = Math.round(subtotal * 0.05); 
+    const tax = Math.round(subtotal * 0.05);
     const deliveryFee = 40;
     const total = subtotal + tax + deliveryFee;
 
@@ -123,13 +121,13 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
                             // ITEMS IN CART
                             : (
-                                <div className="max-w-4xl mx-auto px-4 md:px-8 mt-8 space-y-8">
+                                <div className="max-w-4xl mx-auto px-4 md:px-8 mt-8 space-y-8 font-merriweather">
 
-                                    {/* --- 1. ADDRESS SECTION --- */}
+                                    {/* --- ADDRESS SECTION --- */}
                                     <section>
                                         <div className="flex items-center gap-3 mb-4">
                                             <span className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-black font-bold text-xs">1</span>
-                                            <h2 className="text-xl font-bold font-merriweather text-stone-200">Delivery Address</h2>
+                                            <h2 className="text-xl font-bold text-stone-200">Delivery Address</h2>
                                         </div>
 
                                         <div className="bg-stone-900/50 backdrop-blur-sm border border-white/10 p-6 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all hover:border-amber-500/30">
@@ -141,7 +139,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                                     </svg>
                                                 </div>
                                                 <div>
-                                                    <h3 className="font-bold text-white text-lg">{address.type}</h3>
+                                                    <h3 className="font-bold text-stone-100 text-lg">{address.type}</h3>
                                                     <p className="text-stone-400 text-sm leading-relaxed">
                                                         {address.line1}, {address.line2}<br />
                                                         {address.city}
@@ -157,11 +155,11 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                         </div>
                                     </section>
 
-                                    {/* --- 2. CART ITEMS SECTION --- */}
+                                    {/* --- CART ITEMS SECTION --- */}
                                     <section>
                                         <div className="flex items-center gap-3 mb-4">
                                             <span className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-stone-950 font-bold text-xs">2</span>
-                                            <h2 className="text-xl font-bold font-merriweather text-stone-200">Order Summary</h2>
+                                            <h2 className="text-xl font-bold text-stone-200">Order Summary</h2>
                                         </div>
 
                                         <div className="bg-stone-900/30 border border-white/5 rounded-xl overflow-hidden divide-y divide-white/5">
@@ -177,10 +175,10 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                                     <div className="flex-1 flex flex-col justify-between">
                                                         <div>
                                                             <div className="flex justify-between items-start">
-                                                                <h3 className="font-bold text-lg text-white font-merriweather leading-tight">{item.name}</h3>
-                                                                <span className="font-mono text-amber-500 font-bold ml-2">₹{item.price * item.quantity}</span>
+                                                                <h3 className="font-bold text-lg text-white leading-tight">{item.name}</h3>
+                                                                <span className="text-amber-500 font-bold ml-2">₹{item.price * item.quantity}</span>
                                                             </div>
-                                                            <p className="text-xs text-stone-500 uppercase tracking-wide mt-1">{item.restaurant}</p>
+                                                            <p className="text-xs font-mono text-stone-500 uppercase tracking-wide mt-1">{item.restaurant}</p>
                                                         </div>
 
                                                         {/* Quantity Control */}
@@ -203,7 +201,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                                                 </button>
                                                             </div>
                                                             <button
-                                                                onClick={() => updateQuantity(item.id, -100)} // Remove logic
+                                                                onClick={() => updateQuantity(item.id, -100)} 
                                                                 className="text-xs text-red-500/70 hover:text-red-500 underline decoration-dotted"
                                                             >
                                                                 Remove
@@ -215,7 +213,30 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                         </div>
                                     </section>
 
-                                    {/* --- 3. BILLING SECTION --- */}
+                                    {/* --- Payment SECTION --- */}
+                                    <section className='font-merriweather'>
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <span className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-black font-bold text-xs">3</span>
+                                            <h2 className="text-xl font-bold text-stone-200">Payment Method</h2>
+                                        </div>
+
+                                        <div className="bg-stone-900/50 backdrop-blur-sm border border-white/10 p-6 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all hover:border-amber-500/30">
+                                            <div className="flex items-center gap-4">
+                                                <div className="mt-1">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-amber-500" fill="none" viewBox="0 0 18 18" stroke="currentColor">
+                                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0" />
+                                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z" />
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h3 className="font-semibold text-stone-100 text-lg">Cash On Delivery</h3>
+                                                    <p className="text-xs text-stone-400">Pay when you receive your order</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+
+                                    {/* --- BILLING SECTION --- */}
                                     <section className="border-t-2 border-dashed border-stone-800 pt-8 mt-8">
                                         <div className="bg-stone-900/80 p-6 rounded-xl space-y-3 font-merriweather text-sm">
                                             <div className="flex justify-between text-stone-400">
@@ -243,8 +264,8 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
                 {/* --- CHECKOUT --- */}
                 {user && cartItems.length > 0 && (
-                    <div className="p-6 bg-stone-900 border-t border-white/10">
-                        <div className="flex justify-between items-center mb-4 text-sm font-merriweather text-stone-400">
+                    <div className="p-6 bg-stone-900 border-t border-white/10 font-merriweather">
+                        <div className="flex justify-between items-center mb-4 text-sm text-stone-400">
                             <span>Subtotal</span>
                             <span className="text-stone-100">₹{total}</span>
                         </div>
@@ -253,7 +274,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                             className="w-full py-4 bg-amber-500 hover:bg-stone-300 text-stone-950 font-bold uppercase tracking-[0.2em] rounded-lg shadow-lg transition-all"
                         >
                             Place Order
-                        </button> 
+                        </button>
                         <p className="text-center text-[10px] text-stone-600 uppercase tracking-widest mt-3 font-mono">
                             Secure Payment Gateway
                         </p>
