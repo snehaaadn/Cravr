@@ -28,7 +28,14 @@ async function addDishToCart(req, res) {
 
 async function getCart(req, res) {
     const userID = req.user._id;
-    const user = await User.findById(userID).populate('cart.dishID');
+    const user = await User.findById(userID).populate({
+        path: 'cart.dishID',
+        populate: {
+            path: 'restaurantID', 
+            model: 'Restaurant',  
+            select: 'name'        
+        }
+    });
     if (!user) return res.status(404).json({ message: "User not found" });
     
     res.status(200).json({ cart: user.cart });

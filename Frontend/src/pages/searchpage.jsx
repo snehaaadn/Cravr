@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+
+// Components 
 import Loading from '../components/common/loading.jsx';
 import Pagination from '../components/common/pagination.jsx';
 import RestaurantCard from '../components/restaurantCard.jsx';
@@ -38,7 +40,7 @@ function SearchPage() {
                     const searchTerm = queryName || '';
                     const response = await getRestaurantsByName(searchTerm);
                     const rawData = response.data.restaurants || [];
-                    setTotalItems(rawData.length); 
+                    setTotalItems(rawData.length);
 
                     data = rawData.map(item => ({
                         id: item._id,
@@ -49,8 +51,10 @@ function SearchPage() {
                     }));
                 } else {
                     let response;
-                    if(queryName){
+                    if (queryName) {
                         response = await getDishesByName(queryName, currentPage);
+                    } else {
+                        response = { data: { count: 0, dishes: [] } };
                     }
 
                     setTotalItems(response.data.count || 0);
@@ -64,9 +68,9 @@ function SearchPage() {
                         price: item.price,
                         rating: item.rating || 4,
                         ratingCount: item.ratingCount || 100,
-                        image: item.imageUrl || pizzaImg, 
+                        image: item.imageUrl || pizzaImg,
                         description: item.description || "Delicious and freshly prepared.",
-                        category: item.category 
+                        category: item.category
                     }));
                 }
                 setResults(data);
@@ -106,21 +110,19 @@ function SearchPage() {
                     <div className="flex bg-stone-900/50 p-1.5 rounded-full border border-white/10 backdrop-blur-sm">
                         <button
                             onClick={() => setActiveTab('dishes')}
-                            className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${
-                                activeTab === 'dishes' 
-                                ? 'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]' 
-                                : 'text-stone-400 hover:text-white'
-                            }`}
+                            className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${activeTab === 'dishes'
+                                    ? 'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]'
+                                    : 'text-stone-400 hover:text-white'
+                                }`}
                         >
                             Dishes
                         </button>
                         <button
                             onClick={() => setActiveTab('restaurants')}
-                            className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${
-                                activeTab === 'restaurants' 
-                                ? 'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]' 
-                                : 'text-stone-400 hover:text-white'
-                            }`}
+                            className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 ${activeTab === 'restaurants'
+                                    ? 'bg-amber-500 text-black shadow-[0_0_15px_rgba(245,158,11,0.4)]'
+                                    : 'text-stone-400 hover:text-white'
+                                }`}
                         >
                             Restaurants
                         </button>
@@ -145,7 +147,7 @@ function SearchPage() {
 
                         {results.length > 0 ? (
                             <div className={`grid gap-8 ${activeTab === 'restaurants' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
-                                
+
                                 {/* --- DISH CARDS --- */}
                                 {activeTab === 'dishes' && results.map((dish) => (
                                     <DishCard key={dish.id} dish={dish} />
@@ -153,7 +155,7 @@ function SearchPage() {
 
                                 {/* --- RESTAURANT CARDS --- */}
                                 {activeTab === 'restaurants' && results.map((rest) => (
-                                   <RestaurantCard key={rest.id} data={rest} />
+                                    <RestaurantCard key={rest.id} data={rest} />
                                 ))}
 
                             </div>

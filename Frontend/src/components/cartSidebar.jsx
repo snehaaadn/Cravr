@@ -1,13 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.png'; // Make sure path is correct
-import { AuthContext } from '../context/authContext.jsx'; // UNCOMMENT if you use context
-import pizzaImg from '../assets/category/pizza.webp';
+
+import logo from '../assets/logo.png';
+
+import { AuthContext } from '../context/authContext.jsx';
+import { CartContext } from '../context/cartContext.jsx';
 import Loading from './common/loading.jsx';
 
 const CartSidebar = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
     const { user } = useContext(AuthContext);
 
     // --- MOCK USER & CART (Replace with your actual Context/Redux) ---
@@ -18,17 +19,13 @@ const CartSidebar = ({ isOpen, onClose }) => {
         city: "Bengaluru, KA"
     });
 
-    const [cartItems, setCartItems] = useState([
-        // Uncomment to test items:
-        { id: 1, name: "Truffle Mushroom Pizza", price: 450, image: pizzaImg, quantity: 1, restaurant: "Italiano Crust" },
-        { id: 2, name: "Pepperoni Pizza", price: 350, image: pizzaImg, quantity: 2, restaurant: "Pizza Palace" }
-    ]);
+    const { cartItems, loading, cartTotal, updateQuantity, removeFromCart } = useContext(CartContext);
 
     // --- CALCULATIONS ---
-    const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    const tax = Math.round(subtotal * 0.05);
-    const deliveryFee = 40;
-    const total = subtotal + tax + deliveryFee;
+    const subtotal = cartTotal.toFixed(2);
+    const tax = Math.round(subtotal * 0.18).toFixed(2);
+    const deliveryFee = subtotal > 0 ? 20 : 0;
+    const total = parseFloat(subtotal) + parseFloat(tax) + parseFloat(deliveryFee);
 
     // Close on Escape key
     useEffect(() => {
@@ -48,18 +45,28 @@ const CartSidebar = ({ isOpen, onClose }) => {
         navigate('/profile');
     };
 
-    const updateQuantity = (id, delta) => {
-        setCartItems(prev => prev.map(item => {
-            if (item.id === id) {
-                return { ...item, quantity: Math.max(0, item.quantity + delta) };
-            }
-            return item;
-        }).filter(item => item.quantity > 0));
-    };
-
     const handleChangeAddress = () => {
         alert("Trigger Address Modal Here");
     };
+
+    const getItemName = (item) => item.dishID?.name || "Unknown Dish";
+    const getItemPrice = (item) => item.dishID?.price || 0;
+    const getItemImage = (item) => item.dishID?.imageUrl || logo;
+    const getItemId = (item) => item.dishID?._id || item.dishID;
+
+    const getItemRestaurant = (item) => {
+    if (!item.dishID) return "Loading...";
+
+    if (item.dishID.restaurantID && item.dishID.restaurantID.name) {
+        return item.dishID.restaurantID.name;
+    }
+
+    if (item.dishID.restaurant && item.dishID.restaurant.name) {
+        return item.dishID.restaurant.name;
+    }
+
+    return "Cravr Partner";
+};
 
     if (loading) {
         return (
@@ -76,7 +83,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
             {/* SIDEBAR PANEL */}
             <div
-                className={`fixed top-0 right-0 h-full w-full sm:w-[480px] bg-stone-950 border-l border-white/10 z-70 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                className={`fixed top-0 right-0 h-full w-full sm:w-[500px] bg-stone-950 border-l border-white/10 z-70 shadow-2xl transform transition-transform duration-300 ease-in-out flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
             >
                 {/* --- HEADER --- */}
                 <div className="flex items-center justify-between p-5 border-b border-white/10 bg-stone-900/50 backdrop-blur-md z-10">
@@ -164,28 +171,29 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
                                         <div className="bg-stone-900/30 border border-white/5 rounded-xl overflow-hidden divide-y divide-white/5">
                                             {cartItems.map((item) => (
-                                                <div key={item.id} className="p-4 md:p-6 flex gap-4 md:gap-6 group hover:bg-stone-900/80 transition-colors">
+                                                <div key={getItemId(item)} className="p-4 md:p-6 flex gap-4 md:gap-6 group hover:bg-stone-900/80 transition-colors">
 
                                                     {/* Image */}
                                                     <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 overflow-hidden rounded-lg bg-stone-800">
-                                                        <img src={item.image} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                                                        <img src={getItemImage(item)} alt={getItemImage(item)} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                                                     </div>
 
                                                     {/* Details */}
                                                     <div className="flex-1 flex flex-col justify-between">
                                                         <div>
                                                             <div className="flex justify-between items-start">
-                                                                <h3 className="font-bold text-lg text-white leading-tight">{item.name}</h3>
-                                                                <span className="text-amber-500 font-bold ml-2">₹{item.price * item.quantity}</span>
+                                                                <h3 className="font-bold text-lg text-white leading-tight">{getItemName(item)}</h3>
+                                                               
+                                                                <span className="text-amber-500 font-bold whitespace-nowrap shrink-0">₹{(getItemPrice(item) * item.quantity).toFixed(2)}</span>  
                                                             </div>
-                                                            <p className="text-xs font-mono text-stone-500 uppercase tracking-wide mt-1">{item.restaurant}</p>
+                                                            <p className="text-xs font-mono text-stone-500 uppercase tracking-wide mt-1">{getItemRestaurant(item)}</p>
                                                         </div>
 
                                                         {/* Quantity Control */}
                                                         <div className="flex items-center gap-4 mt-3">
                                                             <div className="flex items-center bg-stone-950 border border-stone-700 rounded overflow-hidden">
                                                                 <button
-                                                                    onClick={() => updateQuantity(item.id, -1)}
+                                                                    onClick={() => updateQuantity(getItemId(item), item.quantity - 1)}
                                                                     className="w-8 h-7 flex items-center justify-center text-stone-400 hover:text-white hover:bg-stone-800 transition-colors"
                                                                 >
                                                                     -
@@ -194,14 +202,14 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                                                     {item.quantity}
                                                                 </span>
                                                                 <button
-                                                                    onClick={() => updateQuantity(item.id, 1)}
+                                                                    onClick={() => updateQuantity(getItemId(item), item.quantity + 1)}
                                                                     className="w-8 h-7 flex items-center justify-center text-amber-500 hover:bg-stone-800 transition-colors"
                                                                 >
                                                                     +
                                                                 </button>
                                                             </div>
                                                             <button
-                                                                onClick={() => updateQuantity(item.id, -100)} 
+                                                                onClick={() => removeFromCart(getItemId(item))}
                                                                 className="text-xs text-red-500/70 hover:text-red-500 underline decoration-dotted"
                                                             >
                                                                 Remove

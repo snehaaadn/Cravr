@@ -8,7 +8,6 @@ const api = axios.create({
   },
 });
 
-
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -20,9 +19,9 @@ api.interceptors.request.use((config) => {
 });
 
 api.interceptors.response.use(
-  (response) => response, // Pass through successful responses
+  (response) => response, // successful responses
   (error) => {
-    // Check if the error is a 401 (Expired/Invalid Token)
+    // Check if Expired/Invalid Token
     if (error.response && error.response.status === 401) {
       console.warn("Session expired. Redirecting to login...");
       
@@ -38,11 +37,12 @@ api.interceptors.response.use(
 );
 
 
-// User APIs (Cleaned of redundant manual headers)
+// User APIs 
 const userSignup = (formData) => api.post('/users/signup', formData);
 const userLogin = (phone, password) => api.post('/users/login', { phone, password });
 const getUserProfile = () => api.get('/users/profile');
 const addAddressToUser = (addressData) => api.post('/users/address', addressData);
+
 
 // Cart APIs
 const addDishToCart = (dishID, name, price, quantity) =>
@@ -50,15 +50,16 @@ const addDishToCart = (dishID, name, price, quantity) =>
 
 const getCart = () => api.get('/users/cart');
 
-const removeDishFromCart = (dishId) =>
-  api.delete('/users/cart', { data: { dishId } });
+const removeDishFromCart = (dishID) =>
+  api.delete('/users/cart', { data: { dishID } });
 
-const updateDishQuantityInCart = (dishId, quantity) =>
-  api.patch('/users/cart', { dishId, quantity });
+const updateDishQuantityInCart = (dishID, quantity) =>
+  api.patch('/users/cart', { dishID, quantity });
 
 // Order APIs
 const createOrder = (orderData) => api.post('/orders/create', orderData);
 const getUserOrders = () => api.get('/orders/user-orders'); 
+
 
 // Restaurant APIs
 const getRestaurantsByLocationName = (locationName, page = 1, limit = 10) =>
