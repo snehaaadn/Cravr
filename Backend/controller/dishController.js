@@ -37,15 +37,15 @@ async function getDishesByName(req, res) {
 async function getDishDetailsByID(req, res) {
     try {
         const { id } = req.params;
-        const dish = await Dish.findById(id).populate('restaurantID', 'name location');
+        const dish = await Dish.findById(id).populate('restaurantID', 'name');
 
         if (!dish) {
             return res.status(404).json({ success: false, message: "Dish not found" });
         }
 
-        res.status(200).json({ success: true, dish: dish });
+        return res.status(200).json({ success: true, dish });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({ success: false, message: error.message });
     }
 }
 
