@@ -1,8 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Orders from "./orderpage.jsx";
 import Addresses from "./addresspage.jsx";
 import LogoutView from "./logoutpage.jsx";
 import { AuthContext } from '../context/authContext';
+import { getUserProfile } from '../services/api.js';
 
 function ProfilePage() {
     const [activeView, setActiveView] = useState('orders');
@@ -16,6 +17,30 @@ function ProfilePage() {
             default: return <Orders />;
         }
     };
+
+    // Fetch user data on view change
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await getUserProfile();
+                if (response.data.success) {
+                    const totalOrders = response.data.user.totalOrders || 0;
+                    const totalSpent = response.data.user.totalSpent || 0;
+                    const points = response.data.user.points || 0;
+
+                    // Logic: Update user context with latest stats
+                    user.totalOrders = totalOrders;
+                    user.totalSpent = totalSpent;
+                    user.points = points;
+                }
+            } catch (error) {
+                console.error("Error fetching user profile:", error);
+            }
+        };
+
+        fetchUserData();
+        
+    }, []);
 
     return (
         <div className="min-h-screen bg-stone-950 text-amber-50 flex flex-col lg:flex-row font-sans selection:bg-amber-500 selection:text-black">
