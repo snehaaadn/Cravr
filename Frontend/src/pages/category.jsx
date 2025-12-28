@@ -1,6 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
-import {useNavigate} from "react-router-dom";
+import React, { useRef, useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import scrollToTop from "../utils/scrollToTop";
+import { AuthContext } from "../context/authContext";
 
 // Importing images
 import choleBhature from "../assets/category/cholebhature.webp";
@@ -20,7 +21,7 @@ import kebabs from "../assets/category/kebab.webp";
 const categories = [
     { name: "Pizza", image: pizza },
     { name: "Burgers", image: burger },
-    { name: "Biryani", image: biryani },
+    { name: "Biriyani", image: biryani },
     { name: "Noodles", image: noodles },
     { name: "Pasta", image: pasta },
     { name: "Paratha", image: paratha },
@@ -38,6 +39,8 @@ function CategoryPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const navigate = useNavigate();
+
+    const { user } = useContext(AuthContext);
 
     const handleCategorySelect = (category) => {
         setSelectedCategory(category);
@@ -73,14 +76,16 @@ function CategoryPage() {
         }
     };
 
-    const userName = "Tushar";
-
     return (
         <div className="w-full flex flex-col border-b border-amber-50 items-center py-12 bg-stone-950 min-h-[400px]">
             {/* Header Section */}
             <div className="w-full max-w-7xl px-6 mb-8 flex items-baseline gap-2">
                 <h2 className="text-2xl md:text-3xl font-bold font-merriweather text-amber-50">
-                    <span className="text-amber-500">{userName},</span> what's on your mind?
+                    Hey{" "}
+                    <span className="text-amber-500 capitalize">
+                        {user?.username || "Craver"}
+                    </span>
+                    , what are you craving?
                 </h2>
                 <div className="grow h-px bg-gray-200 ml-4 hidden md:block"></div>
             </div>
@@ -98,7 +103,7 @@ function CategoryPage() {
             ) : (
                 /* MAIN CAROUSEL */
                 <div className="relative w-full max-w-7xl px-4 group">
-                    
+
                     {/* Left Button */}
                     <button
                         onClick={() => scroll('left')}
@@ -120,28 +125,28 @@ function CategoryPage() {
                                 key={index}
                                 className="flex flex-col items-center shrink-0 snap-center cursor-pointer group/item"
                             >
-                                
+
                                 <div className="relative w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden shadow-md mb-4 
                                     transition-transform duration-300 ease-out will-change-transform
                                     group-hover/item:scale-110 group-hover/item:shadow-xl 
                                     border-4 border-amber-50 group-hover/item:border-amber-500"
-                                    onClick={()=> {
+                                    onClick={() => {
                                         handleCategorySelect(category);
                                     }}
                                 >
-                                    
+
                                     <img
                                         src={category.image}
                                         alt={category.name}
-                                        loading="eager" 
+                                        loading="eager"
                                         draggable="false"
                                         className="w-full h-full object-cover"
                                     />
-                                    
+
                                     {/* Shine effect */}
                                     <div className="absolute inset-0 bg-black/5 group-hover/item:bg-transparent transition-colors duration-300"></div>
                                 </div>
-                                
+
                                 <h3 className="text-lg font-semibold font-merriweather text-amber-50 group-hover/item:text-amber-600 transition-colors duration-300">
                                     {category.name}
                                 </h3>

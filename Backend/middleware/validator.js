@@ -10,6 +10,7 @@ const registerValidationRules = () => {
 
     // EMAIL
     body('email')
+      .optional({ checkFalsy: true })
       .trim()
       .isEmail().withMessage('Invalid email address format')
       .normalizeEmail(),

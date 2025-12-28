@@ -65,9 +65,9 @@ function Footer() {
                 <div className="flex flex-col items-start pl-4 sm:pl-0 lg:pl-8 -mt-4 sm:mt-0">
                     <div className="h-13 hidden lg:block"></div> 
                     <ul className="flex flex-col space-y-3 text-base">
-                        <FooterLink text="Appetizers" href="/search?q=Appetizers" />
-                        <FooterLink text="Desserts" href="/search?q=Desserts" />
-                        <FooterLink text="Small Eats" href="/search?q=Small Eats" />
+                        <FooterLink text="Ice Cream" href="/search?q=Ice Cream" />
+                        <FooterLink text="Sweets" href="/search?q=Sweets" />
+                        <FooterLink text="Snacks" href="/search?q=Snack" />
                         <FooterLink text="Main Course" href="/search?q=Main Course" />
                         <FooterLink text="Wraps & Rolls" href="/search?q=Wraps & Rolls" />
                         <FooterLink text="Bakery" href="/search?q=Bakery" />
@@ -83,8 +83,9 @@ function Footer() {
                         <FooterLink text="Vegan" href="/search?q=Vegan" />
                         <FooterLink text="Vegetarian" href="/search?q=Vegetarian" />
                         <FooterLink text="Healthy" href="/search?q=Healthy" />
-                        <FooterLink text="Gluten-free" href="/search?q=Gluten-free" />
+                        <FooterLink text="Gluten-free" href="/search?q=Gluten" />
                         <FooterLink text="Organic" href="/search?q=Organic" />
+                        <FooterLink text="Combos" href="/search?q=Combo" />
                     </ul>
                 </div>
 

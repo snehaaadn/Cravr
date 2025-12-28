@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import FavItems from "../components/favItems.jsx";
 import Orders from "./orderpage.jsx";
 import Addresses from "./addresspage.jsx";
 import LogoutView from "./logoutpage.jsx";
@@ -9,7 +8,6 @@ function ProfilePage() {
     const [activeView, setActiveView] = useState('orders');
     const { user, logout } = useContext(AuthContext);
 
-    // 1. Logic to render view moved INSIDE the component to access state/context
     const renderView = (view) => {
         switch (view) {
             case 'orders': return <Orders />;
@@ -63,15 +61,8 @@ function ProfilePage() {
 
             {/* --- RIGHT PANE --- */}
             <main className="flex-1 overflow-y-auto bg-stone-900 p-12 custom-scrollbar">
-                {/* 2. Call the localized renderView function */}
                 {renderView(activeView)}
             </main>
-
-           { <style>{`
-    .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
-`}</style>}
         </div>
     );
 }

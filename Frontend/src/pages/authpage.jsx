@@ -20,6 +20,8 @@ function AuthPage() {
     const [isLogin, setIsLogin] = useState(true);
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+
+    const [fieldErrors, setFieldErrors] = useState({});
     const [error, setError] = useState('');
 
     const [formData, setFormData] = useState({
@@ -31,12 +33,17 @@ function AuthPage() {
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+
+        if (fieldErrors[e.target.name]) {
+            setFieldErrors({ ...fieldErrors, [e.target.name]: null });
+        }
     };
 
     const handleAuth = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
+        setFieldErrors({});
 
         try {
             if (isLogin) {
@@ -44,7 +51,7 @@ function AuthPage() {
                 const response = await userLogin(formData.phone, formData.password);
 
                 if (response.data.success || response.data.token) {
-                    // Use the context function to update state and localStorage
+
                     login(response.data.user, response.data.token);
                     navigate('/');
                 } else {
@@ -67,9 +74,18 @@ function AuthPage() {
 
         } catch (err) {
             console.error(err);
-            // Better error handling to display specific messages from backend
-            const msg = err.response?.data?.message || "Authentication Failed. Please check your connection.";
-            setError(msg);
+            const response = err.response?.data;
+            if (response?.errors && Array.isArray(response.errors)) {
+                const newFieldErrors = {};
+                response.errors.forEach(errorObj => {
+                    const fieldName = Object.keys(errorObj)[0];
+                    newFieldErrors[fieldName] = errorObj[fieldName];
+                });
+                setFieldErrors(newFieldErrors);
+            } else {
+                const msg = response?.message || "Authentication Failed.";
+                setError(msg);
+            }
         } finally {
             setLoading(false);
         }
@@ -83,7 +99,7 @@ function AuthPage() {
     const row2 = [...baseRow2, ...baseRow2, ...baseRow2];
     const row3 = [...baseRow3, ...baseRow3, ...baseRow3];
 
-    // Zig-Zag "Receipt" Edge
+    // Zig-Zag Receipt Edge
     const jaggedEdgeStyle = {
         background: `linear-gradient(-45deg, transparent 16px, #ffffff 16px), 
                      linear-gradient(45deg, transparent 16px, #ffffff 16px)`,
@@ -101,7 +117,7 @@ function AuthPage() {
     return (
         <div className="min-h-screen w-full flex items-center justify-center bg-stone-950 relative overflow-hidden font-mono selection:bg-amber-400 selection:text-black">
 
-            {/* 1. ANIMATED BACKGROUND: The Infinite Stream */}
+            {/* ANIMATED BACKGROUND */}
             <div className="absolute inset-0 z-0">
                 <div className="absolute inset-0 bg-radial-gradient from-stone-900/80 via-stone-950/90 to-black z-10 pointer-events-none"></div>
 
@@ -136,7 +152,7 @@ function AuthPage() {
                 </div>
             </div>
 
-            {/* 2. THE RECEIPT CONTAINER */}
+            {/* THE RECEIPT CONTAINER */}
             <div className="relative z-20 w-full max-w-sm bg-white shadow-[0_0_50px_rgba(0,0,0,0.5)] pt-8 pb-4 px-6 sm:px-8 m-4 animate-fade-in-up transform transition-all hover:scale-[1.01]">
                 <div className="absolute inset-0 bg-gray-50 opacity-50 pointer-events-none mix-blend-multiply"></div>
 
@@ -165,7 +181,7 @@ function AuthPage() {
                         {isLogin ? "LOGIN TICKET" : "NEW REGISTRY"}
                     </h2>
 
-                    {/* ADDED: Error Message Display */}
+                    {/* Error Message Display */}
                     {error && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded relative text-xs font-bold uppercase mb-4 text-center">
                             {error}
@@ -187,6 +203,7 @@ function AuthPage() {
                                     required
                                     className="border-b-2 border-gray-300 bg-transparent py-1 focus:outline-none focus:border-black font-bold text-lg placeholder-gray-200 transition-colors uppercase"
                                 />
+                                {fieldErrors.username && <span className="text-[10px] text-red-500 font-bold mt-1">⚠ {fieldErrors.username}</span>}
                             </div>
                         )}
 
@@ -202,6 +219,7 @@ function AuthPage() {
                                 required
                                 className="border-b-2 border-gray-300 bg-transparent py-1 focus:outline-none focus:border-black font-bold text-lg placeholder-gray-200 transition-colors uppercase"
                             />
+                            {fieldErrors.phone && <span className="text-[10px] text-red-500 font-bold mt-1">⚠ {fieldErrors.phone}</span>}
                         </div>
 
                         {!isLogin && (
@@ -214,6 +232,7 @@ function AuthPage() {
                                     onChange={handleInputChange}
                                     className="border-b-2 border-gray-300 bg-transparent py-1 focus:outline-none focus:border-black font-bold text-lg placeholder-gray-200 transition-colors uppercase"
                                 />
+                                {fieldErrors.email && <span className="text-[10px] text-red-500 font-bold mt-1">⚠ {fieldErrors.email}</span>}
                             </div>
                         )}
 
@@ -247,6 +266,7 @@ function AuthPage() {
                                     )}
                                 </button>
                             </div>
+                            {fieldErrors.password && <span className="text-[10px] text-red-500 font-bold mt-1">⚠ {fieldErrors.password}</span>}
                         </div>
 
                         {/* --- TOTAL / BUTTON --- */}

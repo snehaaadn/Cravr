@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png'; // Make sure path is correct
-// import { useAuth } from '../context/AuthContext.js'; // UNCOMMENT if you use context
+import { AuthContext } from '../context/authContext.jsx'; // UNCOMMENT if you use context
 import pizzaImg from '../assets/category/pizza.webp';
 import Loading from './common/loading.jsx';
 
@@ -10,8 +10,8 @@ const CartSidebar = ({ isOpen, onClose }) => {
     const [loading, setLoading] = useState(false);
 
     // --- MOCK USER & CART (Replace with your actual Context/Redux) ---
-    // const { user } = useAuth(); 
-    const user = { name: "Test User" }; // CHANGE THIS to `null` to test login state
+    const { user } = useContext(AuthContext);
+    // const user = { name: "Test User" }; // CHANGE THIS to `null` to test login state
 
     const [address, setAddress] = useState({
         type: "Home",
@@ -28,7 +28,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
 
     // --- CALCULATIONS ---
     const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-    const tax = Math.round(subtotal * 0.05); // 5% Tax
+    const tax = Math.round(subtotal * 0.05); 
     const deliveryFee = 40;
     const total = subtotal + tax + deliveryFee;
 
@@ -94,12 +94,12 @@ const CartSidebar = ({ isOpen, onClose }) => {
                     {/* NOT LOGGED IN */}
                     {!user ? (
                         <div className="h-full flex flex-col items-center justify-center text-center opacity-80">
-                            <img src={logo} alt="Login Required" className="w-24 h-24 mb-6 grayscale invert opacity-50" />
+                            <img src={logo} alt="Login Required" className="w-24 h-24 mb-6 grayscale invert" />
                             <h3 className="text-xl font-bold text-stone-300 mb-2">Login Required</h3>
-                            <p className="text-stone-500 text-sm mb-6 max-w-[200px]">Please login first to add items to your cart.</p>
+                            <p className="text-stone-400 text-sm mb-6 max-w-[200px]">Please login first to add items to your cart.</p>
                             <button
                                 onClick={() => { onClose(); navigate('/login'); }}
-                                className="px-8 py-3 bg-amber-500 text-black font-bold uppercase tracking-widest text-xs rounded hover:bg-white transition-colors"
+                                className="px-8 py-3 bg-amber-500 text-black font-bold uppercase tracking-widest text-xs rounded hover:bg-stone-200 transition-colors cursor-pointer"
                             >
                                 Login Now
                             </button>

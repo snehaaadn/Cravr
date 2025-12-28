@@ -62,7 +62,7 @@ function SearchPage() {
                         name: item.name,
                         restaurant: item.restaurantID?.name || "Cravr Partner",
                         price: item.price,
-                        rating: item.rating || 8,
+                        rating: item.rating || 4,
                         ratingCount: item.ratingCount || 100,
                         image: item.imageUrl || pizzaImg, 
                         description: item.description || "Delicious and freshly prepared.",
@@ -158,10 +158,10 @@ function SearchPage() {
 
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center py-20 opacity-40">
+                            <div className="flex flex-col items-center justify-center py-20 opacity-50">
                                 <img src={logo} alt="No results" className="w-24 h-24 mb-4 grayscale invert" />
                                 <h3 className="text-xl font-bold text-stone-400">No results found</h3>
-                                <p className="text-stone-600">Try searching for generic terms like "Pizza" or "Biryani"</p>
+                                <p className="text-stone-400">We will {activeTab === 'dishes' ? 'add more dishes' : 'contact more restaurants'} soon!</p>
                             </div>
                         )}
                     </>
