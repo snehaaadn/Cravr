@@ -10,14 +10,15 @@ async function signup(req, res) {
 
     // Validate required fields
     if (!phone || !username || !password) {
-        return res.status(400).json({success: false, message: "Username, phone and password are required" });
+        return res.status(400).json({ success: false, message: "Username, phone and password are required" });
     }
 
 
     // Check if user with phone already exists
     const existingUser = await User.findOne({ phone: phone });
     if (existingUser) {
-        return res.status(400).json({success: false,
+        return res.status(400).json({
+            success: false,
             message: "User with given phone number already exists. Please login instead."
         });
     }
@@ -27,7 +28,7 @@ async function signup(req, res) {
     const hashPass = await bcrypt.hash(password, salt);
     await User.create({ username, email, phone, password: hashPass });
 
-    return res.status(201).json({success: true, message: "User created successfully"});
+    return res.status(201).json({ success: true, message: "User created successfully" });
 }
 
 // User Login
@@ -56,41 +57,48 @@ async function login(req, res) {
     res.setHeader('Authorization', `Bearer ${token}`);
 
     // If user exists, return success response
-    return res.status(200).json({success: true, message: "Login successful", user: user, token: token });
+    return res.status(200).json({ success: true, message: "Login successful", user: user, token: token });
 
 }
 
 // Profile
-async function getUserProfile(req,res){
+async function getUserProfile(req, res) {
     const userID = req.user._id;
-    const user = await User.findById(userID);
-    if(!user){
-        return res.status(404).json({success: false, message: "User not found"});
-    }
-
-    return res.status(200).json({success: true, user: user});
-}
-
-// Addres Add
-async function addAdress(req, res){
-    const userID = req.user._id;
-    const { address } = req.body;
-
-    if (!address) {
-        return res.status(400).json({ success: false, message: "Address is required" });
-    }
-
     const user = await User.findById(userID);
     if (!user) {
         return res.status(404).json({ success: false, message: "User not found" });
     }
 
-    user.address = address;
-    await user.save();
-    return res.status(200).json({ success: true, message: "Address updated successfully", user: user });
+    return res.status(200).json({ success: true, user: user });
 }
 
+// Address Add
+async function addAddressToUser(req, res) {
+    const userID = req.user._id;
+    const addressData = req.body;
 
+    if (!addressData || Object.keys(addressData).length === 0) {
+        return res.status(400).json({ success: false, message: "Address details are required" });
+    }
 
+    try {
+        const user = await User.findById(userID);
 
-export { signup, login, getUserProfile };
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        user.address.push(addressData);
+        await user.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Address updated successfully",
+            user: user
+        });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server Error" });
+    }
+}
+
+export { signup, login, getUserProfile, addAddressToUser };

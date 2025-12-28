@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
 const addressSchema = new mongoose.Schema({
+    label: {type: String, required: true},
+    contact: {type: String, required: true},
     houseNo: {type: Number, required: false},
     street: {type: String, required: true},
     locality: {type: String, required: false},
