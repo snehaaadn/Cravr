@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import logo from '../assets/logo.png';
+import AddressCard from './addressCard.jsx';
 
 import { AuthContext } from '../context/authContext.jsx';
 import { CartContext } from '../context/cartContext.jsx';
@@ -10,16 +11,21 @@ import Loading from './common/loading.jsx';
 const CartSidebar = ({ isOpen, onClose }) => {
     const navigate = useNavigate();
     const { user } = useContext(AuthContext);
+    const [address, setAddress] = useState([]);
+    const [selectedAddressId, setSelectedAddressId] = useState(null);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false); //
 
-    // --- MOCK USER & CART (Replace with your actual Context/Redux) ---
-    const [address, setAddress] = useState({
-        type: "Home",
-        line1: "Flat 402, Emerald Heights",
-        line2: "Sector 14, Indiranagar",
-        city: "Bengaluru, KA"
-    });
+    useEffect(() => {
+        if (user?.address) {
+            setAddress(user.address);
+            if (user.address.length > 0 && !selectedAddressId) {
+                setSelectedAddressId(user.address[0]._id);
+            }
+        }
+    }, [user, isOpen]);
 
-    const { cartItems, loading, cartTotal, updateQuantity, removeFromCart } = useContext(CartContext);
+
+    const { cartItems, loading, cartTotal, updateQuantity, removeFromCart, placeOrder } = useContext(CartContext);
 
     // --- CALCULATIONS ---
     const subtotal = cartTotal.toFixed(2);
@@ -40,13 +46,44 @@ const CartSidebar = ({ isOpen, onClose }) => {
         else document.body.style.overflow = 'unset';
     }, [isOpen]);
 
-    const handlePlaceOrder = () => {
-        onClose();
-        navigate('/profile');
+    const handlePlaceOrder = async () => {
+        const selectedAddress = address.find(addr => addr._id === selectedAddressId);
+
+        if (!selectedAddress) {
+            alert("Select Delivery Destination.");
+            return;
+        }
+
+        const billingData = {
+            subTotal: parseFloat(subtotal),
+            tax: parseFloat(tax),
+            deliveryFee: parseFloat(deliveryFee),
+            totalAmount: total,
+            paymentMethod: "Cash On Delivery", // Mapped to 'COD' in controller
+            shippingAddress: selectedAddress // Contains zipCode, street, etc.
+        };
+
+        const result = await placeOrder(billingData);
+        if (result.success) {
+            onClose();
+            navigate('/profile');
+        } else {
+            alert(result.message || "Order Transmission Failed.");
+        }
     };
 
     const handleChangeAddress = () => {
-        alert("Trigger Address Modal Here");
+        if (address.length === 0) {
+            navigate('/profile');
+            onClose();
+            return;
+        }
+        setIsDropdownOpen(!isDropdownOpen); // Toggle dropdown logic
+    };
+
+    const selectNewAddress = (id) => {
+        setSelectedAddressId(id);
+        setIsDropdownOpen(false); // Close after selection
     };
 
     const getItemName = (item) => item.dishID?.name || "Unknown Dish";
@@ -55,18 +92,18 @@ const CartSidebar = ({ isOpen, onClose }) => {
     const getItemId = (item) => item.dishID?._id || item.dishID;
 
     const getItemRestaurant = (item) => {
-    if (!item.dishID) return "Loading...";
+        if (!item.dishID) return "Loading...";
 
-    if (item.dishID.restaurantID && item.dishID.restaurantID.name) {
-        return item.dishID.restaurantID.name;
-    }
+        if (item.dishID.restaurantID && item.dishID.restaurantID.name) {
+            return item.dishID.restaurantID.name;
+        }
 
-    if (item.dishID.restaurant && item.dishID.restaurant.name) {
-        return item.dishID.restaurant.name;
-    }
+        if (item.dishID.restaurant && item.dishID.restaurant.name) {
+            return item.dishID.restaurant.name;
+        }
 
-    return "Cravr Partner";
-};
+        return "Cravr Partner";
+    };
 
     if (loading) {
         return (
@@ -137,31 +174,73 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                             <h2 className="text-xl font-bold text-stone-200">Delivery Address</h2>
                                         </div>
 
-                                        <div className="bg-stone-900/50 backdrop-blur-sm border border-white/10 p-6 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all hover:border-amber-500/30">
-                                            <div className="flex gap-4">
-                                                <div className="mt-1">
-                                                    <svg className="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                    </svg>
+                                        <div className="bg-stone-900/50 backdrop-blur-sm border border-white/10 p-4 rounded-xl transition-all hover:border-amber-500/30">
+                                            <div className="flex flex-col gap-2">
+                                                <div className="flex gap-4 items-start">
+                                                    <div className="mt-1">
+                                                        <svg className="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                        </svg>
+                                                    </div>
+
+                                                    <div className="flex-1">
+                                                        {address.length > 0 && selectedAddressId ? (
+                                                            address.filter(addr => addr._id === selectedAddressId).map((addr) => (
+                                                                <AddressCard key={addr._id} address={addr} isCompact={true} />
+                                                            ))
+                                                        ) : (
+                                                            /* Logic: Fallback when no address exists */
+                                                            <div className="py-2">
+                                                                <p className="text-stone-400 italic text-sm">No saved locations found.</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <h3 className="font-bold text-stone-100 text-lg">{address.type}</h3>
-                                                    <p className="text-stone-400 text-sm leading-relaxed">
-                                                        {address.line1}, {address.line2}<br />
-                                                        {address.city}
-                                                    </p>
+
+                                                {/* --- TOGGLE LINK (Bottom Line with Arrow) --- */}
+                                                <div className="border-t border-white/5 pt-2 mt-1 flex justify-end">
+                                                    <button
+                                                        onClick={handleChangeAddress}
+                                                        className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-amber-500/80 hover:text-amber-400 transition-colors group"
+                                                    >
+                                                        {address.length === 0 ? "Add New Address" : isDropdownOpen ? "Keep Current" : "Change Location"}
+                                                        <svg
+                                                            className={`w-3 h-3 transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : 'translate-x-0 group-hover:translate-x-1'}`}
+                                                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                                        >
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                                        </svg>
+                                                    </button>
                                                 </div>
+
+                                                {/* Dropdown Selection Logic */}
+                                                {isDropdownOpen && address.length == 1 && (
+                                                    <div className="mt-4 space-y-3 animate-in fade-in slide-in-from-top-2">
+                                                        <p className="text-stone-400 italic text-sm">No other saved locations found.</p>
+                                                    </div>
+
+                                                )}:{(address.length > 1 && isDropdownOpen) && (
+                                                    <div className="mt-4 space-y-3 animate-in fade-in slide-in-from-top-2">
+                                                        {address
+                                                            .filter(addr => addr._id !== selectedAddressId)
+                                                            .map((addr) => (
+                                                                <div
+                                                                    key={addr._id}
+                                                                    onClick={() => {
+                                                                        selectNewAddress(addr._id);
+                                                                    }}
+                                                                    className="cursor-pointer"
+                                                                >
+                                                                    <AddressCard address={addr} isCompact={true} />
+                                                                </div>
+                                                            ))}
+                                                    </div>
+                                                )
+                                                }
                                             </div>
-                                            <button
-                                                onClick={handleChangeAddress}
-                                                className="px-5 py-2 border border-stone-700 text-stone-300 font-bold text-xs uppercase tracking-widest rounded hover:border-amber-500 hover:text-amber-500 transition-colors whitespace-nowrap"
-                                            >
-                                                Change
-                                            </button>
                                         </div>
                                     </section>
-
                                     {/* --- CART ITEMS SECTION --- */}
                                     <section>
                                         <div className="flex items-center gap-3 mb-4">
@@ -183,8 +262,8 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                                         <div>
                                                             <div className="flex justify-between items-start">
                                                                 <h3 className="font-bold text-lg text-white leading-tight">{getItemName(item)}</h3>
-                                                               
-                                                                <span className="text-amber-500 font-bold whitespace-nowrap shrink-0">₹{(getItemPrice(item) * item.quantity).toFixed(2)}</span>  
+
+                                                                <span className="text-amber-500 font-bold whitespace-nowrap shrink-0">₹{(getItemPrice(item) * item.quantity).toFixed(2)}</span>
                                                             </div>
                                                             <p className="text-xs font-mono text-stone-500 uppercase tracking-wide mt-1">{getItemRestaurant(item)}</p>
                                                         </div>
@@ -274,7 +353,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                 {user && cartItems.length > 0 && (
                     <div className="p-6 bg-stone-900 border-t border-white/10 font-merriweather">
                         <div className="flex justify-between items-center mb-4 text-sm text-stone-400">
-                            <span>Subtotal</span>
+                            <span>Final Total</span>
                             <span className="text-stone-100">₹{total}</span>
                         </div>
                         <button

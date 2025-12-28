@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 import { authCheck } from '../middleware/authCheck.js';
 
-import { signup, login, getUserProfile, addAddressToUser } from '../controller/userController.js';
+import { signup, login, getUserProfile, addAddressToUser, deleteAddressFromUser } from '../controller/userController.js';
 import { registerValidationRules, validate } from '../middleware/validator.js';
 
 // User routes
@@ -12,6 +12,7 @@ router.post('/login', login);
 
 router.get('/profile', authCheck, getUserProfile);
 router.post('/address', authCheck, addAddressToUser);
+router.delete('/address/:addressID', authCheck, deleteAddressFromUser);
 
 
 

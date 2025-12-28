@@ -3,7 +3,7 @@ import AddressForm from '../components/addressForm';
 import AddressCard from '../components/addressCard';
 import { AuthContext } from '../context/authContext';
 
-import {addAddressToUser} from '../services/api';
+import {addAddressToUser, deleteAddressFromUser} from '../services/api';
 
 import logo from '../assets/logo.png';
 
@@ -17,6 +17,20 @@ function Addresses() {
         setAddresses(user?.address || []);
     }, [user, view]);
 
+    const handleDelete = async (addressID) => {
+        try{
+            const response = await deleteAddressFromUser(addressID);
+            if(response.data.success){
+                setAddresses(response.data.user.address);
+                login(response.data.user, localStorage.getItem('token'));
+            } else {
+                console.error("Failed to delete address:", response.data.message);
+            }
+        }
+        catch(error){
+            console.error("Error while deleting address:", error);
+        }
+    };
 
     const handleSave = async (data) => {
         try{
@@ -66,6 +80,7 @@ function Addresses() {
                         <AddressCard
                             key={addr._id}
                             address={addr}
+                            onDelete={handleDelete}
                         />
                     ))
                 )}
