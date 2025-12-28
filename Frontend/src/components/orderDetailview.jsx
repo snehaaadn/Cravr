@@ -1,20 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import OrderTracker from './orderTracker.jsx';
 import ReviewEntry from './reviewEntry.jsx';
 import { getRestaurantDetailsByID, getDishDetailsByID } from '../services/api.js';
 
 function OrderDetailView({ order, onBack }) {
     const [reviewTarget, setReviewTarget] = useState(null);
+    const [restaurantName, setRestaurantName] = useState("Loading...");
+    const [itemImages, setItemImages] = useState({});
 
-    const handleSaveReview = (reviewData) => {
-        console.log("Saving intelligence:", reviewData);
-        setReviewTarget(null);
-    };
+    useEffect(() => {
+        const fetchDetails = async () => {
+            try {
+                const res = await getRestaurantDetailsByID(order.restaurantID);
+                if (res?.data?.success) {
+                    setRestaurantName(res.data.restaurant.name);
+                }
+
+                const imageMap = {};
+                await Promise.all(order.items.map(async (item) => {
+                    try {
+                        const dishRes = await getDishDetailsByID(item.dishID);
+                        // Logic: Explicitly use null instead of "" for src safety
+                        if (dishRes?.data?.success) {
+                            imageMap[item.dishID] = dishRes.data.dish.imageUrl || null; 
+                        }
+                    } catch (err) {
+                        imageMap[item.dishID] = null; 
+                    }
+                }));
+                setItemImages(imageMap);
+            } catch (error) {
+                console.error("Dossier retrieval failure:", error);
+                setRestaurantName("Unknown Restaurant");
+            }
+        };
+
+        fetchDetails();
+    }, [order]);
 
     if (reviewTarget) {
         return <ReviewEntry
             item={reviewTarget}
-            onSave={handleSaveReview}
+            onSave={(data) => { console.log(data); setReviewTarget(null); }}
             onCancel={() => setReviewTarget(null)}
         />;
     }
@@ -26,57 +53,63 @@ function OrderDetailView({ order, onBack }) {
             </button>
 
             <div className="bg-stone-900/20 border border-amber-50 rounded-2xl md:rounded-[2.5rem] p-5 md:p-10 backdrop-blur-md">
-                {/* Header Section: Stacked on mobile */}
+                {/* Header Section */}
                 <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
                     <div>
                         <h1 className="text-3xl md:text-5xl font-serif font-bold italic text-amber-50 uppercase tracking-tighter leading-tight">
-                            Order Briefing
+                            {restaurantName}
                         </h1>
-                        <p className="font-mono text-stone-500 text-[8px] md:text-[10px] mt-2 tracking-widest break-all">
-                            ORDER_ID: {order._id} // {order.createdAt}
+                        <p className="font-mono text-stone-500 text-[8px] md:text-[10px] mt-2 tracking-[0.2em] break-all uppercase">
+                            ID: {order._id} // {new Date(order.createdAt).toLocaleDateString()}
                         </p>
                     </div>
-                    <div className="w-full md:w-auto text-left md:text-right border-t md:border-t-0 border-white/5 pt-4 md:pt-0">
-                        <p className="text-3xl md:text-4xl font-black text-amber-500">₹{order.totalAmount}</p>
-                    </div>
+                    <p className="text-3xl md:text-4xl font-black text-amber-500">₹{order.totalAmount}</p>
                 </div>
 
-                {/* Tracking Section: Added overflow-x for small screens */}
+                {/* Tracking: Responsive Horizontal Scroll */}
                 <div className="mb-10 md:mb-16 mt-6 md:mt-10 border-y border-white/5 py-4 overflow-x-auto no-scrollbar">
-                    <p className="font-mono text-[10px] text-amber-50 uppercase tracking-widest mb-4 sticky left-0">Live Tracking Status</p>
-                    <div className="min-w-[500px]">
+                    <div className="min-w-[600px]">
                         <OrderTracker currentStatus={order.orderStatus} />
                     </div>
                 </div>
 
-                {/* Items Section: Cards stack buttons on mobile */}
+                {/* Items Payload */}
                 <div className="space-y-4">
-                    <p className="font-mono text-[10px] text-stone-500 uppercase tracking-widest">Order Payload</p>
                     {order.items.map((item, idx) => (
-                        <div key={idx} className="bg-stone-950/50 border border-white/5 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 group hover:border-amber-500/30 transition-all">
-                            <div className="flex items-center gap-4 md:gap-6">
+                        <div key={idx} className="bg-stone-950/50 border border-white/5 rounded-2xl p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 group transition-all hover:border-amber-500/30">
+                            <div className="flex items-center gap-4 md:gap-6 w-full">
                                 <div className="relative shrink-0">
-                                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-stone-800 overflow-hidden">
-                                        {/* Image Logic remains same */}
+                                    {/* Fix: Conditional rendering to avoid empty src error */}
+                                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-stone-800 overflow-hidden flex items-center justify-center">
+                                        {itemImages[item.dishID] ? (
+                                            <img 
+                                                src={itemImages[item.dishID]} 
+                                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all"
+                                                alt={item.name}
+                                            />
+                                        ) : (
+                                            /* Aesthetic Placeholder for missing images */
+                                            <span className="font-serif italic text-stone-600 text-[8px] uppercase tracking-tighter">No_Img</span>
+                                        )}
                                     </div>
-                                    <span className="absolute -top-2 -right-2 bg-amber-500 text-black text-[9px] md:text-[10px] font-bold w-5 h-5 md:w-6 md:h-6 flex items-center justify-center rounded-full border-2 md:border-4 border-stone-900">
+                                    <span className="absolute -top-2 -right-2 bg-amber-500 text-black text-[9px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-stone-950">
                                         {item.quantity}
                                     </span>
                                 </div>
-                                <div>
-                                    <h3 className="text-amber-50 font-bold text-lg md:text-xl line-clamp-1">{item.name}</h3>
-                                    <p className="text-amber-400 font-mono text-[9px] md:text-[10px] uppercase">Unit Price: ₹{item.price}</p>
+                                <div className="min-w-0">
+                                    <h3 className="text-amber-50 font-bold text-lg md:text-xl truncate">{item.name}</h3>
+                                    <p className="text-amber-400 font-mono text-[9px] uppercase tracking-tighter">Unit: ₹{item.price}</p>
                                 </div>
                             </div>
 
                             <div className="flex gap-2 w-full sm:w-auto">
                                 <button
                                     onClick={() => setReviewTarget(item)}
-                                    className="flex-1 sm:flex-none px-4 md:px-6 py-2 bg-stone-800 border border-stone-700 text-white rounded-lg text-[9px] md:text-[10px] uppercase font-bold hover:bg-amber-500 hover:text-black transition-all"
+                                    className="flex-1 sm:flex-none px-5 py-2 bg-stone-800 border border-stone-700 text-white rounded-lg text-[9px] uppercase font-bold hover:bg-amber-500 hover:text-black transition-all"
                                 >
                                     Rate
                                 </button>
-                                <button className="flex-1 sm:flex-none px-4 md:px-6 py-2 bg-amber-500 text-black rounded-lg text-[9px] md:text-[10px] uppercase font-bold hover:bg-white transition-all">
+                                <button className="flex-1 sm:flex-none px-5 py-2 bg-amber-500 text-black rounded-lg text-[9px] uppercase font-bold hover:bg-white transition-all">
                                     Reorder
                                 </button>
                             </div>
