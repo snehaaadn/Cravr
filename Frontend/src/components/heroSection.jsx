@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import foodBg from "../assets/foodbg1.png";
 import { useNavigate } from "react-router-dom";
-import AdCard from "./adCard";
+import AdCard from "./card/adCard.jsx";
 
 
 function HeroSection() {

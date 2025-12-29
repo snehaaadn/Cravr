@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { getRestaurantDetailsByID } from '../services/api.js';
 import Pagination from '../components/common/pagination.jsx';
 import Loading from '../components/common/loading.jsx';
-import DishCard from '../components/dishCard.jsx';
+import DishCard from '../components/card/dishCard.jsx';
 
 // Assets
 import logo from '../assets/logo.png';

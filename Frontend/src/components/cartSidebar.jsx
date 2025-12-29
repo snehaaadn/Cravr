@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import logo from '../assets/logo.png';
-import AddressCard from './addressCard.jsx';
+import AddressCard from './card/addressCard.jsx';
 
 import { AuthContext } from '../context/authContext.jsx';
 import { CartContext } from '../context/cartContext.jsx';

@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { getRestaurantsByLocationName } from '../services/api.js';
 import Loading from '../components/common/loading.jsx';
-import RestaurantCard from '../components/restaurantCard.jsx';
+import RestaurantCard from '../components/card/restaurantCard.jsx';
 import Pagination from '../components/common/pagination.jsx';
 import LocationPrompt from '../components/locationprompt.jsx';
 import logo from '../assets/logo.png';

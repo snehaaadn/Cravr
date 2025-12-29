@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import AddressForm from '../components/addressForm';
-import AddressCard from '../components/addressCard';
+import AddressCard from '../components/card/addressCard.jsx';
 import { AuthContext } from '../context/authContext';
 
 import {addAddressToUser, deleteAddressFromUser} from '../services/api';

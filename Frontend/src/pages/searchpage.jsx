@@ -4,8 +4,8 @@ import { useSearchParams } from 'react-router-dom';
 // Components 
 import Loading from '../components/common/loading.jsx';
 import Pagination from '../components/common/pagination.jsx';
-import RestaurantCard from '../components/restaurantCard.jsx';
-import DishCard from '../components/dishCard.jsx';
+import RestaurantCard from '../components/card/restaurantCard.jsx';
+import DishCard from '../components/card/dishCard.jsx';
 
 // API Functions
 import {
