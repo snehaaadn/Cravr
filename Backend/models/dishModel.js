@@ -17,14 +17,14 @@ const dishSchema = new mongoose.Schema({
             },
             comment: { type: String, required: false },
             rating: { type: Number, required: false },
-            default: [] // Added default empty array for reviews
+            default: [] 
         }
     ],
     restaurantID : { 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Restaurant',
         required: true,
-        index: true // Added index for faster queries
+        index: true 
     }
 })
 

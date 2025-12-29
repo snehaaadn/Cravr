@@ -5,7 +5,7 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        index: true // Added index for faster queries
+        index: true 
     },
     restaurantID: {
         type: mongoose.Schema.Types.ObjectId,
@@ -13,13 +13,13 @@ const orderSchema = new mongoose.Schema({
         required: true,
         index: true
     },
-    items: [ // Array of ordered items Snapshot
+    items: [ 
         {
             dishID: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Dish',
                 required: true,
-                index: true // Added index for faster queries
+                index: true // index for faster queries
             },
             name: { type: String, required: true },
             price: { type: Number, required: true },
@@ -44,7 +44,6 @@ const orderSchema = new mongoose.Schema({
         street: { type: String, required: true },
         city: { type: String, required: true },
         pincode: { type: String, required: true },
-        // Coordinates are essential for maps/tracking
         location: {
             lat: { type: Number },
             lng: { type: Number }

@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const addressSchema = new mongoose.Schema({
-    // Store as GeoJSON Point for $near queries
     location: {
         type: {
             type: String,
@@ -15,7 +14,7 @@ const addressSchema = new mongoose.Schema({
     },
     city: { type: String, required: true },
     state: { type: String, required: true },
-    locality: { type: String } // Store original address string here if needed
+    locality: { type: String } 
 }, { _id: false });
 
 const restaurantSchema = new mongoose.Schema({

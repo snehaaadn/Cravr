@@ -29,10 +29,10 @@ const userSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Dish',
                 required: true,
-                index: true // Added index for faster queries
+                index: true 
             },
             quantity: { type: Number, required: true, default: 1 },
-            default: [] // Added default empty array for cart
+            default: [] 
         }
     ]
 }, { timestamps: true });
