@@ -35,8 +35,17 @@ export const AuthProvider = ({ children }) => {
         window.location.href = '/'; 
     };
 
+    // Update User Data 
+    const updateUser = (updates) => {
+        if (!user) return;
+        
+        const updatedUser = { ...user, ...updates };
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+    };
+
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, loading, updateUser }}>
             {!loading && children}
         </AuthContext.Provider>
     );

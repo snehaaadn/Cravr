@@ -7,7 +7,7 @@ import { getUserProfile } from '../services/api.js';
 
 function ProfilePage() {
     const [activeView, setActiveView] = useState('orders');
-    const { user, logout } = useContext(AuthContext);
+    const { user, logout, updateUser } = useContext(AuthContext);
 
     const renderView = (view) => {
         switch (view) {
@@ -28,10 +28,13 @@ function ProfilePage() {
                     const totalSpent = response.data.user.totalSpent || 0;
                     const points = response.data.user.points || 0;
 
-                    // Logic: Update user context with latest stats
-                    user.totalOrders = totalOrders;
-                    user.totalSpent = totalSpent;
-                    user.points = points;
+                    if (user && (user.totalOrders !== totalOrders || user.totalSpent !== totalSpent)) {
+                        updateUser({
+                            totalOrders,
+                            totalSpent,
+                            points
+                        });
+                    }
                 }
             } catch (error) {
                 console.error("Error fetching user profile:", error);
