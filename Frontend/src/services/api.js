@@ -88,6 +88,11 @@ const getDishDetailsByID = (id) =>{
 }
 
 
+// Review APIs
+const addReview = (dishID, rating, comment) => {
+  return api.post('/dishes/review', { dishID, rating, comment })
+};
+
 export {
   userSignup,
   userLogin,
@@ -105,4 +110,5 @@ export {
   getRestaurantDetailsByID,
   getDishesByName,
   getDishDetailsByID,
+  addReview,
 };
