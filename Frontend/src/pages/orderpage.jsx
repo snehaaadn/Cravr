@@ -61,7 +61,7 @@ function Orders() {
                 }
             } catch (err) {
                 console.error("There is an error fetching orders:", err);
-                setError(err.response?.data?.message || "Unauthorized access.");
+                setError(err.response?.data?.message || "Session expired. Log out and log back in.");
             } finally {
                 setLoading(false);
             }

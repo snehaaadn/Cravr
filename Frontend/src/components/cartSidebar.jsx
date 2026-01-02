@@ -31,7 +31,7 @@ const CartSidebar = ({ isOpen, onClose, onBrowse }) => {
     // --- CALCULATIONS ---
     const subtotal = cartTotal.toFixed(2);
     const tax = Math.round(subtotal * 0.18).toFixed(2);
-    const deliveryFee = subtotal > 0 ? 20 : 0;
+    const deliveryFee = subtotal > 0 ? 20.00 : 0;
     const total = parseFloat(subtotal) + parseFloat(tax) + parseFloat(deliveryFee);
 
     // Close on Escape key
@@ -341,7 +341,7 @@ const CartSidebar = ({ isOpen, onClose, onBrowse }) => {
                                                 <span>₹{subtotal}</span>
                                             </div>
                                             <div className="flex justify-between text-stone-400">
-                                                <span>Tax (5%)</span>
+                                                <span>Tax</span>
                                                 <span>₹{tax}</span>
                                             </div>
                                             <div className="flex justify-between text-stone-400">
