@@ -23,7 +23,7 @@ async function addDishToCart(req, res) {
 
     await user.save();
 
-    res.status(200).json({ message: "Dish added to cart", cart: user.cart });
+    res.status(200).json({success: true, message: "Dish added to cart", cart: user.cart });
 }
 
 async function getCart(req, res) {
@@ -33,7 +33,7 @@ async function getCart(req, res) {
         populate: {
             path: 'restaurantID', 
             model: 'Restaurant',  
-            select: 'name'        
+            select: 'name address'        
         }
     });
     if (!user) return res.status(404).json({ message: "User not found" });

@@ -1,7 +1,9 @@
 import React, { useState, useContext } from "react";
 import { CartContext } from '../../context/cartContext.jsx';
+import { AuthContext } from "../../context/authContext.jsx";
 
 const DishCard = ({ dish }) => {
+    const { user } = useContext(AuthContext);
     const { addToCart, cartItems } = useContext(CartContext);
     const [addingId, setAddingId] = useState(null);
     const [toast, setToast] = useState({ show: false, message: '', type: 'success' }); 
@@ -25,6 +27,13 @@ const DishCard = ({ dish }) => {
     };
 
     const handleAddToCart = async (item) => {
+        // Check if user is logged in
+        if (!user) {
+            showNotification("Please login to add to cart", "error");
+            return;
+        }
+
+        // Check for restaurant consistency
         if (cartItems && cartItems.length > 0) {
             const existingRestaurant = getCartItemRestaurant(cartItems[0]);
             const newRestaurant = item.restaurant; 
@@ -53,7 +62,7 @@ const DishCard = ({ dish }) => {
     return (
         <>
             {/* --- Alert toast --- */}
-            <div className={`fixed top-24 right-5 z-9999 transition-all duration-500 ease-in-out transform ${toast.show ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'}`}>
+            <div className={`fixed bottom-10 right-5 z-9999 transition-all duration-500 ease-in-out transform ${toast.show ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'}`}>
                 <div className={`flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md border border-white/10 min-w-[300px]
                     ${toast.type === 'success' ? 'bg-green-900/90 text-green-50' : 'bg-red-900/90 text-red-50'}
                 `}>

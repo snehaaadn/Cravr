@@ -35,7 +35,6 @@ function HeroSection() {
                     alt="Delicious food background"
                     className="w-full h-full object-cover rotate-180 opacity-90"
                 />
-                {/* Main Gradient Overlay: Essential for text visibility over busy images */}
                 <div className="absolute inset-0 bg-linear-to-b from-stone-900/90 via-stone-800/30 to-stone-900/80"></div>
             </div>
 
@@ -52,7 +51,7 @@ function HeroSection() {
                     </p>
                 </div>
 
-                {/* Search Bar - Glassmorphism Style */}
+                {/* Search Bar  */}
                 <div className="w-full max-w-lg mt-8 relative group">
                     <div className="absolute -inset-1 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
                     <div className="relative flex items-center">
@@ -66,10 +65,9 @@ function HeroSection() {
                             className="w-full bg-white/10 backdrop-blur-md border border-white/20 text-amber-50 placeholder-amber-200/50 px-8 py-4 rounded-full text-lg focus:outline-none focus:bg-white/20 focus:border-amber-400/50 transition-all duration-300 shadow-xl cursor-text"
                         />
 
-                        {/* Fixed Button: Removed pointer-events-none and added hover effects */}
                         <button
                             type="button"
-                            className="h-10 w-10 text-amber-200 absolute right-4 flex items-center justify-center hover:text-amber-400 hover:scale-110 active:scale-90 transition-all duration-200 z-10"
+                            className="h-10 w-10 text-amber-300 absolute right-4 flex items-center justify-center hover:text-amber-500 hover:scale-110 active:scale-90 transition-all duration-200 z-10"
                             onClick={() => handleSearch({ key: 'Enter' })}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -79,6 +77,7 @@ function HeroSection() {
                     </div>
                 </div>
             </div>
+
             {/* Advertisement Cards */}
             <div className="z-20 w-full mt-auto pb-12 md:pb-20 px-4 md:px-20">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0">
