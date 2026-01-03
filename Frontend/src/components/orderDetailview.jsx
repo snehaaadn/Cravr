@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 
 import OrderTracker from './orderTracker.jsx';
 import ReviewEntry from './reviewEntry.jsx';
-import { getRestaurantDetailsByID, getDishDetailsByID, addReview } from '../services/api.js';
+import { getRestaurantDetailsByID, getDishDetailsByID, addReview, getUserOrders } from '../services/api.js';
 import { AuthContext } from '../context/authContext.jsx';
 import OrderItemCard from './card/orderItemCard.jsx';
 
@@ -15,21 +15,54 @@ function OrderDetailView({ order, onBack }) {
     const [userReviews, setUserReviews] = useState({});
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [reviewError, setReviewError] = useState('');
+    const [currentOrder, setCurrentOrder] = useState(order);
 
+    // POLLING EFFECT: Check status every 5 seconds
+    useEffect(() => {
+        if (['Delivered', 'Cancelled'].includes(currentOrder.orderStatus)) return;
+
+        const intervalId = setInterval(async () => {
+            try {
+                const res = await getUserOrders(); 
+                
+                if (res?.data?.success) {
+                    const updatedData = res.data.orders.find(o => o._id === order._id);
+                   const oldStatus = currentOrder.orderStatus;
+                    const newStatus = updatedData.orderStatus;
+
+                    if (newStatus !== oldStatus) {
+                        setCurrentOrder(updatedData);
+
+                        if (newStatus === 'Delivered') {
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 2000); // 2-second delay before reload
+                        }
+                    }
+                }
+            } catch (err) {
+                console.error("Polling error:", err);
+            }
+        }, 4000); // Check every 5 seconds
+
+        return () => clearInterval(intervalId); 
+    }, [currentOrder.orderStatus, order._id]);
+
+    
+    // --- FETCH RESTAURANT & DISH DETAILS ---
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const res = await getRestaurantDetailsByID(order.restaurantID);
+                const res = await getRestaurantDetailsByID(currentOrder.restaurantID);
                 if (res?.data?.success) {
                     setRestaurantName(res.data.restaurant.name);
                 }
 
                 const imageMap = {};
                 const reviewsMap = {};
-                await Promise.all(order.items.map(async (item) => {
+                await Promise.all(currentOrder.items.map(async (item) => {
                     try {
                         const dishRes = await getDishDetailsByID(item.dishID);
-                        // null instead of "" for src safety
                         if (dishRes?.data?.success) {
                             const dish = dishRes.data.dish;
                             imageMap[item.dishID] = dish.imageUrl || null;
@@ -49,12 +82,12 @@ function OrderDetailView({ order, onBack }) {
                 setUserReviews(reviewsMap);
             } catch (error) {
                 // console.error("Dossier retrieval failure:", error);
-                setRestaurantName("Unknown Restaurant");
+                setRestaurantName("Cravr Partner");
             }
         };
 
         fetchDetails();
-    }, [order, user, refreshTrigger]);
+    }, [order._id, user, refreshTrigger]);
 
     const handleReviewSave = async (data) => {
         setReviewError('');
@@ -103,7 +136,10 @@ function OrderDetailView({ order, onBack }) {
                 {/* Tracking */}
                 <div className="mb-10 md:mb-16 mt-6 md:mt-10 border-y border-white/5 py-4 overflow-x-auto no-scrollbar">
                     <div className="min-w-[600px]">
-                        <OrderTracker currentStatus={order.orderStatus} />
+                        <OrderTracker 
+                        currentStatus={currentOrder.orderStatus} 
+                        userAddress={currentOrder.shippingAddress}
+                    />
                     </div>
                 </div>
 
