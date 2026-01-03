@@ -27,7 +27,7 @@ const DishCard = ({ dish }) => {
     };
 
     const handleAddToCart = async (item) => {
-        // Check if user is logged in
+        
         if (!user) {
             showNotification("Please login to add to cart", "error");
             return;
@@ -61,7 +61,7 @@ const DishCard = ({ dish }) => {
 
     return (
         <>
-            {/* --- Alert toast --- */}
+            
             <div className={`fixed bottom-10 right-5 z-9999 transition-all duration-500 ease-in-out transform ${toast.show ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0 pointer-events-none'}`}>
                 <div className={`flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl backdrop-blur-md border border-white/10 min-w-[300px]
                     ${toast.type === 'success' ? 'bg-green-900/90 text-green-50' : 'bg-red-900/90 text-red-50'}
@@ -80,10 +80,10 @@ const DishCard = ({ dish }) => {
                 </div>
             </div>
 
-            {/* --- CARD UI --- */}
+           
             <div className="group relative bg-stone-800/50 rounded-3xl overflow-hidden border border-white/5 hover:border-amber-500/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_10px_30px_-10px_rgba(245,158,11,0.2)] flex flex-col h-full">
 
-                {/* Image Area */}
+                {/* Image */}
                 <div className="h-56 overflow-hidden relative">
                     <img
                         src={dish.image || dish.imageUrl} 
@@ -110,7 +110,7 @@ const DishCard = ({ dish }) => {
                     </div>
                 </div>
 
-                {/* Content Area */}
+                {/* Content */}
                 <div className="p-6 flex flex-col flex-1 relative">
                     <div className="flex flex-col items-start mb-2">
                         {dish.restaurant && (
@@ -127,7 +127,7 @@ const DishCard = ({ dish }) => {
                         {dish.description}
                     </p>
 
-                    {/* Action Button */}
+                    {/* Button */}
                     <div className="mt-auto pt-4 border-t border-white/5">
                         <button
                             onClick={() => handleAddToCart(dish)}

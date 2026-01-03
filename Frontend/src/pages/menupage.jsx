@@ -63,10 +63,10 @@ function MenuPage() {
     return (
         <div className="min-h-screen bg-stone-950 font-sans pb-20 relative selection:bg-amber-500 selection:text-black">
 
-            {/* --- HERO SECTION --- */}
+            {/*  HERO SECTION  */}
             <div className="relative w-full h-[60vh] overflow-hidden">
 
-                {/* Background Design */}
+                {/* Background */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-500/20 rounded-full blur-[100px] animate-pulse"></div>
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-orange-600/10 rounded-full blur-[120px] animate-pulse delay-1000"></div>
@@ -91,7 +91,7 @@ function MenuPage() {
                 </div>
             </div>
 
-            {/* --- STICKY INFO BAR --- */}
+            {/*  STICKY INFO BAR  */}
             <div className={`sticky top-20 z-40 transition-all duration-500 ease-in-out border-b border-white/5 ${isScrolled ? 'bg-stone-900/90 backdrop-blur-lg py-3 shadow-2xl' : 'bg-transparent -mt-25 py-6'}`}>
                 <div className="max-w-7xl mx-auto px-6 flex flex-wrap justify-center md:justify-between items-center gap-4">
 
@@ -112,7 +112,7 @@ function MenuPage() {
                 </div>
             </div>
 
-            {/* --- MENU GRID --- */}
+            {/*  MENU GRID  */}
             <div id='menuSection' className="max-w-7xl mx-auto px-4 md:px-8 mt-12 scroll-mt-32">
                 <div className="flex items-end justify-between mb-10 border-b border-stone-800 pb-4">
                     <div>

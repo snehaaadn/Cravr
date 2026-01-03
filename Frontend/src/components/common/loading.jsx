@@ -4,16 +4,12 @@ function Loading() {
     return (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-md transition-opacity duration-500">
             
-            {/* SPINNER CONTAINER */}
             <div className="relative flex items-center justify-center mb-8">
                 
-                {/* The Spinning Ring */}
                 <div className="absolute w-40 h-40 border-4 border-amber-500/30 border-t-amber-500 rounded-full animate-spin"></div>
                 
-                {/* Second Reverse Ring for detail */}
                 <div className="absolute w-32 h-32 border-2 border-white/10 border-b-white/50 rounded-full animate-spin-reverse-slow"></div>
 
-                {/* The Static Logo */}
                 <img 
                     src={logo} 
                     alt="Logo" 

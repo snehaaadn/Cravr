@@ -17,7 +17,7 @@ function OrderDetailView({ order, onBack }) {
     const [reviewError, setReviewError] = useState('');
     const [currentOrder, setCurrentOrder] = useState(order);
 
-    // POLLING EFFECT: Check status every 5 seconds
+
     useEffect(() => {
         if (['Delivered', 'Cancelled'].includes(currentOrder.orderStatus)) return;
 
@@ -36,20 +36,20 @@ function OrderDetailView({ order, onBack }) {
                         if (newStatus === 'Delivered') {
                             setTimeout(() => {
                                 window.location.reload();
-                            }, 2000); // 2-second delay before reload
+                            }, 2000); 
                         }
                     }
                 }
             } catch (err) {
                 console.error("Polling error:", err);
             }
-        }, 4000); // Check every 5 seconds
+        }, 4000); 
 
         return () => clearInterval(intervalId); 
     }, [currentOrder.orderStatus, order._id]);
 
     
-    // --- FETCH RESTAURANT & DISH DETAILS ---
+    //  FETCH RESTAURANT & DISH DETAILS 
     useEffect(() => {
         const fetchDetails = async () => {
             try {
@@ -81,7 +81,6 @@ function OrderDetailView({ order, onBack }) {
                 setItemImages(imageMap);
                 setUserReviews(reviewsMap);
             } catch (error) {
-                // console.error("Dossier retrieval failure:", error);
                 setRestaurantName("Cravr Partner");
             }
         };

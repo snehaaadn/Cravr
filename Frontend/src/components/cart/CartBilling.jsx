@@ -3,7 +3,6 @@ import React from 'react';
 const CartBilling = ({ subtotal, tax, deliveryFee, total }) => {
     return (
         <>
-            {/* Static Payment Method Section */}
             <section className='font-merriweather'>
                 <div className="flex items-center gap-3 mb-4">
                     <span className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center text-black font-bold text-xs">3</span>

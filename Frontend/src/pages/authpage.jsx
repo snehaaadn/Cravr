@@ -47,7 +47,6 @@ function AuthPage() {
 
         try {
             if (isLogin) {
-                // --- LOGIN FLOW ---
                 const response = await userLogin(formData.phone, formData.password);
 
                 if (response.data.success || response.data.token) {
@@ -58,7 +57,6 @@ function AuthPage() {
                     setError("Login failed. Please check your credentials.");
                 }
             } else {
-                // --- SIGNUP FLOW ---
                 const signupRes = await userSignup(formData);
 
                 if (signupRes.data.success) {
@@ -99,7 +97,7 @@ function AuthPage() {
     const row2 = [...baseRow2, ...baseRow2, ...baseRow2];
     const row3 = [...baseRow3, ...baseRow3, ...baseRow3];
 
-    // Zig-Zag Receipt Edge
+
     const jaggedEdgeStyle = {
         background: `linear-gradient(-45deg, transparent 16px, #ffffff 16px), 
                      linear-gradient(45deg, transparent 16px, #ffffff 16px)`,
@@ -123,7 +121,7 @@ function AuthPage() {
 
                 <div className="absolute inset-0 flex flex-col justify-center items-center gap-6 opacity-30 select-none pointer-events-none transform -rotate-12 scale-125">
 
-                    {/* Row 1: Scroll Left */}
+                    {/* Scroll Left */}
                     <div className="flex gap-6 animate-scroll-left w-max">
                         {row1.map((img, i) => (
                             <div key={i} className="w-72 h-44 shrink-0 rounded-xl overflow-hidden shadow-2xl border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
@@ -132,7 +130,7 @@ function AuthPage() {
                         ))}
                     </div>
 
-                    {/* Row 2: Scroll Right */}
+                    {/* Scroll Right */}
                     <div className="flex gap-6 animate-scroll-right w-max">
                         {row2.map((img, i) => (
                             <div key={i} className="w-72 h-44 shrink-0 rounded-xl overflow-hidden shadow-2xl border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
@@ -141,7 +139,7 @@ function AuthPage() {
                         ))}
                     </div>
 
-                    {/* Row 3: Scroll Left */}
+                    {/* Scroll Left */}
                     <div className="flex gap-6 animate-scroll-left w-max">
                         {row3.map((img, i) => (
                             <div key={i} className="w-72 h-44 shrink-0 rounded-xl overflow-hidden shadow-2xl border border-white/10 grayscale hover:grayscale-0 transition-all duration-500">
@@ -156,7 +154,7 @@ function AuthPage() {
             <div className="relative z-20 w-full max-w-sm bg-white shadow-[0_0_50px_rgba(0,0,0,0.5)] pt-8 pb-4 px-6 sm:px-8 m-4 animate-fade-in-up transform transition-all hover:scale-[1.01]">
                 <div className="absolute inset-0 bg-gray-50 opacity-50 pointer-events-none mix-blend-multiply"></div>
 
-                {/* --- HEADER --- */}
+                {/*  HEADER  */}
                 <div className="text-center border-b-2 border-dashed border-gray-300 pb-6 mb-6 relative">
                     <span className="text-5xl text-black font-pacifico block mb-2 hover:text-amber-600 transition-colors">
                         Cravr
@@ -175,7 +173,7 @@ function AuthPage() {
                     </div>
                 </div>
 
-                {/* --- THE FORM --- */}
+                {/*  THE FORM  */}
                 <div className="space-y-4 relative">
                     <h2 className="text-xl font-black text-center uppercase tracking-wider mb-6 border-y-2 border-black py-2">
                         {isLogin ? "LOGIN TICKET" : "NEW REGISTRY"}
@@ -269,7 +267,7 @@ function AuthPage() {
                             {fieldErrors.password && <span className="text-[10px] text-red-500 font-bold mt-1">⚠ {fieldErrors.password}</span>}
                         </div>
 
-                        {/* --- TOTAL / BUTTON --- */}
+                        {/*  TOTAL / BUTTON  */}
                         <div className="pt-6 border-t-2 border-dashed border-gray-300 mt-6">
                             <div className="flex justify-between items-center text-xl font-black mb-4">
                                 <span>TOTAL</span>
@@ -285,7 +283,7 @@ function AuthPage() {
                     </form>
                 </div>
 
-                {/* --- FOOTER --- */}
+                {/*  FOOTER  */}
                 <div className="text-center mt-8 pb-4 relative">
                     <p className="text-xs text-gray-500 mb-4 font-bold">
                         {isLogin ? "New Customer?" : "Already Registered?"}{" "}
@@ -304,7 +302,7 @@ function AuthPage() {
 
                 </div>
 
-                {/* --- THE JAGGED BOTTOM EDGE --- */}
+                {/*  THE JAGGED BOTTOM EDGE  */}
                 <div style={jaggedEdgeStyle}></div>
             </div>
         </div>

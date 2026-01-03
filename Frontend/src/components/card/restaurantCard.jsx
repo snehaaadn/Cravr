@@ -7,14 +7,13 @@ const RestaurantCard = ({ data }) => {
         <Link to={`/restaurant/${data.id}`} className="block h-full w-full">
             <div className="group relative w-full h-full bg-stone-950 p-2 transition-transform duration-500 hover:-translate-y-2">
 
-                {/* --- MAIN CONTAINER --- */}
+                
                 <div className="relative h-full w-full bg-[#1c1917] rounded-lg shadow-2xl overflow-hidden flex flex-col">
                     <div className="absolute inset-2 border-[1.5px] border-dashed border-stone-700 rounded-sm group-hover:border-amber-500/50 transition-colors duration-500 z-0"></div>
 
-                    {/* --- CONTENT AREA --- */}
+                    {/* CONTENT AREA */}
                     <div className="relative z-10 flex-1 flex flex-col items-center text-center pt-8 pb-6 px-6">
                         <div className="text-amber-600 mb-3 opacity-70 group-hover:opacity-100 transition-opacity">
-                            {/* <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z" /></svg> */}
                             <img src={logo} alt="Logo" className="w-10 h-10" />
                         </div>
 
@@ -33,7 +32,7 @@ const RestaurantCard = ({ data }) => {
                             <div className="h-px w-12 bg-amber-400"></div>
                         </div>
 
-                        {/* --- DETAILS --- */}
+                        {/* DETAILS */}
                         <div className="mt-auto grid grid-cols-3 w-full border-t border-stone-800 pt-4">
 
                             {/* Rating */}
@@ -58,7 +57,6 @@ const RestaurantCard = ({ data }) => {
                         </div>
                     </div>
 
-                    {/* --- The Bottom --- */}
                     <div className="absolute bottom-0 left-0 w-full h-1/2 bg-linear-to-t from-black/50 to-transparent pointer-events-none"></div>
 
                     <div className="absolute top-2 left-2 w-3 h-3 border-t border-l border-stone-600 rounded-tl group-hover:border-amber-500 transition-colors"></div>

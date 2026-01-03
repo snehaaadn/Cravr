@@ -34,7 +34,7 @@ const simulateOrderLifecycle = (orderId, userId, totalAmount) => {
 
                     step++;
                     runNextStep(); 
-                }, 10 * 1000); // 10 seconds delay
+                }, 4 * 1000); // 4 seconds delay
             }
         } catch (err) {
             console.error("Simulation Error:", err.message);
@@ -85,7 +85,7 @@ async function createOrder(req, res) {
             },
         });
 
-        // Logic: Clear cart immediately, but wait for 'Delivered' to update stats
+        // Clear cart immediately, but wait for 'Delivered' to update stats
         await User.findByIdAndUpdate(userId, { $set: { cart: [] } });
         
         // Pass userId and totalAmount to the simulation

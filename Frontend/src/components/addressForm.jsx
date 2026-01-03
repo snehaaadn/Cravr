@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 function AddressForm({ onSave, onCancel }) {
-    // Optimized state mapping to your Schema
+
     const [formData, setFormData] = useState({
         label: '',
         contact: '',
@@ -33,7 +33,7 @@ function AddressForm({ onSave, onCancel }) {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Field mappings for your addressSchema */}
+                {/* Field mappings */}
                 <div className="flex flex-col space-y-2">
                     <label className="font-mono text-[10px] uppercase tracking-widest text-stone-500">Label (Home/Work)</label>
                     <input name="label" value={formData.label} onChange={handleChange} className="bg-stone-950 border border-amber-500/10 rounded-xl px-4 py-3 text-amber-50 focus:outline-none focus:border-amber-500 transition-colors" placeholder="e.g. Headquarters" required />

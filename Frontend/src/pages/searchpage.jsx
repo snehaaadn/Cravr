@@ -68,7 +68,7 @@ function SearchPage() {
                         rating: item.rating || 4.5
                     }));
 
-                    // --- CLIENT SIDE FILTERING ---
+                    //  CLIENT SIDE FILTERING 
                     if (selectedCity) {
                         const filterCity = selectedCity.trim().toLowerCase();
 
@@ -81,8 +81,7 @@ function SearchPage() {
                     }
 
                 } 
-                // Dish Search 
-                else {
+                else { // Dish Search 
                     let response;
                     if (queryName) {
                         response = await getDishesByName(queryName, currentPage);
@@ -143,7 +142,7 @@ function SearchPage() {
     return (
         <div id='searchSection' className="min-h-screen bg-stone-950 text-white font-sans selection:bg-amber-500 selection:text-black pb-20 relative">
 
-            {/* --- HEADER --- */}
+            {/*  HEADER  */}
             <div className="sticky top-20 z-40 bg-stone-950/90 backdrop-blur-md border-b border-white/5 py-6">
                 <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-end md:items-center gap-4">
 
@@ -160,7 +159,7 @@ function SearchPage() {
                     {/* Controls Container */}
                     <div className="flex flex-col-reverse sm:flex-row items-center gap-4">
 
-                        {/* --- LOCATION DROPDOWN --- */}
+                        {/*  LOCATION DROPDOWN  */}
                         <div className="relative">
                             <button
                                 onClick={toggleLocation}
@@ -252,7 +251,7 @@ function SearchPage() {
                 </div>
             </div>
 
-            {/* --- CONTENT GRID --- */}
+            {/*  CONTENT GRID  */}
             <div className="max-w-7xl mx-auto px-4 md:px-8 mt-12 relative z-10">
                 {loading ? (
                     <div className="min-h-[50vh] flex items-center justify-center">
@@ -270,12 +269,12 @@ function SearchPage() {
                         {results.length > 0 ? (
                             <div className={`grid gap-8 ${activeTab === 'restaurants' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'}`}>
 
-                                {/* --- DISH CARDS --- */}
+                                {/*  DISH CARDS  */}
                                 {activeTab === 'dishes' && results.map((dish) => (
                                     <DishCard key={dish.id} dish={dish} />
                                 ))}
 
-                                {/* --- RESTAURANT CARDS --- */}
+                                {/*  RESTAURANT CARDS  */}
                                 {activeTab === 'restaurants' && results.map((rest) => (
                                     <RestaurantCard key={rest.id} data={rest} />
                                 ))}
