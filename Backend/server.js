@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 
 const URI = process.env.MONGO_ATLAS_URI;
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 8000;
 
 
 connectDB(URI)
@@ -33,6 +33,9 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/dishes', dishRoutes);
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
 
 // Start Server
 app.listen(PORT, () => {
