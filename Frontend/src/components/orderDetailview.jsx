@@ -5,6 +5,7 @@ import ReviewEntry from './reviewEntry.jsx';
 import { getRestaurantDetailsByID, getDishDetailsByID, addReview, getUserOrders } from '../services/api.js';
 import { AuthContext } from '../context/authContext.jsx';
 import OrderItemCard from './card/orderItemCard.jsx';
+import WhatsAppButton from './whatsappbutton.jsx';
 
 function OrderDetailView({ order, onBack }) {
     const { user } = useContext(AuthContext);
@@ -17,7 +18,7 @@ function OrderDetailView({ order, onBack }) {
     const [reviewError, setReviewError] = useState('');
     const [currentOrder, setCurrentOrder] = useState(order);
 
-
+    // POLLING EFFECT
     useEffect(() => {
         if (['Delivered', 'Cancelled'].includes(currentOrder.orderStatus)) return;
 
@@ -49,7 +50,7 @@ function OrderDetailView({ order, onBack }) {
     }, [currentOrder.orderStatus, order._id]);
 
     
-    //  FETCH RESTAURANT & DISH DETAILS 
+    // --- FETCH RESTAURANT & DISH DETAILS ---
     useEffect(() => {
         const fetchDetails = async () => {
             try {
@@ -122,9 +123,18 @@ function OrderDetailView({ order, onBack }) {
                 {/* Header Section */}
                 <div className="flex flex-col md:flex-row justify-between items-start gap-4 mb-6">
                     <div>
-                        <h1 className="text-3xl md:text-5xl font-serif font-bold italic text-amber-50 uppercase tracking-tighter leading-tight">
-                            {restaurantName}
-                        </h1>
+                        <div className="flex flex-wrap items-center gap-4">
+                            <h1 className="text-3xl md:text-5xl font-serif font-bold italic text-amber-50 uppercase tracking-tighter leading-tight">
+                                {restaurantName}
+                            </h1>
+                            {/* --- RESTAURANT WHATSAPP BUTTON --- */}
+                            <WhatsAppButton 
+                                label="Contact" 
+                                phoneNumber="919999999999" 
+                                message={`Hi ${restaurantName}, I have a query regarding my order #${order._id}.`}
+                                type="restaurant"
+                            />
+                        </div>
                         <p className="font-mono text-stone-500 text-[8px] md:text-[10px] mt-2 tracking-[0.2em] break-all uppercase">
                             ID: {order._id} // {new Date(order.createdAt).toLocaleDateString()}
                         </p>

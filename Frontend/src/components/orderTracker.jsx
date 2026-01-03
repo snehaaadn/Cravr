@@ -1,3 +1,6 @@
+import React from 'react';
+import WhatsAppButton from './whatsappbutton.jsx';
+
 const OrderTracker = ({ currentStatus }) => {
     const statuses = ['Pending', 'Confirmed', 'Preparing', 'Ready for Pickup', 'Out for Delivery', 'Delivered'];
     const currentIndex = statuses.indexOf(currentStatus);
@@ -35,6 +38,31 @@ const OrderTracker = ({ currentStatus }) => {
                     </div>
                 ))}
             </div>
+
+            {/* --- DELIVERY PARTNER DETAILS --- */}
+            {currentIndex >= 3 && (
+                <div className="mt-8 p-4 bg-stone-800/30 rounded-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-in fade-in slide-in-from-bottom-2 duration-700 border border-white/5">
+                    
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-stone-700 rounded-full flex items-center justify-center text-2xl border border-stone-600">
+                            👷
+                        </div>
+                        <div>
+                            <p className="text-amber-50 font-bold text-sm">Ramesh Kumar</p>
+                            <p className="text-stone-400 text-[10px] uppercase tracking-wider">Delivery Partner • +91 98765 43210</p>
+                        </div>
+                    </div>
+
+                    <div className="flex gap-2 w-full md:w-auto">
+                        <WhatsAppButton 
+                            label="Chat with Driver" 
+                            phoneNumber="919876543210" 
+                            message="Hi Ramesh, I am tracking my Cravr order."
+                            type="driver"
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
