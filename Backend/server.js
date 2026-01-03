@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { connectDB } from './connect.js';
+import cors from 'cors';
 
 // Import Routes
 import userRoutes from './routes/userRoutes.js';
@@ -24,7 +25,16 @@ connectDB(URI)
 });
 
 // Middleware
-app.use(express.json()); 
+app.use(express.json());
+
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://cravr.vercel.app"
+  ],
+  credentials: true
+}));
 
 // Routes
 app.use('/api/users', userRoutes);
