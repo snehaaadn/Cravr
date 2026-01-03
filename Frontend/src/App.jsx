@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     setIsLoading(true);
-    const timer = setTimeout(() => setIsLoading(false), 2000); // 1 second load time
+    const timer = setTimeout(() => setIsLoading(false), 2000); 
     return () => clearTimeout(timer);
   }, [location.pathname]);
 

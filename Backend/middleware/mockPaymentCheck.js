@@ -1,7 +1,7 @@
 const mockProcessPayment = (paymentMethod, totalAmount) => {
-    // --- MOCK LOGIC FOR DEMO ---
+    // MOCK LOGIC FOR DEMO 
     
-    // Simulate a failure for a specific case (e.g., if total is exactly 1.00 INR)
+    // Simulate a failure for a specific case
     if (paymentMethod === 'Card' && totalAmount <= 1.00) {
         return { status: 'failed', errorCode: 'INSUFFICIENT_FUNDS' };
     }
@@ -20,19 +20,12 @@ const paymentCheck = async (req, res, next) => {
     try {
         let paymentResult = { status: 'succeeded' }; // Default for COD/Mock
 
-        // 1. Process for Non-COD payments
         if (paymentMethod === 'Card' || paymentMethod === 'UPI') {
-            // In a real application, you replace mockProcessPayment 
-            // with calls to Stripe, Razorpay, or other gateway APIs.
             paymentResult = mockProcessPayment(paymentMethod, totalAmount);
         } 
-        // 2. COD payments are assumed successful for initial order creation
-        // but status is set to 'Pending' (handled in the route).
-        
-        
-        // 3. Handle Payment Failure
+
         if (paymentResult.status !== 'succeeded') {
-            // Stop the request here and send a failure response
+
             return res.status(402).json({ 
                 success: false, 
                 message: "Payment failed. Please check your details or try COD.",
@@ -40,10 +33,9 @@ const paymentCheck = async (req, res, next) => {
             });
         }
 
-        // 4. Success: Attach result to request object and proceed
         req.paymentResult = paymentResult;
         
-        next(); // Proceed to the final order creation route
+        next(); 
 
     } catch (error) {
         console.error('Payment processing error:', error);

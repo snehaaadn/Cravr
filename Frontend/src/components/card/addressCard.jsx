@@ -24,7 +24,7 @@ function AddressCard({ address, isCompact = false, onDelete }) {
                 <button 
                     onClick={(e) => { 
                         e.stopPropagation(); 
-                        onDelete(address._id); // Logical fix: Uses _id from DB
+                        onDelete(address._id); 
                     }}
                     className="self-end sm:self-center p-2 text-stone-600 hover:text-red-500 transition-colors"
                 >

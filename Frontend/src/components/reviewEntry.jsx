@@ -33,8 +33,6 @@ function ReviewEntry({ item, existingReview, onSave, onCancel, error }) {
                         Target: {item.name}
                     </p>
                 </div>
-                {/* <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-stone-800 shrink-0 border border-amber-50 overflow-hidden">
-                </div> */}
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6 md:space-y-10">

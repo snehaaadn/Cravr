@@ -31,8 +31,8 @@ function OrderItemCard({ item, image, hasRated, onRate }) {
                     onClick={() => onRate(item)}
                     className={`flex-1 sm:flex-none px-5 py-2 border rounded-lg text-[9px] uppercase font-bold transition-all
                                             ${hasRated
-                            ? 'bg-amber-500/10 border-amber-500 text-amber-500'  // rated
-                            : 'bg-amber-500 text-stone-900 hover:bg-stone-200' // not rated
+                            ? 'bg-amber-500/10 border-amber-500 text-amber-500' 
+                            : 'bg-amber-500 text-stone-900 hover:bg-stone-200' 
                         }`}
                 >
                     {hasRated ? 'Rated' : 'Rate'}

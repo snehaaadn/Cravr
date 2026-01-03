@@ -47,7 +47,7 @@ function ProfilePage() {
 
     return (
         <div className="min-h-screen bg-stone-950 text-amber-50 flex flex-col lg:flex-row font-sans selection:bg-amber-500 selection:text-black">
-            {/* --- LEFT PANE --- */}
+            {/*  LEFT */}
             <aside className="w-full lg:w-1/3 border-b lg:border-b-0 lg:border-r border-amber-500/10 flex flex-col p-6 md:p-10 justify-between bg-stone-900/30">
                 <div className="space-y-8 lg:space-y-12">
                     <div className="space-y-4">
@@ -90,7 +90,7 @@ function ProfilePage() {
                 </div>
             </aside>
 
-            {/* --- RIGHT PANE --- */}
+            {/*  RIGHT */}
             <main className="flex-1 overflow-y-auto bg-stone-900 p-6 md:p-12 custom-scrollbar">
                 {renderView(activeView)}
             </main>

@@ -40,11 +40,11 @@ function Orders() {
                     const fetchedOrders = response.data.orders;
                     setOrders(fetchedOrders);
 
-                    // Logic: Get unique restaurant IDs to avoid redundant API calls
+                    // Get unique restaurant IDs to avoid redundant API calls
                     const uniqueRestaurantIds = [...new Set(fetchedOrders.map(o => o.restaurantID))];
                     const namesMap = {};
 
-                    // Logic: Fetch all names in parallel for performance
+                    // Fetch all names in parallel for performance
                     await Promise.all(
                         uniqueRestaurantIds.map(async (id) => {
                             try {

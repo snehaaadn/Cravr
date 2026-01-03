@@ -28,7 +28,7 @@ const LocationPrompt = () => {
     return (
         <div className="relative w-full min-h-[85vh] flex flex-col items-center justify-center overflow-hidden bg-stone-950 border-b border-stone-800 isolate">
             
-            {/* --- BACKGROUND --- */}
+            {/* BACKGROUND */}
             <div className="absolute inset-0 pointer-events-none opacity-20">
                 <div 
                     className="absolute inset-0" 
@@ -42,12 +42,10 @@ const LocationPrompt = () => {
                 ></div>
             </div>
                     
-            {/* --- THE SCANNER BEAM --- */}
             <div className="absolute inset-0 pointer-events-none z-0">
                 <div className="w-full h-0.5 bg-amber-500/50 blur-sm shadow-[0_0_20px_rgba(245,158,11,0.5)] animate-[scan_4s_ease-in-out_infinite]"></div>
             </div>
 
-            {/* --- FLOATING ELEMENTS  --- */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 {/* Visible on all */}
                 <FloatingGroup emoji="🍕" text="Pizza" style={{ top: '10%', left: '5%' }} delay="0s" />
@@ -56,14 +54,14 @@ const LocationPrompt = () => {
                 <FloatingGroup emoji="🍧" text="Ice Cream" style={{ top: '15%', right: '8%' }} delay="4s" />
                 <FloatingGroup emoji="🍗" text="Spicy" style={{ top: '25%', left: '10%' }} delay="1.5s"  />
 
-                {/* --- Hidden on Mobile --- */}
+                {/*Hidden on Mobile*/}
                 <FloatingGroup emoji="🍜" text="Ramen" style={{ top: '7%', right: '30%' }} delay="2s" className="hidden md:flex" />
                 <FloatingGroup emoji="🥗" text="Healthy" style={{ bottom: '15%', right: '20%' }} delay="3s" className="hidden md:flex" />
                 <FloatingGroup emoji="🍩" text="Donuts" style={{ bottom: '25%', left: '20%' }} delay="1.5s" className="hidden md:flex" />
                 <FloatingGroup emoji="🌮" text="Tacos" style={{ top: '4%', left: '25%' }} delay="0.5s" className="hidden md:flex" />
             </div>
 
-            {/* --- MAIN CONTENT --- */}
+            {/*MAIN CONTENT*/}
             <div className="relative z-10 text-center px-4 max-w-4xl w-full">
                 
                 {/* Icon  */}
@@ -90,7 +88,7 @@ const LocationPrompt = () => {
                     <span className="text-stone-200 font-medium"> Enter location to start your journey.</span>
                 </p>
 
-                {/* --- ACTION BAR --- */}
+                {/*ACTION BAR*/}
                 <div className="flex flex-col md:flex-row items-center justify-center gap-4 w-full max-w-md mx-auto">
                     <button 
                         onClick={handleManualEntry}
@@ -117,7 +115,7 @@ const LocationPrompt = () => {
     );
 };
 
-// Component that holds both the Text Pill and the Emoji Bubble
+
 const FloatingGroup = ({ emoji, text, style, delay, className = "" }) => (
     <div 
         className={`absolute flex items-center gap-5 ${className}`}

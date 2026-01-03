@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import scrollToTop from "../utils/scrollToTop";
 import { AuthContext } from "../context/authContext";
 
-// Importing images
+// Importing assets
 import choleBhature from "../assets/category/cholebhature.webp";
 import pizza from "../assets/category/pizza.webp";
 import burger from "../assets/category/burger.webp";
@@ -90,7 +90,7 @@ function CategoryPage() {
                 <div className="grow h-px bg-gray-200 ml-4 hidden md:block"></div>
             </div>
 
-            {/* LOADING STATE (Skeleton UI) */}
+            {/* LOADING STATE */}
             {isLoading ? (
                 <div className="flex overflow-hidden space-x-8 px-4 py-4 w-full max-w-7xl">
                     {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -101,7 +101,6 @@ function CategoryPage() {
                     ))}
                 </div>
             ) : (
-                /* MAIN CAROUSEL */
                 <div className="relative w-full max-w-7xl px-4 group">
 
                     {/* Left Button */}
@@ -143,7 +142,6 @@ function CategoryPage() {
                                         className="w-full h-full object-cover"
                                     />
 
-                                    {/* Shine effect */}
                                     <div className="absolute inset-0 bg-black/5 group-hover/item:bg-transparent transition-colors duration-300"></div>
                                 </div>
 

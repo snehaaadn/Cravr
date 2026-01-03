@@ -24,7 +24,7 @@ connectDB(URI)
 });
 
 // Middleware
-app.use(express.json()); // For parsing application/json
+app.use(express.json()); 
 
 // Routes
 app.use('/api/users', userRoutes);

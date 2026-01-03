@@ -28,7 +28,7 @@ function HeroSection() {
     return (
         <div className="relative w-full min-h-screen flex flex-col justify-start items-center overflow-hidden bg-stone-900">
 
-            {/* BACKGROUND LAYER */}
+            {/* BACKGROUND */}
             <div className="absolute inset-0 w-full h-full z-0">
                 <img
                     src={foodBg}
@@ -38,7 +38,7 @@ function HeroSection() {
                 <div className="absolute inset-0 bg-linear-to-b from-stone-900/90 via-stone-800/30 to-stone-900/80"></div>
             </div>
 
-            {/* MAIN CONTENT CONTENT */}
+            {/* MAIN CONTENT */}
             <div className="z-10 w-full flex flex-col items-center pt-20 md:pt-32 px-4 space-y-8">
 
                 {/* Hero Text */}

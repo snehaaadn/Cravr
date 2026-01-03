@@ -5,7 +5,7 @@ async function getDishesByName(req, res) {
         const { name, category, page = 1, limit = 20 } = req.query;
         let query = {};
 
-        // Logical search: If name is provided, use regex for partial matching
+        // If name is provided, use regex for partial matching
         if (name) {
             query.name = { $regex: name, $options: 'i' }; 
         }
@@ -17,7 +17,6 @@ async function getDishesByName(req, res) {
 
         const totalCount = await Dish.countDocuments(query);
 
-        // Use skip/limit for O(1) style paging
         const dishes = await Dish.find(query)
             .populate('restaurantID', 'name')
             .limit(limit * 1)

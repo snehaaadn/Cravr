@@ -2,7 +2,7 @@ const AdCard = ({ text }) => {
     return (
         <div className="group relative w-40 h-40 md:w-60 md:h-60 rounded-full shadow-xl hover:shadow-amber-500/50 transition-all duration-500 ease-out transform overflow-hidden animate-float-delay">
 
-            {/* Gradient Overlay for text readability */}
+            {/* Gradient Overlay */}
             <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent transition-opacity duration-300"></div>
 
             {/* Text Content */}

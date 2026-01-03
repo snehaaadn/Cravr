@@ -17,7 +17,6 @@ const CartSidebar = ({ isOpen, onClose, onBrowse }) => {
     const { user } = useContext(AuthContext);
     const { cartItems, loading, cartTotal, updateQuantity, removeFromCart, placeOrder } = useContext(CartContext);
 
-    // State
     const [address, setAddress] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [addressError, setAddressError] = useState('');
@@ -62,7 +61,7 @@ const CartSidebar = ({ isOpen, onClose, onBrowse }) => {
         }
     };
 
-    // Keyboard & Scroll Lock Effects
+    
     useEffect(() => {
         const handleEsc = (e) => { if (e.key === 'Escape') onClose(); };
         window.addEventListener('keydown', handleEsc);
