@@ -1,5 +1,5 @@
 import { geocodeLocation } from "../utils/geocoder.js";
-import Restaurant from "../models/Restaurant.js";
+import Restaurant from "../models/restaurantModel.js";
 
 async function getRestaurantsByLocationName(req, res) {
   try {
