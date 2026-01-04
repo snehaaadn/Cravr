@@ -33,7 +33,6 @@ app.use(cors({
   credentials: true
 }));
 
-app.options("*", cors()); // 🔥 IMPORTANT
 
 // Health + root (Render wake-up)
 app.get("/", (req, res) => {
