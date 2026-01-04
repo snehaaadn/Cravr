@@ -16,6 +16,52 @@ Cravr is a full-stack food delivery application designed to provide a seamless e
 
 ---
 
+## 🌐 Deployment
+
+The application is fully deployed with separate frontend and backend hosting.
+
+### 🔗 Live Links
+
+LIVE DEMO: https://cravr.vercel.app/
+
+## 🧩 Deployment Stack
+
+- Frontend Hosting: Vercel
+
+- Backend Hosting: Render / Railway
+
+- Database: MongoDB Atlas
+
+Environment Variables securely configured on hosting platforms
+
+---
+
+## 🌍 Location & Geocoding
+
+Cravr uses OpenCage Geocoding API to provide accurate and user-friendly location services.
+
+- Convert user-selected map coordinates into readable addresses
+
+- Auto-detect delivery location
+
+- Improve delivery accuracy and user experience
+
+---
+
+## 🎁 Cravr Points (Reward System)
+
+Cravr includes a loyalty-based reward system called Cravr Points to enhance user engagement.
+
+- Users earn points on every successful order
+
+- Points can be redeemed for discounts on future orders
+
+- Real-time point updates after checkout
+
+- Encourages repeat orders and customer retention
+
+---
+
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -50,74 +96,65 @@ Follow these steps to run the project locally. You will need to set up both the 
 ```
 cd Cravr/Backend
 npm install
+
 ```
 
-- Environment Configuration
-- - Create a .env file in the Backend directory:
+- Create a .env file in the Backend directory:
+```
 MONGO_ATLAS_URI=your_mongodb_connection_string
 PORT=6000
 JWTSECRETKEY=your_secure_random_string
-Start the Server
+OPENCAGE_API_KEY=your_opencage_key
 
-npm run dev
-The backend server will run at:
 ```
-arduino
-Copy code
-http://localhost:6000
-2️⃣ Frontend Setup
-Open a new terminal, navigate to the frontend directory, and install dependencies:
 
-bash
-Copy code
+- Start the Server
+```
+npm run dev
+```
+- The backend server will run at:
+```
+http://localhost:6000
+
+```
+### 2️⃣ Frontend Setup
+- Open a new terminal, navigate to the frontend directory, and install dependencies:
+```
 cd Cravr/Frontend
 npm install
-Environment Configuration
-Create a .env file in the Frontend directory:
 
-env
-Copy code
+```
+
+- Create a .env file in the Frontend directory:
+```
 VITE_API_BASE=http://localhost:6000/api
-Start the Application
-bash
-Copy code
-npm run dev
-The frontend application will run at:
 
-arduino
-Copy code
+```
+
+- Start the Application
+```
+npm run dev
+```
+- The frontend application will run at:
+```
 http://localhost:5173
 (or the port specified by Vite)
+```
 
-🔗 API Endpoints
+### 🔗 API Endpoints
 The backend exposes the following key API routes:
 
-Auth: /api/users (Register, Login, Profile)
+- **Auth**: /api/users (Register, Login, Profile)
 
-Restaurants: /api/restaurants (List, Details)
+- **Restaurants**: /api/restaurants (List, Details)
 
-Dishes: /api/dishes (Menu items)
+- **Dishes**: /api/dishes (Menu items)
 
-Cart: /api/users/cart (Manage cart items)
+- **Cart**: /api/users/cart (Manage cart items)
 
-Orders: /api/orders (Place and view orders)
+- **Orders**: /api/orders (Place and view orders)
 
-✍️ Authors
-Sneha
+## ✍️ Authors
+- **Sneha**
+- **Tushar**
 
-Tushar
-
-📄 License
-This project is licensed under the ISC License.
-
-yaml
-Copy code
-
----
-
-If you want, I can also:
-- Add **badges** (Vite, React, Node, MongoDB)
-- Make it **GitHub-polished** (screenshots, demo link, env notes)
-- Convert it into a **resume-friendly project description**
-
-Just tell me 👍
