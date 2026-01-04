@@ -10,7 +10,7 @@ function HeroSection() {
 
     const handleSearch = (e) => {
         if ((e.key === 'Enter' || !e.key) && locationInput.trim() !== '') {
-            navigate(`?location=${encodeURIComponent(locationInput.trim())}`);
+            navigate(`?locationName=${encodeURIComponent(locationInput.trim())}`);
 
             const section = document.getElementById('nearByRestaurants');
             if (section) {
