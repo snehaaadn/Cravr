@@ -10,7 +10,7 @@ import logo from '../assets/logo.png';
 
 function RestaurantPage() {
     const [searchParams] = useSearchParams();
-    const queryLocation = searchParams.get('location');
+    const queryLocation = searchParams.get('locationName');
 
     const [loading, setLoading] = useState(true);
     const [results, setResults] = useState([]);
