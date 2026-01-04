@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './connect.js';
 import cors from 'cors';
 
-// Import Routes
+// Routes
 import userRoutes from './routes/userRoutes.js';
 import cartRoutes from './routes/cartRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
@@ -16,38 +16,42 @@ const app = express();
 const URI = process.env.MONGO_ATLAS_URI;
 const PORT = process.env.PORT || 8000;
 
-
+// DB connection (NON-BLOCKING)
 connectDB(URI)
-.then(() => {
-    console.log("Connected to MongoDB");
-}).catch((err) => {
-    console.error("Error connecting to MongoDB:", err);
-});
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error("Mongo error:", err));
 
 // Middleware
 app.use(express.json());
-
 
 app.use(cors({
   origin: [
     "http://localhost:5173",
     "https://cravr.vercel.app"
   ],
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   credentials: true
 }));
 
-// Routes
+app.options("*", cors()); // 🔥 IMPORTANT
+
+// Health + root (Render wake-up)
+app.get("/", (req, res) => {
+  res.json({ success: true, message: "Cravr backend live 🚀" });
+});
+
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
+// API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/users/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/dishes', dishRoutes);
 
-app.get("/health", (req, res) => {
-  res.status(200).send("OK");
-});
-
-// Start Server
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
